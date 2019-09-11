@@ -17,7 +17,7 @@ Food waste
 
 # Solution
 
-People will input their grocery items into the app, which will then be tracked for how long you've kept each item. It will notify you of items that should be used soon, or items that should (reluctantly) be thrown out. According to the Food and Agriculture Organization of the United Nations, "roughly one third of the food produced in the world for human consumption every year - apporximately 1.3 billion tons - gets lost of wasted. Specifically, in US households about 150,000 tons of food is tossed out in US households each day. The app should help this by keeping track of food that should be used.
+People will input their grocery items into the app, which will then be tracked for how long you've kept each item. It will notify you of items that should be used soon, or items that should (reluctantly) be thrown out. According to the Food and Agriculture Organization of the United Nations, "roughly one third of the food produced in the world for human consumption every year - approximately 1.3 billion tons - gets lost of wasted. Specifically, in US households about 150,000 tons of food is tossed out in US households each day. The app should help this by keeping track of food that should be used.
 
 ## Architecture Overview
 
@@ -61,7 +61,7 @@ As a person using the application, I input my groceries into the app. The app sh
 
 
 ## Tools
-* Android Studio: Because I have more experience with it
+* Android Studio: Because we have experience with it
 * Java
 * Javascript/React
 
