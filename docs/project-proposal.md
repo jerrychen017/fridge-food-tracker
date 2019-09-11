@@ -13,11 +13,11 @@ Food waste
 
 ## Introduction to Domain
 
-<!-- TODO -->
+Lots of food is wasted in many households. There are many causes, and one prevalent cause is people simply forgetting what they have in their fridges and letting it all go bad. There is a need for some easy-to-use process for keeping track of what food is owned and when that food will go bad.
 
 # Solution
 
-People will input their grocery items into the app, which will then be tracked for how long you've kept each item. It will notify you of items that should be used soon, or items that should (reluctantly) be thrown out. According to the Food and Agriculture Organization of the United Nations, "roughly one third of the food produced in the world for human consumption every year - approximately 1.3 billion tons - gets lost of wasted. Specifically, in US households about 150,000 tons of food is tossed out in US households each day. The app should help this by keeping track of food that should be used.
+People will input their grocery items into the app, which will then be tracked for how long you've kept each item. It will notify users of items that should be used soon, or items that should (reluctantly) be thrown out. According to the Food and Agriculture Organization of the United Nations, "roughly one third of the food produced in the world for human consumption every year - approximately 1.3 billion tons - gets lost of wasted. Specifically, in US households about 150,000 tons of food is tossed out in US households each day." This app should help this by keeping track of food that should be used.
 
 ## Architecture Overview
 
@@ -64,8 +64,6 @@ As a person using the application, I input my groceries into the app. The app sh
 * Android Studio: Because we have experience with it
 * Java
 * Javascript/React
-
-<!-- TODO -->
 
 ## Proof of Concept
 
