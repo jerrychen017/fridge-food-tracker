@@ -41,7 +41,7 @@ People will input their grocery items into the app, which will then be tracked f
 
 **<!-- Description, for example, “Events Map” -->**
 
-![Wireframes](Pictures/Wireframes.JPG)
+![WireframeCamera](Pictures/Wireframes\ Camera\ Input.JPG)
 
 ## User Stories
 
