@@ -41,6 +41,16 @@ People will input their grocery items into the app, which will then be tracked f
 
 **<!-- Description, for example, “Events Map” -->**
 
+#Fridge Home
+![WireframeFridgeHome](Pictures/WireframeFridgeHome.JPG)
+
+#Common Item
+![WireframeCommonItem](Pictures/WireframeCommonItem.JPG)
+
+#Recommendations
+![WireframeRecommendations](Pictures/WireframeRecommendations.JPG)
+
+#Camera Input
 ![WireframeCamera](Pictures/WireframeCameraInput.JPG)
 
 ## User Stories
