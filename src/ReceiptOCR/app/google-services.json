@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "940471308287",
+    "firebase_url": "https://receiptocr-87ff3.firebaseio.com",
+    "project_id": "receiptocr-87ff3",
+    "storage_bucket": "receiptocr-87ff3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940471308287:android:7f7e37810edda5dcd621ca",
+        "android_client_info": {
+          "package_name": "com.example.receiptocr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "940471308287-o9r1qrqv2gcf0jvlhth6uer6bru30a9p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdmJEojJFAQ3elMF-xojpHoRF_UYrFiI0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "940471308287-o9r1qrqv2gcf0jvlhth6uer6bru30a9p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
