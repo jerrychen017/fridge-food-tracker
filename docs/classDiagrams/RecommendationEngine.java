@@ -1,4 +1,4 @@
-public class RecommendationEngine extends User {
+public class RecommendationEngine {
   public ItemList recommendShoppingList(User usr) {
     return new ItemList();
   }
