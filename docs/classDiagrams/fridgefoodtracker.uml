@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="1179.7994791666667">com</node>
+    <node x="0.0" y="1108.7994791666667">netscape</node>
+    <node x="893.19" y="698.0">User</node>
+    <node x="527.9166666666666" y="731.5">Recipe</node>
+    <node x="605.0" y="982.0">toolbarButtonGraphics</node>
+    <node x="56.027222222222235" y="564.0">BarcodeEngine</node>
+    <node x="152.0" y="1179.7994791666667">sun</node>
+    <node x="999.9166666666667" y="530.0">Fridge</node>
+    <node x="10.5" y="176.0">ItemListIterator</node>
+    <node x="720.0" y="1108.7994791666667">apple</node>
+    <node x="467.91666666666663" y="0.0">Item</node>
+    <node x="883.0" y="982.0">groovyjarjarasm</node>
+    <node x="1052.0" y="1108.7994791666667">java</node>
+    <node x="886.0" y="1108.7994791666667">javax</node>
+    <node x="249.38611111111118" y="387.5">Camera</node>
+    <node x="574.3711111111112" y="865.0">RecommendationEngine</node>
+    <node x="374.0" y="1108.7994791666667">images</node>
+    <node x="304.0" y="1179.7994791666667">org</node>
+    <node x="276.91666666666663" y="564.0">OCREngine</node>
+    <node x="456.0" y="1179.7994791666667">jdk</node>
+    <node x="187.0" y="1108.7994791666667">META-INF</node>
+    <node x="547.0" y="1108.7994791666667">groovy</node>
+    <node x="734.9166666666666" y="552.5">Diet</node>
+    <node x="630.4166666666666" y="365.0">ItemList</node>
+    <node x="572.9166666666666" y="220.5">ItemHistory</node>
+    <node x="320.0" y="995.6328125">groovyjarjarcommonscli</node>
+    <node x="40.0" y="997.7994791666666">groovyjarjarantlr</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Recipe" target="ItemList">
+      <point x="0.0" y="-25.0" />
+      <point x="620.9166666666666" y="510.0" />
+      <point x="703.5277777777777" y="510.0" />
+      <point x="-20.888888888888914" y="47.5" />
+    </edge>
+    <edge source="ItemList" target="Item">
+      <point x="-62.66666666666663" y="-47.5" />
+      <point x="661.75" y="340.0" />
+      <point x="562.4166666666666" y="340.0" />
+      <point x="0.0" y="58.0" />
+    </edge>
+    <edge source="groovyjarjarantlr" target="groovyjarjarantlr">
+      <point x="0.0" y="13.0" />
+      <point x="142.5" y="1053.7994791666665" />
+      <point x="10.0" y="1053.7994791666665" />
+      <point x="10.0" y="1010.7994791666666" />
+      <point x="-102.5" y="-0.0" />
+    </edge>
+    <edge source="ItemList" target="ItemHistory">
+      <point x="0.0" y="-47.5" />
+      <point x="0.0" y="25.0" />
+    </edge>
+    <edge source="OCREngine" target="ItemList">
+      <point x="0.0" y="-25.0" />
+      <point x="391.91666666666663" y="480.0" />
+      <point x="640.8611111111111" y="480.0" />
+      <point x="-83.55555555555554" y="47.5" />
+    </edge>
+    <edge source="Diet" target="ItemList">
+      <point x="0.0" y="-36.5" />
+      <point x="857.4166666666666" y="510.0" />
+      <point x="745.3055555555555" y="510.0" />
+      <point x="20.888888888888914" y="47.5" />
+    </edge>
+    <edge source="BarcodeEngine" target="Camera">
+      <point x="50.33333333333334" y="-25.0" />
+      <point x="181.8605555555556" y="510.0" />
+      <point x="290.6361111111112" y="510.0" />
+      <point x="-41.25" y="25.0" />
+    </edge>
+    <edge source="RecommendationEngine" target="User">
+      <point x="72.5" y="-36.0" />
+      <point x="791.8711111111112" y="835.0" />
+      <point x="939.94" y="835.0" />
+      <point x="-46.75" y="58.5" />
+    </edge>
+    <edge source="RecommendationEngine" target="ItemList">
+      <point x="24.16666666666663" y="-36.0" />
+      <point x="743.5377777777778" y="845.0" />
+      <point x="724.4166666666666" y="845.0" />
+      <point x="0.0" y="47.5" />
+    </edge>
+    <edge source="User" target="Diet">
+      <point x="-46.75" y="-58.5" />
+      <point x="939.94" y="673.0" />
+      <point x="857.4166666666666" y="673.0" />
+      <point x="0.0" y="36.5" />
+    </edge>
+    <edge source="ItemHistory" target="Item">
+      <point x="0.0" y="-25.0" />
+      <point x="724.4166666666666" y="156.0" />
+      <point x="589.4166666666666" y="156.0" />
+      <point x="27.0" y="58.0" />
+    </edge>
+    <edge source="RecommendationEngine" target="Recipe">
+      <point x="-24.166666666666742" y="-36.0" />
+      <point x="695.2044444444444" y="845.0" />
+      <point x="667.4166666666666" y="845.0" />
+      <point x="46.5" y="25.0" />
+    </edge>
+    <edge source="User" target="Fridge">
+      <point x="46.75" y="-58.5" />
+      <point x="1033.44" y="673.0" />
+      <point x="1106.4166666666667" y="673.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="OCREngine" target="Camera">
+      <point x="-76.66666666666669" y="-25.0" />
+      <point x="315.24999999999994" y="510.0" />
+      <point x="373.1361111111112" y="510.0" />
+      <point x="41.25" y="25.0" />
+    </edge>
+    <edge source="Fridge" target="ItemList">
+      <point x="26.625" y="-59.0" />
+      <point x="1133.0416666666667" y="480.0" />
+      <point x="807.9722222222222" y="480.0" />
+      <point x="83.55555555555554" y="47.5" />
+    </edge>
+    <edge source="Fridge" target="Item">
+      <point x="79.875" y="-59.0" />
+      <point x="1186.2916666666667" y="510.0" />
+      <point x="1151.4844444444445" y="510.0" />
+      <point x="1151.4844444444445" y="136.0" />
+      <point x="643.4166666666666" y="136.0" />
+      <point x="81.0" y="58.0" />
+    </edge>
+    <edge source="groovyjarjarcommonscli" target="groovyjarjarcommonscli">
+      <point x="60.0" y="13.0" />
+      <point x="500.0" y="1051.6328125" />
+      <point x="290.0" y="1051.6328125" />
+      <point x="290.0" y="1002.1328125" />
+      <point x="-120.0" y="-6.5" />
+    </edge>
+    <edge source="BarcodeEngine" target="Item">
+      <point x="0.0" y="-25.0" />
+      <point x="131.52722222222224" y="500.0" />
+      <point x="181.0" y="500.0" />
+      <point x="181.0" y="156.0" />
+      <point x="535.4166666666666" y="156.0" />
+      <point x="-27.0" y="58.0" />
+    </edge>
+    <edge source="ItemListIterator" target="Item">
+      <point x="0.0" y="-69.5" />
+      <point x="90.5" y="146.0" />
+      <point x="508.41666666666663" y="146.0" />
+      <point x="-54.0" y="58.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="638.5" y="437.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
