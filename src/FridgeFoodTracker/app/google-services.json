@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "579492814968",
+    "firebase_url": "https://fridgefoodproject.firebaseio.com",
+    "project_id": "fridgefoodproject",
+    "storage_bucket": "fridgefoodproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579492814968:android:bac4a02cce08a362f48d8d",
+        "android_client_info": {
+          "package_name": "com.oosegroup.fridgefoodtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579492814968-64o3pi079ksbnh95t9l3kuv955as0eru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDX0a_jD_hkVEpf8ibmzVdqhpE9XXO8I4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579492814968-64o3pi079ksbnh95t9l3kuv955as0eru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
