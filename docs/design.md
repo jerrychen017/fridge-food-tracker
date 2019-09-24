@@ -40,30 +40,52 @@ Where do you get it?
  
  #### Android Studio 
  * What is it? 
+ 
  Android Studio is the official integrated development environment for Google's Android operating
   system.
+ 
  * Why Did We Choose It?
- Because we  
- * Where Do I Get It? 
+ 
+ Because we are developing an Android application.
+ 
+ * Where Do I Get It?
+ 
+ There you go: http://developer.android.com/studio?&gclid=Cj0KCQjw_absBRD1ARIsAO4_D3seRt3KKOdaYLWbEpx4rYoBcl2Xtw4EiqI--mHuACxwn06Rr7DkDF8aAgSEEALw_wcB
+ 
  * How Do I Learn It? 
  
-#### Android Studio 
+ We can learn it from the tutorials on the android studio official website. 
+ 
+#### Text Recognition APIs (OCR API)
   * What is it? 
+  
   * Why Did We Choose It? 
+  
   * Where Do I Get It? 
+  
+  https://firebase.google.com/docs/ml-kit/android/recognize-text
   * How Do I Learn It? 
   
-#### Android Studio 
+#### jcomo/StillTasty API
+   * What is it? 
+   * Why Did We Choose It? 
+   * Where Do I Get It? 
+   * How Do I Learn It? 
+
+#### RESTful API
    * What is it? 
    * Why Did We Choose It? 
    * Where Do I Get It? 
    * How Do I Learn It? 
    
- #### Android Studio 
+ #### Node.js 
  * What is it? 
  * Why Did We Choose It? 
  * Where Do I Get It? 
  * How Do I Learn It?    
+ 
+ 
+ 
    
 We attached the tool links to the items and that's where we can look up for documentations. We
  can learn them from the official tutorials published on these websites. 
