@@ -9,7 +9,7 @@ Find yourself throwing out tons of food when they go bad in your fridge? The Fri
 
 # Problem
 
-Food waste
+Food waste is a problem prevalent in many households throughout the world. According to https://www.theguardian.com/environment/2018/apr/18/americans-waste-food-fruit-vegetables-study, Americans waste 150,000 tons of food each day. This takes a toll on both the environment and people's wallets.
 
 ## Introduction to Domain
 
@@ -77,7 +77,7 @@ As a person using the application, I input my groceries into the app. The app sh
 
 ## Proof of Concept
 
-One can look at Tab, which is a mobile  app that takes a photo of a receipt and splits the tab, for the validity of virtually entering items into a virtual fridge. The GUI interface can be used similar to any sort of tracking app. 
+One can look at Tab, which is a mobile  app that takes a photo of a receipt and splits the tab, for the validity of virtually entering items into a virtual fridge. The GUI interface can be used similar to any sort of tracking app.
 
 # Difficulty
 
