@@ -63,7 +63,7 @@ Where do you get it?
 
 #### jcomo/Shelf Life API
    * What is it? 
-   An API to get information about the shelf life of food and tips about how to keep food fresh. The data provided comes from ![Still Tasty(https://www.stilltasty.com/)
+   An API to get information about the shelf life of food and tips about how to keep food fresh. The data provided comes from ![Still Tasty](https://www.stilltasty.com/)
    * Why did we choose it? 
    Free open source library to allow us to get shelf life data without manually inputting the data into our own database.
    * Where did we get it? 
