@@ -20,10 +20,10 @@ It would be convenient for users to have multiples ways to input items to the ap
 * jcomo/Shelf Life API - expiration dates
  
  To obtain common food expiration dates, we use 
- [Shelf Life API] (https://github.com/jcomo/shelf-life/tree/master/src/main/java/me/jcomo/stilltasty) developed by jcomo.
+ ![Shelf Life API](https://github.com/jcomo/shelf-life/tree/master/src/main/java/me/jcomo/stilltasty) developed by jcomo.
 
 * openFDA - give notifications about food recalls and overall food safety alerts
-One feature to add further down the line is to be able to alert users of food that the FDA has put alerts out on so that users will be notified about what food to avoid in their current fridge and what food to avoid shopping for in their next grocery trip. Here is the [API](https://open.fda.gov/)
+One feature to add further down the line is to be able to alert users of food that the FDA has put alerts out on so that users will be notified about what food to avoid in their current fridge and what food to avoid shopping for in their next grocery trip. Here is the ![API](https://open.fda.gov/)
 
 * Web Server - Node backend with RESTful API
 
@@ -48,7 +48,7 @@ Where do you get it?
  * Why did we choose it?
  Android studio is the official IDE for android app development and we'd like to use the standard.
  * Where did we get it?
- Android studio is available [here] (https://developer.android.com/studio).
+ Android studio is available ![here](https://developer.android.com/studio).
  * How do we learn it?
  It can be learned through multiple tutorials online or by just reading through the official API documentation.
 #### ML Kit
