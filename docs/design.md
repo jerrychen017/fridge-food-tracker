@@ -81,18 +81,17 @@ Where do you get it?
    The full database can be found [here](https://open.fda.gov/) and the [food enforcement API] (https://open.fda.gov/apis/food/enforcement/) is available.
    * How do we learn it?
    Like above, using the API will be learned through reading the corresponding documentation.
-#### RESTful API
-   * What is it? 
-   * Why Did We Choose It? 
-   * Where Do I Get It? 
-   * How Do I Learn It? 
 
 #### Node.js 
  * What is it? 
- * Why Did We Choose It? 
- * Where Do I Get It? 
- * How Do I Learn It?    
-   
+ Node.js is an open-source, cross-platform, JavaScript run-time environment that executes JavaScript code outside of a browser.
+ * Why did we choose it? 
+ Node.js is the standard for enterprise level organizations, and it is lightweight and scalable which perfectly suits are needs for out back end database.
+ * Where ddid we get it? 
+ Node.js can be download [here](https://nodejs.org/en/download/)
+ * How do we learn it?    
+ Node.js can be learned using these [official guides](https://nodejs.org/en/docs/guides/)
+
 We attached the tool links to the items and that's where we can look up for documentations. We
  can learn them from the official tutorials published on these websites. 
 
