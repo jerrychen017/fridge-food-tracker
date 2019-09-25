@@ -31,7 +31,7 @@ For the server side, we are going to build a Node.js RESTful API.
 
 * Frontend 
 We make XML through Layout Editor in Android Studio because it's built-in and simple. 
-
+[] (Pictures/Android_Studio_Drawing.png)
 ## Tools Outside the Toolbox
 
 <!-- For each tool: What is it? Why did you choose it? 
@@ -42,8 +42,8 @@ Where do you get it?
  We mentioned these tools above in the Architecture section. Here's a summary of them:
  
 #### Android Studio 
+
  * What is it? 
- 
  Android Studio is the official integrated development environment for Google's Android operating
   system.
  * Why did we choose it?
