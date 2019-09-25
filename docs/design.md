@@ -17,10 +17,10 @@ It would be convenient for users to have multiples ways to input items to the ap
 're using OCR to extract items from receipts. More specifically, we included Google Firebase
  Vision ML SDK to our application so that we can use [text recognition APIs] (https://firebase.google.com/docs/ml-kit/android/recognize-text). 
   
-* jcomo/StillTasty API - expiration dates
+* jcomo/Shelf Life API - expiration dates
  
  To obtain common food expiration dates, we use 
- [StillTasty API] (https://github.com/jcomo/shelf-life/tree/master/src/main/java/me/jcomo/stilltasty) developed by jcomo.
+ [Shelf Life API] (https://github.com/jcomo/shelf-life/tree/master/src/main/java/me/jcomo/stilltasty) developed by jcomo.
 
 * openFDA - give notifications about food recalls and overall food safety alerts
 One feature to add further down the line is to be able to alert users of food that the FDA has put alerts out on so that users will be notified about what food to avoid in their current fridge and what food to avoid shopping for in their next grocery trip. Here is the [API](https://open.fda.gov/)
@@ -46,29 +46,41 @@ Where do you get it?
  
  Android Studio is the official integrated development environment for Google's Android operating
   system.
- 
- * Why Did We Choose It?
+ * Why did we choose it?
  Android studio is the official IDE for android app development and we'd like to use the standard.
- * Where do you get it
+ * Where did we get it?
  Android studio is available [here] (https://developer.android.com/studio).
- * Where do you learn it?
+ * How do we learn it?
  It can be learned through multiple tutorials online or by just reading through the official API documentation.
 #### ML Kit
   * What is it? 
   ML Kit is Google's machine learning library optimized for mobile development.
-  * Why Did We Choose It? 
+  * Why did we choose it? 
   We chose this library due to the open source library for both text recognition and barcode recognition which we will use in order to input items into our fridge.
-  * Where Do I Get It? 
+  * Where did we get it? 
   The tutorial for integrating ML Kit can be found [here] (https://developers.google.com/ml-kit/).
-  * How Do I Learn It? 
+  * How do we learn it? 
   The open source documentation is availble online as well as simple tutorials provided by Google. 
 
-#### jcomo/StillTasty API
+#### jcomo/Shelf Life API
    * What is it? 
-   * Why Did We Choose It? 
-   * Where Do I Get It? 
-   * How Do I Learn It? 
+   An API to get information about the shelf life of food and tips about how to keep food fresh. The data provided comes from [Still Tasty](https://www.stilltasty.com/)
+   * Why did we choose it? 
+   Free open source library to allow us to get shelf life data without manually inputting the data into our own database.
+   * Where did we get it? 
+   The API can be found [here](https://github.com/jcomo/shelf-life)
+   * How do we learn it? 
+   Learning the API can be done through reading through the documentation at the given link.
 
+#### openFDA API
+   * What is it?
+   Provides raw download and access to a number of of high-value, high priority and scalable structured datasets, including adverse events, drug product labeling, and recall enforcement reports.
+   * Why did we choose it?
+   Free open source library to be used for official data about recall enforcement reports for a notificication feature that will be integrated into the app about when users should throw out and avoid certain items.
+   * Where did we get it?
+   The full database can be found [here](https://open.fda.gov/) and the [food enforcement API] (https://open.fda.gov/apis/food/enforcement/) is available.
+   * How do we learn it?
+   Like above, using the API will be learned through reading the corresponding documentation.
 #### RESTful API
    * What is it? 
    * Why Did We Choose It? 
