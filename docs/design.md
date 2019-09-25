@@ -41,7 +41,7 @@ Where do you get it?
  We mentioned these tools above in the Architecture section. Here's a summary of them:
  
 #### Android Studio 
-[Pictures/Android_Studio_Drawing.png]
+![Android_Studio_Drawing](./Pictures/Android_Studio_Drawing.png)
  * What is it? 
  Android Studio is the official integrated development environment for Google's Android operating
   system.
