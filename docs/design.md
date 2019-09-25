@@ -57,7 +57,7 @@ Where do you get it?
   * Why did we choose it? 
   We chose this library due to the open source library for both text recognition and barcode recognition which we will use in order to input items into our fridge.
   * Where did we get it? 
-  The tutorial for integrating ML Kit can be found [here] (https://developers.google.com/ml-kit/).
+  The tutorial for integrating ML Kit can be found ![here](https://developers.google.com/ml-kit/).
   * How do we learn it? 
   The open source documentation is availble online as well as simple tutorials provided by Google. 
 
