@@ -27,7 +27,7 @@ One feature to add further down the line is to be able to alert users of food th
 
 * Web Server - Node backend with RESTful API
 
-For the server side, we use Node.js and RESTful API
+For the server side, we are going to build a Node.js RESTful API.
 
 * Frontend 
 We make XML through Layout Editor in Android Studio because it's built-in and simple. 
