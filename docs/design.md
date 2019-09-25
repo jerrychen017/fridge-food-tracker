@@ -82,6 +82,7 @@ Where do you get it?
    Like above, using the API will be learned through reading the corresponding documentation.
 
 #### Node.js 
+![Node_JS_Drawing](./Pictures/Node_JS_Drawing.png)
  * What is it? 
  Node.js is an open-source, cross-platform, JavaScript run-time environment that executes JavaScript code outside of a browser.
  * Why did we choose it? 
