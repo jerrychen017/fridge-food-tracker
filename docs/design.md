@@ -15,7 +15,7 @@ Our application is an Android application with Java 12.
 
 It would be convenient for users to have multiples ways to input items to the app. Therefore, we
 're using OCR to extract items from receipts. More specifically, we included Google Firebase
- Vision ML SDK to our application so that we can use [text recognition APIs] (https://firebase.google.com/docs/ml-kit/android/recognize-text). 
+ Vision ML SDK to our application so that we can use ![text recognition APIs](https://firebase.google.com/docs/ml-kit/android/recognize-text). 
   
 * jcomo/Shelf Life API - expiration dates
  
@@ -63,11 +63,11 @@ Where do you get it?
 
 #### jcomo/Shelf Life API
    * What is it? 
-   An API to get information about the shelf life of food and tips about how to keep food fresh. The data provided comes from [Still Tasty](https://www.stilltasty.com/)
+   An API to get information about the shelf life of food and tips about how to keep food fresh. The data provided comes from ![Still Tasty(https://www.stilltasty.com/)
    * Why did we choose it? 
    Free open source library to allow us to get shelf life data without manually inputting the data into our own database.
    * Where did we get it? 
-   The API can be found [here](https://github.com/jcomo/shelf-life)
+   The API can be found ![here](https://github.com/jcomo/shelf-life)
    * How do we learn it? 
    Learning the API can be done through reading through the documentation at the given link.
 
@@ -77,7 +77,7 @@ Where do you get it?
    * Why did we choose it?
    Free open source library to be used for official data about recall enforcement reports for a notificication feature that will be integrated into the app about when users should throw out and avoid certain items.
    * Where did we get it?
-   The full database can be found [here](https://open.fda.gov/) and the [food enforcement API] (https://open.fda.gov/apis/food/enforcement/) is available.
+   The full database can be found ![here](https://open.fda.gov/) and the ![food enforcement API](https://open.fda.gov/apis/food/enforcement/) is available.
    * How do we learn it?
    Like above, using the API will be learned through reading the corresponding documentation.
 
