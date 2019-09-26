@@ -2,52 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50faac11-b4d4-40af-8c07-0746b46be577" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/2019-group-fridgefoodtracker.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/ReceiptOCR/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ReceiptOCR/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/ReceiptOCR/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/.idea/codeStyles/Project.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/.idea/runConfigurations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/.idea/runConfigurations.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/proguard-rules.pro" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/proguard-rules.pro" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/androidTest/java/com/example/myfirstapp/ExampleInstrumentedTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/androidTest/java/com/example/fridgefoodtracker/ExampleInstrumentedTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/java/com/example/myfirstapp/Description.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/java/com/example/fridgefoodtracker/Description.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/java/com/example/myfirstapp/DisplayMessageActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/java/com/example/fridgefoodtracker/DisplayMessageActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/java/com/example/myfirstapp/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/java/com/example/fridgefoodtracker/Item.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/java/com/example/myfirstapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/java/com/example/fridgefoodtracker/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/drawable/ic_launcher_background.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/layout/activity_display_message.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/layout/activity_display_message.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-hdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-mdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-xhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/res/values/styles.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/app/src/test/java/com/example/myfirstapp/ExampleUnitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/test/java/com/example/fridgefoodtracker/ExampleUnitTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/gradlew.bat" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/gradlew.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/myfirstapp/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CameraX/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CameraX/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CameraX/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -56,8 +14,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -69,8 +26,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="35" selection-start-line="35" selection-end-line="35" selection-end-column="46" />
+            <state relative-caret-position="243">
+              <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -99,9 +56,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="952" />
-    <option name="width" value="977" />
+    <option name="width" value="978" />
     <option name="height" value="1038" />
   </component>
   <component name="ProjectView">
@@ -109,82 +66,19 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="FridgeFoodTracker" type="b2602c69:ProjectViewProjectNode" />
               <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="FridgeFoodTracker" type="b2602c69:ProjectViewProjectNode" />
               <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="example" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -222,11 +116,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="762" y="0" width="781" height="830" extended-state="0" />
+    <frame x="-6" y="-6" width="1513" height="983" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" weight="0.67069894" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.2802979" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -235,7 +129,7 @@
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="TODO" order="1" />
-      <window_info anchor="bottom" id="Terminal" order="2" visible="true" weight="0.34670487" />
+      <window_info anchor="bottom" id="Terminal" order="2" visible="true" weight="0.15727699" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Theme Preview" order="1" />
@@ -243,12 +137,8 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/gradle.properties">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/settings.gradle" />
+    <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/gradle.properties" />
     <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/java/com/example/myfirstapp/MainActivity.java" />
     <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/build.gradle">
       <provider selected="true" editor-type-id="text-editor" />
@@ -262,8 +152,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="35" selection-start-line="35" selection-end-line="35" selection-end-column="46" />
+        <state relative-caret-position="243">
+          <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
         </state>
       </provider>
     </entry>
