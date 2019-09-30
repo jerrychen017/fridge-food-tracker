@@ -11,6 +11,13 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.view.Gravity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,10 +32,17 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Replace with your own action2", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+
+        TableLayout tableLayout = findViewById(R.id.tableLayout1);
+        List<String> strings = new ArrayList<>();
+        strings.add("ONE");
+        strings.add("TWO");
+        strings.add("THREE");
+        buildTable(strings, tableLayout);
     }
 
     @Override
@@ -51,5 +65,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void buildTable(List<String> texts, TableLayout tableLayout) {
+        for (String text : texts) {
+            TableRow row = new TableRow(this);
+            row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            row.setGravity(Gravity.CENTER);
+
+            TextView textView = new TextView(this);
+            textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                    TableRow.LayoutParams.WRAP_CONTENT));
+            textView.setGravity(Gravity.CENTER);
+            textView.setText(text);
+
+
+            row.addView(textView);
+            tableLayout.addView(row);
+        }
     }
 }
