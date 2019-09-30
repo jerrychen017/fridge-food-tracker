@@ -10,7 +10,8 @@ var db = new sqlite3.Database(':memory:');//new sqlite3.Database('./data/test.db
 
 db.run('CREATE TABLE IF NOT EXISTS test(id text, desc text)');
 
-db.run('CREATE TABLE IF NOT EXISTS fridges(item text, fridgeID text)');
+var fridgeRoute = require('./fridgeRouter')(db)
+app.use('/fridge', fridgeRoute)
 
 app.post('/', function(req, res)
 {
@@ -27,27 +28,6 @@ app.post('/', function(req, res)
   	});
 
 	res.redirect('/');
-})
-
-app.get('/fridge/:id/', function(req, res){
-	let sql = `SELECT id identifier, desc thing
-	FROM test
-	WHERE id = \'${req.params.id}\'
-	ORDER BY thing`
-
-	db.all(sql, [], (err, rows) => {
-		if (err) { throw err; }
-
-		resp = {}
-		resp.items = []
-		rows.forEach((row) => {
-			resp.items.push(row.thing);
-		})
-
-		res.send(resp)
-	})
-
-	//res.send(req.params.id)
 })
 
 app.get('/', function(req, res)
