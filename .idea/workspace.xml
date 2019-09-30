@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="50faac11-b4d4-40af-8c07-0746b46be577" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/java/com/oosegroup/fridgefoodtracker/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/java/com/oosegroup/fridgefoodtracker/MainActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CameraX/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CameraX/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/CameraX/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,8 +27,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="36" column="1" lean-forward="true" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
+            <state relative-caret-position="243">
+              <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -72,103 +75,28 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="951" />
+    <option name="x" value="952" />
     <option name="width" value="978" />
-    <option name="height" value="1039" />
+    <option name="height" value="1038" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="FridgeFoodTracker" type="b2602c69:ProjectViewProjectNode" />
               <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="FridgeFoodTracker" type="b2602c69:ProjectViewProjectNode" />
               <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="oosegroup" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="2019-group-fridgefoodtracker" type="b2602c69:ProjectViewProjectNode" />
-              <item name="2019-group-fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="FridgeFoodTracker" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="com" type="462c0819:PsiDirectoryNode" />
-              <item name="oosegroup" type="462c0819:PsiDirectoryNode" />
-              <item name="fridgefoodtracker" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -233,11 +161,11 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-6" y="-6" width="1513" height="983" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.19828156" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.2802979" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -248,7 +176,7 @@
       <window_info anchor="bottom" id="Debug" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="TODO" order="1" />
-      <window_info anchor="bottom" id="Terminal" order="2" weight="0.3427762" />
+      <window_info anchor="bottom" id="Terminal" order="2" visible="true" weight="0.15727699" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Theme Preview" order="1" />
@@ -256,12 +184,8 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/gradle.properties">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/settings.gradle" />
+    <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/gradle.properties" />
     <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/java/com/example/myfirstapp/MainActivity.java" />
     <entry file="file://$PROJECT_DIR$/src/ReceiptOCR/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
@@ -281,15 +205,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="36" column="1" lean-forward="true" selection-start-line="36" selection-start-column="1" selection-end-line="36" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/FridgeFoodTracker/app/src/main/java/com/oosegroup/fridgefoodtracker/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="28" column="35" lean-forward="true" selection-start-line="28" selection-start-column="35" selection-end-line="28" selection-end-column="35" />
+        <state relative-caret-position="243">
+          <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
         </state>
       </provider>
     </entry>
