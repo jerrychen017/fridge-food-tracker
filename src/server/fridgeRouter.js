@@ -4,11 +4,12 @@ module.exports = function(db)
 
 	var express = require('express')
 	var router = express.Router()
+	var request = require('request');
 
 	router.use(express.urlencoded({extended: true})); 
 	router.use(express.json())
 
-	router.get('/:id/', function(req, res){
+	router.get('/:id/', function(req, res){			//Get all items from a fridge
 		let sql = `SELECT item thing, fridgeID id
 		FROM fridges
 		WHERE fridgeID = \'${req.params.id}\'
@@ -29,19 +30,52 @@ module.exports = function(db)
 		//res.send(req.params.id)
 	})
 
+	router.post('/:id', function(req, res) {	// Add an item to the fridge.
+		if (!req.body || !req.body.item)
+		{
+			console.log("Missing body")
+			// Missing req body
+			res.status(400)
+			res.send("Malformed request, need item to add")
+		}
+
+		if (Array.isArray(req.body.item))
+		{
+			req.body.item.forEach((item) => {
+				db.run(`INSERT INTO fridges(item, fridgeID) VALUES(?,?)`, [item, req.params.id], function(err) {
+					if (err){
+						return console.log(err.message);
+					}
+
+					console.log(`A row has been inserted with rowid ${this.lastID}`)
+				})
+			})
+		}
+		else
+		{
+			db.run(`INSERT INTO fridges(item, fridgeID) VALUES(?,?)`, [req.body.item, req.params.id], function(err) {
+				if (err){
+					return console.log(err.message);
+				}
+
+				console.log(`A row has been inserted with rowid ${this.lastID}`)
+			})
+		}
+
+		res.send("Good!")
+	})
+
 	router.post('/', function(req, res)
 	{
 		var obj = req.body;
 
 		console.log(obj);
 
-		db.run(`INSERT INTO fridges(item, fridgeID) VALUES(?, ?)`, [obj.DESC, obj.ID], function(err) {
-	    if (err) {
-	      return console.log(err.message);
-	    }
-	    // get the last insert id
-	    console.log(`A row has been inserted with rowid ${this.lastID}`);
-	  	});
+		request.post(`http://localhost:3000/fridge/${obj.ID}`, {json: {item: obj.DESC}}, function(err, res, body) {
+			console.log(err)
+			console.log(res)
+			console.log(body)
+		})
 
 		res.redirect('/fridge');
 	})
