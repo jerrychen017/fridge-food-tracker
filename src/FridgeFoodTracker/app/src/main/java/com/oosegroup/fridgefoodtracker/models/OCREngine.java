@@ -1,3 +1,5 @@
+package com.oosegroup.fridgefoodtracker.models;
+
 import android.media.Image;
 
 public class OCREngine {

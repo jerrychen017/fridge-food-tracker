@@ -1,3 +1,5 @@
+package com.oosegroup.fridgefoodtracker.models;
+
 public class Description {
   String name; // we get choose to identify item by name but id makes more sense to me.
 

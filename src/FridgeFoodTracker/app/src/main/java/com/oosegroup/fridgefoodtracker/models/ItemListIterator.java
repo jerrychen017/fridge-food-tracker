@@ -1,3 +1,5 @@
+package com.oosegroup.fridgefoodtracker.models;
+
 import java.util.Iterator;
 import java.util.List;
 

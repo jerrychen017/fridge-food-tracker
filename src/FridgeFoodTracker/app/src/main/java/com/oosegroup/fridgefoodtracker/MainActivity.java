@@ -1,5 +1,4 @@
 package com.oosegroup.fridgefoodtracker;
-
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

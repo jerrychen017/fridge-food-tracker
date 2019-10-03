@@ -1,3 +1,5 @@
+package com.oosegroup.fridgefoodtracker.models;
+
 // item class representing Item
 public class Item {
   private int id;

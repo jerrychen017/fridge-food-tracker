@@ -1,3 +1,5 @@
+package com.oosegroup.fridgefoodtracker.models;
+
 public class Fridge {
   private ItemList content;
 
