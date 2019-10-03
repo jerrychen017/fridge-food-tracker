@@ -1,7 +1,9 @@
 package com.oosegroup.fridgefoodtracker;
 
+import android.app.DownloadManager;
 import android.os.Bundle;
 
+import com.google.android.gms.common.api.Response;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
