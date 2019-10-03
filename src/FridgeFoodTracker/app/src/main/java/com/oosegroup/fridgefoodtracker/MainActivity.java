@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -21,7 +22,7 @@ import java.util.List;
 import com.oosegroup.fridgefoodtracker.models.*;
 
 public class MainActivity extends AppCompatActivity {
-
+    Fridge fridge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,20 +30,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.fridge = new Fridge();
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action2", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                EditText mEdit = (EditText) findViewById(R.id.item_text_input);
+                String text = mEdit.getText().toString();
+
+                fridge.addItem(InputItem(1, text));
             }
         });
-
-        Fridge fridge = new Fridge();
-        Item item = new Item(1);
-        item.setDescription(new Description(item.getId()));
-        item.getDescription().setDetails("eggs");
-        fridge.addItem(item);
 
         TableLayout tableLayout = findViewById(R.id.tableLayout1);
 
@@ -55,6 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public Item InputItem(int id, String str){
+       Item item = new Item(id);
+       Description description = new Description(item.getId());
+       description.setDetails(str);
+       item.setDescription(description);
+       return item;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
