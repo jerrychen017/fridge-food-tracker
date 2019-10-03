@@ -23,6 +23,8 @@ import com.oosegroup.fridgefoodtracker.models.*;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
+    TableLayout tableLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,21 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.fridge = new Fridge();
+        this.tableLayout = findViewById(R.id.tableLayout1);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action2", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                EditText mEdit = (EditText) findViewById(R.id.item_text_input);
-                String text = mEdit.getText().toString();
-
-                fridge.addItem(InputItem(1, text));
-            }
-        });
-
-        TableLayout tableLayout = findViewById(R.id.tableLayout1);
 
         /*
         List<String> strings = new ArrayList<>();
@@ -56,12 +45,37 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public Item InputItem(int id, String str){
+    public Item inputItem(int id, String str){
        Item item = new Item(id);
        Description description = new Description(item.getId());
        description.setDetails(str);
        item.setDescription(description);
+
        return item;
+    }
+
+    public void inputItem(View view) {
+        EditText mEdit = (EditText) findViewById(R.id.item_text_input);
+        String text = mEdit.getText().toString();
+        Item item = inputItem(1, text);
+        TableRow row = addRow(item);
+        this.tableLayout.addView(row);
+    }
+
+    public TableRow addRow(Item item){
+        TableRow row = new TableRow(this);
+        row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+        row.setGravity(Gravity.CENTER);
+
+        TextView textView = new TextView(this);
+        textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+        textView.setGravity(Gravity.CENTER);
+        textView.setText(item.getDescription().getDetails());
+
+        row.addView(textView);
+        return row;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
