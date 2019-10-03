@@ -18,6 +18,8 @@ import android.view.Gravity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.oosegroup.fridgefoodtracker.models.*;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -36,12 +38,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Fridge fridge = new Fridge();
+        Item item = new Item(1);
+        item.setDescription(new Description(item.getId()));
+        item.getDescription().setDetails("eggs");
+        fridge.addItem(item);
+
         TableLayout tableLayout = findViewById(R.id.tableLayout1);
+
+        /*
         List<String> strings = new ArrayList<>();
         strings.add("ONE");
         strings.add("TWO");
-        strings.add("THREE");
-        buildTable(strings, tableLayout);
+        strings.add("THREE"); */
+        buildTable(fridge, tableLayout);
+
     }
 
     @Override
@@ -66,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void buildTable(List<String> texts, TableLayout tableLayout) {
-        for (String text : texts) {
+    public void buildTable(Fridge fridge, TableLayout tableLayout) {
+        for (Item item : fridge.getContent().getItems()) {
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
@@ -77,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
             textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
             textView.setGravity(Gravity.CENTER);
-            textView.setText(text);
-
+            textView.setText(item.getDescription().getDetails());
 
             row.addView(textView);
             tableLayout.addView(row);

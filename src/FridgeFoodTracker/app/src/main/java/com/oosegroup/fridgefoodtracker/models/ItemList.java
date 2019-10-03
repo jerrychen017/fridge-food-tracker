@@ -34,6 +34,9 @@ public class ItemList {
     }
   }
 
+  public List<Item> getItems() {
+    return items;
+  }
 
   public Iterator createIterator() {
     return items.iterator();

@@ -26,4 +26,8 @@ public class Fridge {
 
     return new ItemList();
   }
+
+  public ItemList getContent() {
+    return content;
+  }
 }
