@@ -16,6 +16,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.Gravity;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        try {
+            Connection connection = DriverManager.getConnection(ConnectionConstants.URL);
+        } catch (SQLException e) {
+            System.out.println("connection is foobar");
+        }
 
         this.fridge = new Fridge();
         this.tableLayout = findViewById(R.id.tableLayout1);
