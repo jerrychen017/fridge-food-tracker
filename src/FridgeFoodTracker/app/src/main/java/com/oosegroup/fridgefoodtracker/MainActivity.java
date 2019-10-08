@@ -38,21 +38,18 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Connection connection;
+
         try {
-            Connection connection = DriverManager.getConnection(ConnectionConstants.URL);
+            connection = DriverManager.getConnection(ConnectionConstants.URL);
         } catch (SQLException e) {
             System.out.println("connection is foobar");
         }
 
         this.fridge = new Fridge();
+        this.fridge.addItem(new Item(1));
         this.tableLayout = findViewById(R.id.tableLayout1);
 
-
-        /*
-        List<String> strings = new ArrayList<>();
-        strings.add("ONE");
-        strings.add("TWO");
-        strings.add("THREE"); */
         buildTable(fridge, tableLayout);
 
     }
