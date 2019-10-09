@@ -1,15 +1,7 @@
 package com.oosegroup.fridgefoodtracker;
-
-import android.app.DownloadManager;
 import android.os.Bundle;
-
-import com.google.android.gms.common.api.Response;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,18 +10,14 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.Gravity;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.models.*;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
     TableLayout tableLayout;
+    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,37 +26,24 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Connection connection;
+        this.queue = Volley.newRequestQueue(this);
+        this.fridge = new Fridge(queue); // initialize a fridge
 
-        try {
-            connection = DriverManager.getConnection(ConnectionConstants.URL);
-        } catch (SQLException e) {
-            System.out.println("connection is foobar");
-        }
-
-        this.fridge = new Fridge();
-        this.fridge.addItem(new Item(1));
         this.tableLayout = findViewById(R.id.tableLayout1);
-
         buildTable(fridge, tableLayout);
-
     }
 
-    public Item inputItem(int id, String str){
-       Item item = new Item(id);
-       Description description = new Description(item.getId());
-       description.setDetails(str);
-       item.setDescription(description);
-
-       return item;
-    }
 
     public void inputItem(View view) {
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
         String text = mEdit.getText().toString();
-        Item item = inputItem(1, text);
+
+        Item item = new Item(fridge.getContent().getItems().size(), text);
+        this.fridge.addItem(item);
         TableRow row = addRow(item);
         this.tableLayout.addView(row);
+
+
     }
 
     public TableRow addRow(Item item){
@@ -81,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
         textView.setGravity(Gravity.CENTER);
-        textView.setText(item.getDescription().getDetails());
+        textView.setText(item.getDescription());
 
         row.addView(textView);
         return row;
@@ -119,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
             textView.setGravity(Gravity.CENTER);
-            textView.setText(item.getDescription().getDetails());
+            textView.setText(item.getDescription());
 
             row.addView(textView);
             tableLayout.addView(row);
