@@ -29,30 +29,32 @@ public class Fridge {
   */
   public void addItem(Item item) {
     content.addItem(item);
-    try {
-      String url ="http://10.0.2.2:3000/fridge/" + item.getId();
-      JSONObject postparams = new JSONObject();
-      postparams.put("item", item.getDescription());
-      JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
-              url, postparams,
-              new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                  //Success Callback
-                  System.out.println("Successfully posted an item");
-                }
-              },
-              new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                  //Failure Callback
-                  System.out.println("Failed to post an item");
-                  System.out.println(error.getMessage());
-                }
-              });
-      queue.add(jsonObjReq);
-    } catch (Exception e){
-      System.out.println(e.getMessage());
+    if (queue != null) {
+      try {
+        String url ="http://10.0.2.2:3000/fridge/" + item.getId();
+        JSONObject postparams = new JSONObject();
+        postparams.put("item", item.getDescription());
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                url, postparams,
+                new Response.Listener<JSONObject>() {
+                  @Override
+                  public void onResponse(JSONObject response) {
+                    //Success Callback
+                    System.out.println("Successfully posted an item");
+                  }
+                },
+                new Response.ErrorListener() {
+                  @Override
+                  public void onErrorResponse(VolleyError error) {
+                    //Failure Callback
+                    System.out.println("Failed to post an item");
+                    System.out.println(error.getMessage());
+                  }
+                });
+        queue.add(jsonObjReq);
+      } catch (Exception e){
+        System.out.println(e.getMessage());
+      }
     }
   }
 
