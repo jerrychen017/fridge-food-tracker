@@ -23,6 +23,7 @@
 - Enter a food item name in the input field at the top, and submit using the floating action button in the bottom right
   - The floating action button might be hidden behind the keyboard
 - What you see on your emulator screen should match what you see in your web browser from step (1).
+  - You will need to refresh your web browser to see the updated database in browser.
 
 
 <h2>ITERATION 2</h2>
@@ -32,3 +33,5 @@
 We've implemented manual data entry as our first feature.
 
 We have unit tests written for Fridge, ItemList, and Item, and we have functional tests in Postman for our server.
+
+We have begun implementation of barcode-reading, and our progress can be seen in BarcodeScanner project. We will integrate the scanner in iteration 3. 
