@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "be2bea06-acc8-4b48-88ea-a54f4d144811",
+		"name": "FridgeFoodTrackerServer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetFridge",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "498b3add-dc2a-4470-9f3f-f17f16aa8b20",
+						"exec": [
+							"pm.environment.set(\"fridgeID\", \"test\");",
+							"const postRequest = {",
+							"  url: 'http://localhost:3000/fridge/' + pm.environment.get(\"fridgeID\"),",
+							"  method: 'POST',",
+							"  header: {",
+							"    'Accept': 'application/json',",
+							"    'Content-Type': 'application/x-www-form-urlencoded'",
+							"  },",
+							"  body: {",
+							"      mode: 'urlencoded',",
+							"      urlencoded: [",
+							"        {key: \"item\", value: \"test\", disabled: false}",
+							"    ]",
+							"  }",
+							"};",
+							"",
+							"console.log(postRequest)",
+							"",
+							"pm.sendRequest(postRequest, (err, response) => {",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "9893edf6-015d-4fba-9a54-c31d2168b851",
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Response JSON has items\", () => {",
+							"    pm.expect(pm.response.json()).to.have.all.keys(\"items\")",
+							"});",
+							"",
+							"pm.test(\"Items is a list\", () => {",
+							"    pm.expect(pm.response.json().items).to.be.an(\"array\")",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/fridge/{{fridgeID}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"fridge",
+						"{{fridgeID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddItem",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a1729737-6e3d-4940-8fcb-686d9667f08b",
+						"exec": [
+							"pm.environment.set(\"fridgeID\", \"test\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c281ad38-ee58-4813-8fe1-952d22b6be42",
+						"exec": [
+							"pm.test(\"Status code is 201\", () => {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"item\": \"12341245123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/fridge/{{fridgeID}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"fridge",
+						"{{fridgeID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
