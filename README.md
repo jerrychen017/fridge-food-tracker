@@ -11,6 +11,7 @@
   
 - On Google Chrome, go to localhost:3000/fridge/
   - You should see the below page. By using the input fields in the top left, submitting, and refreshing the page, you should be able to see what items are currently in your fridge.
+[!./docs/Pictures/Server_Screenshot_2019_10_08.png]
 
 
 2) Open the app
