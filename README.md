@@ -27,8 +27,8 @@
 
 <h2>ITERATION 2</h2>
 
-We've implemented manual data entry as our first feature.
-
 ![App_Server_Screenshot](./docs/Pictures/App_Server_Screenshot_2019_10-08.png)
 
-We have unit tests written for Fridge, ItemList, and Item.
+We've implemented manual data entry as our first feature.
+
+We have unit tests written for Fridge, ItemList, and Item, and we have functional tests in Postman for our server.
