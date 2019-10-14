@@ -9,7 +9,7 @@ module.exports = function(db)
 	router.use(express.urlencoded({extended: true})); 
 	router.use(express.json())
 
-	router.delete('', function(req, res)
+	router.delete('', function(req, res)		// Delete an item
 	{
 		if(!req.body || !req.body.item)
 		{
@@ -35,7 +35,7 @@ module.exports = function(db)
 		})
 	})
 
-	router.put('', function(req,res)
+	router.put('', function(req,res)		// Modify an item
 	{
 		if(!req.body)
 		{
@@ -90,8 +90,6 @@ module.exports = function(db)
 
 			res.send(resp)
 		})
-
-		//res.send(req.params.id)
 	})
 
 	router.post('/:id', function(req, res) {	// Add an item to the fridge.
@@ -136,7 +134,6 @@ module.exports = function(db)
 	{
 		var obj = req.body;
 
-		//console.log(obj);
 		if (!obj)
 		{
 			res.redirect('/fridge');
@@ -148,18 +145,12 @@ module.exports = function(db)
 			console.log("Test Delete!")
 
 			request.delete(`http://localhost:3000/fridge/`, {json: {item: obj.ID}}, function(err, res, body) {
-				//console.log(err)
-				//console.log(res)
-				//console.log(body)
 			})
 		}
 		else if (obj.IID)
 		{
 			console.log("Test Modify!")
 			request.put(`http://localhost:3000/fridge/`, {json: {id: obj.IID, item: obj.DESC}}, function(err, res, body) {
-				//console.log(err)
-				//console.log(res)
-				//console.log(body)
 			})
 		}
 		else
@@ -167,9 +158,6 @@ module.exports = function(db)
 			console.log("Test Add!")
 
 			request.post(`http://localhost:3000/fridge/${obj.ID}`, {json: {item: obj.DESC}}, function(err, res, body) {
-				//console.log(err)
-				//console.log(res)
-				//console.log(body)
 			})
 		}
 		
