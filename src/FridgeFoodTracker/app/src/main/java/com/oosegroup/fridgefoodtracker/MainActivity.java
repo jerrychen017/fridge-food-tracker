@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
         buildTable(fridge, tableLayout);
     }
 
-
     public void inputItem(View view) {
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
         String text = mEdit.getText().toString();
@@ -42,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
         this.fridge.addItem(item);
         TableRow row = addRow(item);
         this.tableLayout.addView(row);
-
-
     }
 
     public TableRow addRow(Item item){
@@ -56,11 +53,13 @@ public class MainActivity extends AppCompatActivity {
         textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
         textView.setGravity(Gravity.CENTER);
-        textView.setText(item.getDescription());
+        String toShow = item.getDescription() + ": " + item.getDateExpired().toString();
+        textView.setText(toShow);
 
         row.addView(textView);
         return row;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
