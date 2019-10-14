@@ -62,6 +62,7 @@ module.exports = function(db)
 			// Missing req body
 			res.status(400)
 			res.send("Malformed request, need item to add")
+			return;
 		}
 
 		if (Array.isArray(req.body.item))
@@ -75,7 +76,7 @@ module.exports = function(db)
 					console.log(`A row has been inserted with rowid ${this.lastID}`)
 				})
 			})
-
+			res.status(201)
 			res.send({id : -1})
 		}
 		else
@@ -86,7 +87,7 @@ module.exports = function(db)
 				}
 
 				console.log(`A row has been inserted with rowid ${this.lastID}`)
-
+				res.status(201)
 				res.send({id:this.lastID})
 			})
 		}
