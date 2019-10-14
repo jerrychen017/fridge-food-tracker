@@ -13,12 +13,14 @@ public class Item {
     private Date dateExpired;
 
     public Item(int id) {
+        this.dateEntered = new Date();
+        this.dateExpired = new Date(this.getDateEntered().getTime() + 86400000); // 86400000 msec in 1 day
         this.id = id;
     }
 
     public Item(int id, String description) {
         this.dateEntered = new Date();
-        this.dateExpired = new Date(this.getDateEntered().getTime() + 86400000); // 86400000 msec in 1 day
+        this.dateExpired = new Date(this.getDateEntered().getTime() + 86400000);
         this.id = id;
         this.description = description;
     }

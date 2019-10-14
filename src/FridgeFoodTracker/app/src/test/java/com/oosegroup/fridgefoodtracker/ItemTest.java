@@ -2,6 +2,8 @@ package com.oosegroup.fridgefoodtracker;
 import com.oosegroup.fridgefoodtracker.models.*;
 import org.junit.Test;
 
+import java.util.Date;
+
 import static org.junit.Assert.*;
 
 /**
@@ -14,5 +16,11 @@ public class ItemTest {
         item1.setDescription("same description");
         Item item2 = new Item(2, "same description");
         assertEquals(item1.getDescription(), item2.getDescription());
+    }
+
+    @Test
+    public void getExpirationDate() {
+        Item item = new Item(1, "eggs");
+        assertTrue(item.getDateExpired().after(item.getDateEntered()));
     }
 }
