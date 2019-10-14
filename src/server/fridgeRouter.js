@@ -16,6 +16,7 @@ module.exports = function(db)
 			console.log("Missing body")
 			res.status(400)
 			res.send("Malformed request, need item id to delete")
+			return
 		}
 
 		let sql = `DELETE FROM fridges WHERE itemID=${req.body.item}`
@@ -25,6 +26,44 @@ module.exports = function(db)
 		{
 			if(!err)
 				res.send("Item deleted")
+			else
+			{
+				res.status(400)
+				res.send(err)
+				console.log(err)
+			}
+		})
+	})
+
+	router.put('', function(req,res)
+	{
+		if(!req.body)
+		{
+			console.log("Missing body")
+			res.status(400)
+			res.send("Malformed request, need request body")
+			return
+		}
+
+		if (!req.body.id)
+		{
+			res.status(400)
+			res.send("Malformed request, need item id in json to modify")
+			return
+		}
+
+		if (!req.body.item)
+		{
+			res.status(400)
+			res.send("Malformed request, need new item description to change item to")
+			return
+		}
+
+		let sql = `UPDATE fridges SET item=\'${req.body.item}\' WHERE itemID=${req.body.id}`
+		db.run(sql, function(err)
+		{
+			if(!err)
+				res.send("Item modified")
 			else
 			{
 				res.status(400)
@@ -114,6 +153,15 @@ module.exports = function(db)
 				//console.log(body)
 			})
 		}
+		else if (obj.IID)
+		{
+			console.log("Test Modify!")
+			request.put(`http://localhost:3000/fridge/`, {json: {id: obj.IID, item: obj.DESC}}, function(err, res, body) {
+				//console.log(err)
+				//console.log(res)
+				//console.log(body)
+			})
+		}
 		else
 		{
 			console.log("Test Add!")
@@ -148,6 +196,15 @@ module.exports = function(db)
 	<form action="/fridge/" method="post">
 	Fridge ID:<br>
 	<input type="text" name="ID"><br>
+	Description:<br>
+	<input type="text" name="DESC"><br>
+	<input type="submit" value="Submit">
+	</form>
+
+	<p>Modify Item</p>
+	<form action="/fridge/" method="post">
+	Item ID:<br>
+	<input type="text" name="IID"><br>
 	Description:<br>
 	<input type="text" name="DESC"><br>
 	<input type="submit" value="Submit">
