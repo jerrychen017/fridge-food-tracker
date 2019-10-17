@@ -1,4 +1,4 @@
-module.exports = function(db)
+module.exports = function(db,route)
 {
 	db.run('CREATE TABLE IF NOT EXISTS fridges(item text, itemID integer primary key, fridgeID text)');
 
@@ -136,7 +136,7 @@ module.exports = function(db)
 
 		if (!obj)
 		{
-			res.redirect('/fridge');
+			res.redirect(route);
 			return
 		}
 
@@ -144,25 +144,25 @@ module.exports = function(db)
 		{
 			console.log("Test Delete!")
 
-			request.delete(`http://localhost:3000/fridge/`, {json: {item: obj.ID}}, function(err, res, body) {
+			request.delete(`http://localhost:3000` + route + `/`, {json: {item: obj.ID}}, function(err, res, body) {
 			})
 		}
 		else if (obj.IID)
 		{
 			console.log("Test Modify!")
-			request.put(`http://localhost:3000/fridge/`, {json: {id: obj.IID, item: obj.DESC}}, function(err, res, body) {
+			request.put(`http://localhost:3000` + route + `/`, {json: {id: obj.IID, item: obj.DESC}}, function(err, res, body) {
 			})
 		}
 		else
 		{
 			console.log("Test Add!")
 
-			request.post(`http://localhost:3000/fridge/${obj.ID}`, {json: {item: obj.DESC}}, function(err, res, body) {
+			request.post(`http://localhost:3000` + route + `/${obj.ID}`, {json: {item: obj.DESC}}, function(err, res, body) {
 			})
 		}
 		
 
-		res.redirect('/fridge');
+		res.redirect(route);
 	})
 
 	router.get('/', function(req, res)
@@ -181,7 +181,7 @@ module.exports = function(db)
 		  var output = 
 	`
 	<p>Add Item</p>
-	<form action="/fridge/" method="post">
+	<form action="${route}/" method="post">
 	Fridge ID:<br>
 	<input type="text" name="ID"><br>
 	Description:<br>
@@ -190,7 +190,7 @@ module.exports = function(db)
 	</form>
 
 	<p>Modify Item</p>
-	<form action="/fridge/" method="post">
+	<form action="${route}/" method="post">
 	Item ID:<br>
 	<input type="text" name="IID"><br>
 	Description:<br>
@@ -199,7 +199,7 @@ module.exports = function(db)
 	</form>
 
 	<p>Delete Item</p>
-	<form action="/fridge/" method="post">
+	<form action="${route}/" method="post">
 	Item ID:<br>
 	<input type="number" name="ID"><br>
 	<input type="submit" value="Submit">
