@@ -23,10 +23,10 @@ module.exports = function(db, route)
 		{
 			console.log(`Deleting barcode ${obj.ID}!`)
 
-			let sql = `DELETE FROM barcode WHERE barcodeID=${obj.ID}`
+			let sql = `DELETE FROM barcode WHERE barcodeID=(?)`
 
-			console.log(`Deleting item ${req.body.item}`)
-			db.run(sql, function(err)
+			console.log(`Deleting item ${req.body.ID}`)
+			db.run(sql, [obj.ID], function(err)
 			{
 				if (err){
 					console.log(err.message);

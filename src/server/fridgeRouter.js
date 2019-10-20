@@ -59,8 +59,8 @@ module.exports = function(db,route)
 			return
 		}
 
-		let sql = `UPDATE fridges SET item=\'${req.body.item}\' WHERE itemID=${req.body.id}`
-		db.run(sql, function(err)
+		let sql = `UPDATE fridges SET item=(?) WHERE itemID=(?)`
+		db.run(sql, [req.body.item, req.body.id], function(err)
 		{
 			if(!err)
 				res.send("Item modified")
