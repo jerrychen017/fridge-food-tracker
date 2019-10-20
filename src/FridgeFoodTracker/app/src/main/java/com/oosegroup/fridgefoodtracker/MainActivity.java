@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
         textView.setGravity(Gravity.CENTER);
-        String toShow = item.getDescription() + ": " + item.getDateExpired().toString();
+        String toShow = item.getDescription() + "\n" + "Expiration: " + item.getDateExpired().toString() + "\n";
         textView.setText(toShow);
 
         row.addView(textView);
