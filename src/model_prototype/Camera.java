@@ -1,0 +1,13 @@
+import android.media.Image;
+
+/*
+Camera class
+ */
+public class Camera {
+  public Camera() {
+  }
+
+  public Image takePicture() {
+    return null;
+  }
+}
