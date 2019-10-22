@@ -11,7 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package edu.uima.team4.barcodescanner;
+package edu.uima.team4.barcodescanner.CameraResources;
 
 import android.graphics.Bitmap;
 import androidx.annotation.NonNull;

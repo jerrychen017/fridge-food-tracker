@@ -1,4 +1,4 @@
-package edu.uima.team4.barcodescanner;
+package edu.uima.team4.barcodescanner.CameraResources;
 
 
 import android.graphics.Bitmap;

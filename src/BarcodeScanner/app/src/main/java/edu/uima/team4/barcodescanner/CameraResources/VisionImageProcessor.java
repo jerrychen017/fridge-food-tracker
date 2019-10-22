@@ -1,4 +1,4 @@
-package edu.uima.team4.barcodescanner;
+package edu.uima.team4.barcodescanner.CameraResources;
 
 // Copyright 2018 Google LLC
 //
@@ -15,10 +15,8 @@ package edu.uima.team4.barcodescanner;
 // limitations under the License.
 
 import android.graphics.Bitmap;
-import android.media.Image;
 
 import com.google.firebase.ml.common.FirebaseMLException;
-import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import java.nio.ByteBuffer;
 
