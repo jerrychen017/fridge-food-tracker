@@ -6,13 +6,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -22,6 +27,8 @@ import android.widget.ToggleButton;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
@@ -49,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        start();
         preview = findViewById(R.id.firePreview);
         if (preview == null) {
             Log.d(TAG, "Preview is null");
@@ -64,6 +70,16 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         } else {
             getRuntimePermissions();
         }
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                startPictureIntent();
+            }
+        });
     }
 
     public void onCheckedChanged() {
@@ -260,70 +276,95 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         Log.i(TAG, "Permission NOT granted: " + permission);
         return false;
     }
+    public static final int PICK_IMAGE = 1;
+    private void startPictureIntent(){
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
 
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
 
-    public void start(){
-        FirebaseVisionImage image = null;
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE) {
+            process(data);
+            Log.d("onActivityResult", "onActivityResult: pic selected");
+        }
+    }
+
+    private void process(Intent data){
+    /*
+    File path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS);
+    File file = new File(path, filename);
+    Log.d("filename", filename);
+    Uri uri = Uri.fromFile(file);
+    Log.d("uri", uri.getPath());
+     */
+        FirebaseVisionImage image;
+        Bitmap bitmap = null;
 
         try {
-            //System.out.println("WOrking directory = " + System.getProperty("user.home"));
-            File f = new File("receipt2.jpg");
-            if (f != null) {
-                System.out.println(f.toString());
-                return;
+            if(data != null) {
+                Log.d("in process", "process: data is not null");
+                Uri selectedImageUri = data.getData();
+                String[] filePath = { MediaStore.Images.Media.DATA };
+                Cursor cursor = getContentResolver().query(selectedImageUri, filePath, null, null, null);
+                cursor.moveToFirst();
+                String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+                Log.d("image path", "process: image path: " + imagePath);
+                bitmap = BitmapFactory.decodeFile(imagePath);
+
+                image = FirebaseVisionImage.fromBitmap(bitmap);
+                if (image != null) {
+
+                    Log.d("image", "not null");
+                }
+                FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
+                        .getOnDeviceTextRecognizer();
+                Task<FirebaseVisionText> result =
+                        detector.processImage(image)
+                                .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+                                    @Override
+                                    public void onSuccess(FirebaseVisionText result) {
+                                        // Task completed successfully
+                                        // ...
+                                        String resultText = result.getText();
+                                        String res = "";
+                                        for (FirebaseVisionText.TextBlock block: result.getTextBlocks()) {
+                                            for (FirebaseVisionText.Line line: block.getLines()) {
+                                                res.concat(line.getText() + "\n");
+                                            }
+                                        }
+                                        if(res.equals("")) {
+                                            Log.d("firebase", "res is null");
+                                        }
+                                        Log.d("firebase", "On Success: " + res);
+                                        Log.d("firebase", "On Success: " + resultText);
+                                    }
+                                })
+                                .addOnFailureListener(
+                                        new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                // Task failed with an exception
+                                                // ...
+                                            }
+                                        });
+            } else {
+                Log.d("process", "process: data is null");
             }
 
-            image = FirebaseVisionImage.fromFilePath(MainActivity.this, Uri.fromFile(f));
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch(Exception e) {//(IOException e) {
+            //e.printStackTrace();
         }
-        FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
-                .getOnDeviceTextRecognizer();
-        Task<FirebaseVisionText> result =
-                detector.processImage(image)
-                        .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
-                            @Override
-                            public void onSuccess(FirebaseVisionText firebaseVisionText) {
-                                // Task completed successfully
-                                // [START_EXCLUDE]
-                                // [START get_text]
-                                for (FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()) {
-                                    String blockText = block.getText();
-                                    Float blockConfidence = block.getConfidence();
-                                    List<RecognizedLanguage> blockLanguages = block.getRecognizedLanguages();
-
-                                    Rect boundingBox = block.getBoundingBox();
-                                    Point[] cornerPoints = block.getCornerPoints();
-                                    String text = block.getText();
-                                    for (FirebaseVisionText.Line line: block.getLines()) {
-                                        String lineText = line.getText();
-                                        Float lineConfidence = line.getConfidence();
-                                        List<RecognizedLanguage> lineLanguages = line.getRecognizedLanguages();
-                                        Point[] lineCornerPoints = line.getCornerPoints();
-                                        Rect lineFrame = line.getBoundingBox();
-                                        for (FirebaseVisionText.Element element: line.getElements()) {
-                                            String elementText = element.getText();
-                                            Float elementConfidence = element.getConfidence();
-                                            List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
-                                            Point[] elementCornerPoints = element.getCornerPoints();
-                                            Rect elementFrame = element.getBoundingBox();
-                                        }
-                                    }
-                                }
-                                // [END get_text]
-                                // [END_EXCLUDE]
-                            }
-                        })
-                        .addOnFailureListener(
-                                new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-
-                                        Log.d("FAIL",e.toString());
-                                        // Task failed with an exception
-                                        // ...
-                                    }
-                                });
 
     }
 }
