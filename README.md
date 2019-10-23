@@ -61,6 +61,8 @@ We've merged OCR functionality with the main app.
 
 We've remodeled our item class to work better with our server.
 
+![App_Screenshot_Iteration3](./docs/Pictures/app_screenshot_10.22.2019.PNG)
+
 
 
 
