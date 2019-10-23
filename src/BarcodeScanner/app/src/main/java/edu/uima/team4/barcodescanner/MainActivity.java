@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -15,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     private CameraSourcePreview preview;
     private GraphicOverlay graphicOverlay;
 
+    private Uri imageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +81,10 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                startPictureIntent();
+                //startPictureIntent();
+                //startCameraIntentForResult();
+                File test = cameraSource.takePicture();
+
             }
         });
     }
@@ -291,17 +297,33 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         startActivityForResult(chooserIntent, PICK_IMAGE);
     }
 
+
+    private void startCameraIntentForResult() {
+        // Clean up last time's image
+        imageUri = null;
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE, "New Picture");
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
+            imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(takePictureIntent, PICK_IMAGE);
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
-            process(data);
-            Log.d("onActivityResult", "onActivityResult: pic selected");
+            Log.d("onActivityResult", "onActivityResult: pic selected " + resultCode);
+            //process(data.getData());
+
         }
     }
 
-    private void process(Intent data){
+    protected void process(File data){
     /*
     File path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS);
     File file = new File(path, filename);
@@ -311,22 +333,40 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
      */
         FirebaseVisionImage image;
         Bitmap bitmap = null;
-
+        Log.d("in process", "process called");
         try {
             if(data != null) {
-                Log.d("in process", "process: data is not null");
-                Uri selectedImageUri = data.getData();
-                String[] filePath = { MediaStore.Images.Media.DATA };
-                Cursor cursor = getContentResolver().query(selectedImageUri, filePath, null, null, null);
-                cursor.moveToFirst();
-                String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+                Log.d("in process", "process: data is not null " + data.toString());
+                String imagePath = data.getAbsolutePath();
+                imagePath = imagePath.replace("storage/emulated/0","Internal storage");
                 Log.d("image path", "process: image path: " + imagePath);
+                //bitmap = BitmapFactory.decodeFile(imagePath);
+
+                File test = new File(imagePath);
+                if(test != null) {
+                    Log.d("in process", "test is not null: " + test.toURI().toString().replace("file:/file:/","file:/"));
+                    Log.d("in process", test.getAbsolutePath());
+                } else {
+                    Log.d("in process", "test is null");
+                }
+                Uri uri = Uri.parse(data.getPath());
+                String[] projection = { MediaStore.Images.Media.DATA };
+                Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+                if (cursor == null){
+                    Log.d("in process","cursor is null: " + uri.toString());
+                    return;
+                }
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                String s=cursor.getString(column_index);
+                cursor.close();
                 bitmap = BitmapFactory.decodeFile(imagePath);
-
-                image = FirebaseVisionImage.fromBitmap(bitmap);
+                image = FirebaseVisionImage.fromFilePath(this, Uri.parse(s));
                 if (image != null) {
-
-                    Log.d("image", "not null");
+                    Log.d("in process", "Image is not null");
+                }
+                else{
+                    Log.d("in process", "Image is null");
                 }
                 FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                         .getOnDeviceTextRecognizer();
@@ -364,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
             }
 
         } catch(Exception e) {//(IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
 
     }
