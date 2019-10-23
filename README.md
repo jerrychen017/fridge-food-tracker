@@ -52,3 +52,15 @@ We've implemented manual data entry as our first feature.
 We have unit tests written for Fridge, ItemList, and Item, and we have functional tests in Postman for our server.
 
 We have begun implementation of barcode-reading, and our progress can be seen in BarcodeScanner project. We will integrate the scanner in iteration 3. 
+
+<h2>ITERATION 3</h2>
+
+We've begun the modification of tableview for Fridge, showing the item as well as a button for deletion. We plan to have the button to get more info about the food item, as well as add some sort of progress bar showing the freshness of the item.
+
+We've merged OCR functionality with the main app.
+
+We've remodeled our item class to work better with our server.
+
+
+
+
