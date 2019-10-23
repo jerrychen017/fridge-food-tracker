@@ -3,12 +3,13 @@
 <h2>HOW TO START OUR APPLICATION</h2>
 
 1) Start the server manually
-- We haven't yet deployed a server yet, so you have to start it locally
+- We haven't yet deployed a server yet, so you have to start it locally. The developers plan to have their own server deployed by the end of Iteration 4.
 
-  >   cd server
-  >
-  >   node index.js
-  
+~~~
+cd server
+npm start
+~~~
+
 - On Google Chrome, go to localhost:3000/fridge/
   - You should see the below page. By using the input fields in the top left, submitting, and refreshing the page, you should be able to see what items are currently in your fridge.
 ![Server_Screenshot](./docs/Pictures/Server_Screenshot_2019_10_09.PNG)
@@ -24,6 +25,22 @@
   - The floating action button might be hidden behind the keyboard
 - What you see on your emulator screen should match what you see in your web browser from step (1).
   - You will need to refresh your web browser to see the updated database in browser.
+
+
+Troubleshooting
+- Server doesn't start
+  - Install npm with 
+  ~~~
+  npm install
+  ~~~
+  
+- I don't have an emulator
+  - Go to emulator -> Open AVD Manager -> Create Virtual Device
+  - Select Pixel 3a -> Next
+  - Select 'Q' as system image (API Level 29) -> Next -> Finish
+  
+- My configuration isn't working
+  - Create an Android app with Module 'app'
 
 
 <h2>ITERATION 2</h2>

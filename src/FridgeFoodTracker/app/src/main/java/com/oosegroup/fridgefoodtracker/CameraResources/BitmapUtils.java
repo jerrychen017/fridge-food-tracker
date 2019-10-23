@@ -1,4 +1,4 @@
-package edu.uima.team4.barcodescanner;
+package com.oosegroup.fridgefoodtracker.CameraResources;
 
 
 import android.graphics.Bitmap;
