@@ -1,21 +1,31 @@
 package com.oosegroup.fridgefoodtracker.Activities;
 import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.Gravity;
+import android.widget.ToggleButton;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
@@ -31,6 +41,20 @@ public class MainActivity extends AppCompatActivity {
 
         this.queue = Volley.newRequestQueue(this);
         this.fridge = new Fridge(queue); // initialize a fridge
+
+        /*
+        ArrayList<String> itemsList = new ArrayList<>();
+        for (Item item : this.fridge.getContent().getItems()) {
+            itemsList.add(item.getDescription());
+        }
+
+
+        //instantiate custom adapter
+        // ItemViewAdapter adapter = new ItemViewAdapter(itemsList, this);
+
+        //handle listview and assign adapter
+        this.tableLayout = findViewById(R.id.tableLayout1);
+        tableLayout.setAdapter(adapter); */
 
         this.tableLayout = findViewById(R.id.tableLayout1);
         buildTable(fridge, tableLayout);
@@ -65,14 +89,25 @@ public class MainActivity extends AppCompatActivity {
                 TableRow.LayoutParams.WRAP_CONTENT));
         row.setGravity(Gravity.CENTER);
 
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.items, null);
+        TextView textView = view.findViewById(R.id.list_item_string);
+        textView.setText(item.getDescription());
+
+        /*
         TextView textView = new TextView(this);
         textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
         textView.setGravity(Gravity.CENTER);
-        String toShow = item.getDescription() + "\n" + "Expiration: " + item.getDateExpired().toString() + "\n";
+        String toShow = item.getDescription(); // + "\n" + "Expiration: " + item.getDateExpired().toString() + "\n";
         textView.setText(toShow);
 
+        TextView textView2 = new TextView(this);
+        textView2.setText("foobar");
+
         row.addView(textView);
+        row.addView(textView2); */
+        row.addView(view);
         return row;
     }
 
