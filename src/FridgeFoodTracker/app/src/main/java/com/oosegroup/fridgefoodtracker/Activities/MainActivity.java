@@ -1,10 +1,12 @@
-package com.oosegroup.fridgefoodtracker;
+package com.oosegroup.fridgefoodtracker.Activities;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -12,13 +14,14 @@ import android.widget.TextView;
 import android.view.Gravity;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
     TableLayout tableLayout;
     RequestQueue queue;
-
+    Button start_camera_button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
         this.tableLayout = findViewById(R.id.tableLayout1);
         buildTable(fridge, tableLayout);
+        // Locate the button in activity_main.xml
+        start_camera_button = (Button) findViewById(R.id.start_camera_button);
+
+        // Capture button clicks
+        start_camera_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                // Start NewActivity.class
+                Intent myIntent = new Intent(MainActivity.this,
+                        CameraActivity.class);
+                startActivity(myIntent);
+            }
+        });
     }
 
     public void inputItem(View view) {
