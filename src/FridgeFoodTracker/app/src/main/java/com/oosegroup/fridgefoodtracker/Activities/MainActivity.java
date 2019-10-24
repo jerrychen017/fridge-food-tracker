@@ -40,26 +40,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.queue = Volley.newRequestQueue(this);
-        this.fridge = new Fridge(queue); // initialize a fridge
-
-        /*
-        ArrayList<String> itemsList = new ArrayList<>();
-        for (Item item : this.fridge.getContent().getItems()) {
-            itemsList.add(item.getDescription());
-        }
-
-
-        //instantiate custom adapter
-        // ItemViewAdapter adapter = new ItemViewAdapter(itemsList, this);
-
-        //handle listview and assign adapter
+        this.fridge = new Fridge(queue);
         this.tableLayout = findViewById(R.id.tableLayout1);
-        tableLayout.setAdapter(adapter); */
-
-        this.tableLayout = findViewById(R.id.tableLayout1);
-        buildTable(fridge, tableLayout);
-        // Locate the button in activity_main.xml
-        start_camera_button = (Button) findViewById(R.id.start_camera_button);
+        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
 
         // Capture button clicks
         start_camera_button.setOnClickListener(new View.OnClickListener() {
@@ -131,23 +114,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void buildTable(Fridge fridge, TableLayout tableLayout) {
-        for (Item item : fridge.getContent().getItems()) {
-            TableRow row = new TableRow(this);
-            row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
-            row.setGravity(Gravity.CENTER);
-
-            TextView textView = new TextView(this);
-            textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
-            textView.setGravity(Gravity.CENTER);
-            textView.setText(item.getDescription());
-
-            row.addView(textView);
-            tableLayout.addView(row);
-        }
     }
 }
