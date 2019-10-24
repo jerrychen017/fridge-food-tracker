@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         this.fridge.addItem(item);
         TableRow row = addRow(item);
         this.tableLayout.addView(row);
+
+        mEdit.setText("");
     }
 
     public TableRow addRow(Item item){
