@@ -77,19 +77,6 @@ public class MainActivity extends AppCompatActivity {
         TextView textView = view.findViewById(R.id.list_item_string);
         textView.setText(item.getDescription());
 
-        /*
-        TextView textView = new TextView(this);
-        textView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-        textView.setGravity(Gravity.CENTER);
-        String toShow = item.getDescription(); // + "\n" + "Expiration: " + item.getDateExpired().toString() + "\n";
-        textView.setText(toShow);
-
-        TextView textView2 = new TextView(this);
-        textView2.setText("foobar");
-
-        row.addView(textView);
-        row.addView(textView2); */
         row.addView(view);
         return row;
     }
