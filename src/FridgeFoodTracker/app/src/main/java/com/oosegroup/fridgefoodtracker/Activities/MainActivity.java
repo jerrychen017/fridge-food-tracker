@@ -21,6 +21,7 @@ import android.widget.ToggleButton;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.oosegroup.fridgefoodtracker.ProgressBar;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     TableLayout tableLayout;
     RequestQueue queue;
     Button start_camera_button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,18 +66,23 @@ public class MainActivity extends AppCompatActivity {
         this.fridge.addItem(item);
         TableRow row = addRow(item);
         this.tableLayout.addView(row);
+        mEdit.setText("");
     }
 
     public TableRow addRow(Item item){
         TableRow row = new TableRow(this);
         row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
-        row.setGravity(Gravity.CENTER);
+        row.setGravity(Gravity.START);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.items, null);
         TextView textView = view.findViewById(R.id.list_item_string);
+        //String textToSet = item.getDescription() + "                                                  ";
+        //textToSet = textToSet.substring(0, 50);
         textView.setText(item.getDescription());
+        TextView progressBarTextView = view.findViewById(R.id.progress_bar);
+        progressBarTextView.setText(ProgressBar.getView(item));
 
         row.addView(view);
         return row;
