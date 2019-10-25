@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <Button
-        android:id="@+id/delete_btn"
+        android:id="@+id/expand_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/delete_btn"
+        android:layout_toEndOf="@+id/expand_btn"
         android:width="250dp"
         android:text='NAME'
         android:textSize="18sp"
