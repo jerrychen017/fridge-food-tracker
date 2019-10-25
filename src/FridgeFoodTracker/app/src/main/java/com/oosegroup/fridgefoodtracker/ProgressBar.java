@@ -34,7 +34,7 @@ public class ProgressBar {
     public static final String NINETY_PERCENT = "////////.";
 
     /** URL to database */
-    public static final String EXPIRED = "/////////";
+    public static final String FULL = "/////////";
 
     public static String getView(Item item) {
         Date expDate = item.getDateExpired();
@@ -64,7 +64,7 @@ public class ProgressBar {
         } else if (percentElapsed < 0.9) {
             return ProgressBar.NINETY_PERCENT;
         } else {
-            return ProgressBar.EXPIRED;
+            return ProgressBar.FULL;
         }
     }
 }
