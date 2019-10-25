@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.items, null);
         TextView textView = view.findViewById(R.id.list_item_string);
-        //String textToSet = item.getDescription() + "                                                  ";
-        //textToSet = textToSet.substring(0, 50);
         textView.setText(item.getDescription());
         TextView progressBarTextView = view.findViewById(R.id.progress_bar);
         progressBarTextView.setText(ProgressBar.getView(item));
