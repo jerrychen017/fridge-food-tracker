@@ -1,6 +1,4 @@
-package com.oosegroup.fridgefoodtracker;
-
-import com.oosegroup.fridgefoodtracker.models.Item;
+package com.oosegroup.fridgefoodtracker.models;
 
 import java.util.Date;
 

@@ -18,7 +18,7 @@ import android.view.Gravity;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.oosegroup.fridgefoodtracker.ProgressBar;
+import com.oosegroup.fridgefoodtracker.models.ProgressBar;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
