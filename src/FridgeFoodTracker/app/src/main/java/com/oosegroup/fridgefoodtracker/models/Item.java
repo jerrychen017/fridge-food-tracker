@@ -1,11 +1,10 @@
 package com.oosegroup.fridgefoodtracker.models;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 
-// item class representing Item
+/** Item Class */
 public class Item {
+
     private int id;
     // private Description description;
     private String description;
