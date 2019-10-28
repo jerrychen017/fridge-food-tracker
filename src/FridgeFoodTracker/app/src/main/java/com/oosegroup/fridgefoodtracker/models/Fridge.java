@@ -72,4 +72,8 @@ public class Fridge {
   public ItemList getContent() {
     return content;
   }
+
+  public void sortByExpiration() {
+    this.getContent().sortByExpiration();
+  }
 }

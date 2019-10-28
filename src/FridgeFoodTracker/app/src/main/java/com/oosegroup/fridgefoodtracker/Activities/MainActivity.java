@@ -100,6 +100,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_sortByExpiration) {
+            this.fridge.sortByExpiration();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }
