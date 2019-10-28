@@ -19,12 +19,16 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
+
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -32,13 +36,23 @@ import android.view.WindowManager;
 
 import com.google.android.gms.common.images.Size;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.Thread.State;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
+
+import edu.uima.team4.barcodescanner.Activities.CameraActivity;
 
 /**
  * Manages the camera and allows UI updates on top of it (e.g. overlaying extra Graphics or
@@ -52,7 +66,6 @@ public class CameraSource {
 
     @SuppressLint("InlinedApi")
     public static final int CAMERA_FACING_FRONT = CameraInfo.CAMERA_FACING_FRONT;
-
     private static final String TAG = "MIDemoApp:CameraSource";
 
     /**
@@ -68,7 +81,7 @@ public class CameraSource {
      */
     private static final float ASPECT_RATIO_TOLERANCE = 0.01f;
 
-    protected Activity activity;
+    protected CameraActivity activity;
 
     private Camera camera;
 
@@ -126,7 +139,7 @@ public class CameraSource {
     private final Map<byte[], ByteBuffer> bytesToByteBuffer = new IdentityHashMap<>();
 
     public CameraSource(Activity activity, GraphicOverlay overlay) {
-        this.activity = activity;
+        this.activity = (CameraActivity) activity;
         graphicOverlay = overlay;
         graphicOverlay.clear();
         processingRunnable = new FrameProcessingRunnable();
@@ -138,6 +151,106 @@ public class CameraSource {
         }
     }
 
+    private Uri getOutputMediaFileUri(){
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+    /** Create a File for saving an image or video */
+    private File getOutputMediaFile(){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        //File mediaStorageDir = new File(activity.getApplicationContext().getFilesDir(), "Pictures");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_"+ timeStamp + ".jpg");
+        Log.d("picture","Created media file: " + mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+        return mediaFile;
+    }
+
+    File pictureFile;
+    public Camera.PictureCallback takePictureCallback = new Camera.PictureCallback() {
+
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            Log.d("Picture", "On Picture Taken called");
+            pictureFile = getOutputMediaFile();
+            if (pictureFile == null){
+                Log.d("Picture", "Error creating media file, check storage permissions");
+                return;
+            }
+            else {
+                Log.d("Picture", "Success creating media file");
+            }
+
+            Uri uri = Uri.parse(pictureFile.getPath());
+
+            try {
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                fos.write(data);
+                fos.close();
+                Log.d("Picture", "FILE WRITTEN");
+                try {
+                    if(new File(uri.toString()).exists()){
+                        Log.d("Picture", "Exists 1");
+                    }
+                    if(new File(pictureFile.getPath()).exists()){
+                        Log.d("Picture", "Exists 2");
+                    }
+                    if(new File(pictureFile.getAbsolutePath()).exists()){
+                        Log.d("Picture", "Exists 3");
+                    }
+                    if(pictureFile.getAbsoluteFile().exists()){
+                        Log.d("Picture", "Exists 4");
+                    }
+                    Log.d("Picture", "metaBuilderData: " + camera.getParameters().getPictureSize().height + " | " + camera.getParameters().getPictureSize().width + " | " +
+                            ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation() + " | " + camera.getParameters().getPictureFormat());
+                    FirebaseVisionImageMetadata.Builder metaBuilder = new FirebaseVisionImageMetadata.Builder();
+                    metaBuilder.setHeight(camera.getParameters().getPreviewSize().height);
+                    metaBuilder.setWidth(camera.getParameters().getPreviewSize().width);
+                    metaBuilder.setRotation(rotation);
+                    metaBuilder.setFormat(FirebaseVisionImageMetadata.IMAGE_FORMAT_NV21);
+
+                    FirebaseVisionImage fvImage = FirebaseVisionImage.fromByteArray(data, metaBuilder.build());
+                    fvImage = FirebaseVisionImage.fromFilePath(activity, Uri.fromFile(pictureFile));
+                    activity.process(fvImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                camera.startPreview();
+                //activity.process((pictureFile));
+            } catch (FileNotFoundException e) {
+                Log.d("Picture", "File not found: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d("Picture", "Error accessing file: " + e.getMessage());
+            }
+
+        }
+    };
+
+    public void takePicture() {
+        camera.takePicture(null, null, takePictureCallback);
+        if(pictureFile == null){
+            Log.d("Picture", "Picture file is null");
+        }
+    }
     // ==============================================================================================
     // Public
     // ==============================================================================================
@@ -711,7 +824,7 @@ public class CameraSource {
 
                 try {
                     synchronized (processorLock) {
-                        Log.d(TAG, "Process an image");
+                        //Log.d(TAG, "Process an image");
                         frameProcessor.process(
                                 data,
                                 new FrameMetadata.Builder()
