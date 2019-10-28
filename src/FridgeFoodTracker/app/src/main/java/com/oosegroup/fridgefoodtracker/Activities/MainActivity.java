@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_sortByExpiration) {
             this.fridge.sortByExpiration();
+            this.rebuildTableView();
         }
 
         return super.onOptionsItemSelected(item);
