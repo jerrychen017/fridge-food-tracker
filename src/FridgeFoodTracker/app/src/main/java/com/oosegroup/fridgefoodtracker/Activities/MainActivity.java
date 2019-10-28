@@ -3,7 +3,6 @@ import android.content.Intent;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.LayoutInflater;
@@ -12,26 +11,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.Gravity;
-import android.widget.ToggleButton;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.oosegroup.fridgefoodtracker.models.ProgressBar;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
     TableLayout tableLayout;
     RequestQueue queue;
     Button start_camera_button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,20 +58,32 @@ public class MainActivity extends AppCompatActivity {
 
         Item item = new Item(fridge.getContent().getItems().size(), text);
         this.fridge.addItem(item);
-        TableRow row = addRow(item);
-        this.tableLayout.addView(row);
+
+        this.rebuildTableView();
+        mEdit.setText("");
     }
 
-    public TableRow addRow(Item item){
+    private void rebuildTableView() {
+        this.tableLayout.removeAllViews();
+
+        for (Item item : this.fridge.getContent().getItems()) {
+            TableRow row = createRow(item);
+            this.tableLayout.addView(row);
+        }
+    }
+
+    private TableRow createRow(Item item){
         TableRow row = new TableRow(this);
         row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
-        row.setGravity(Gravity.CENTER);
+        row.setGravity(Gravity.START);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.items, null);
         TextView textView = view.findViewById(R.id.list_item_string);
         textView.setText(item.getDescription());
+        TextView progressBarTextView = view.findViewById(R.id.progress_bar);
+        progressBarTextView.setText(ProgressBar.getView(item));
 
         row.addView(view);
         return row;
