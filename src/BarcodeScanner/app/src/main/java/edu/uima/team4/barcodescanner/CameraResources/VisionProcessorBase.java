@@ -101,6 +101,19 @@ public abstract class VisionProcessorBase<T> implements VisionImageProcessor {
                 graphicOverlay);
     }
 
+     public FirebaseVisionImage getImage(
+            ByteBuffer data, final FrameMetadata frameMetadata) {
+        FirebaseVisionImageMetadata metadata =
+                new FirebaseVisionImageMetadata.Builder()
+                        .setFormat(FirebaseVisionImageMetadata.IMAGE_FORMAT_NV21)
+                        .setWidth(frameMetadata.getWidth())
+                        .setHeight(frameMetadata.getHeight())
+                        .setRotation(frameMetadata.getRotation())
+                        .build();
+
+        return FirebaseVisionImage.fromByteBuffer(data, metadata);
+    }
+
     private void detectInVisionImage(
             final Bitmap originalCameraImage,
             FirebaseVisionImage image,
