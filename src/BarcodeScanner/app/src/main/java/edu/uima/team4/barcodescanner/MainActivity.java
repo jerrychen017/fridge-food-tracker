@@ -19,6 +19,7 @@ import android.hardware.Camera;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -41,9 +42,14 @@ import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -83,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                         .setAction("Action", null).show();
                 //startPictureIntent();
                 //startCameraIntentForResult();
-                File test = cameraSource.takePicture();
+                cameraSource.takePicture();
 
             }
         });
@@ -312,6 +318,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         }
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -323,7 +330,38 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         }
     }
 
-    protected void process(File data){
+
+
+    private File getOutputMediaFileTest(){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        //File mediaStorageDir = new File(activity.getApplicationContext().getFilesDir(), "Pictures");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_TEST"+ timeStamp + ".jpg");
+        Log.d("picture","Created media file: " + mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+        return mediaFile;
+    }
+
+    protected void process(FirebaseVisionImage image){
     /*
     File path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS);
     File file = new File(path, filename);
@@ -331,43 +369,31 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     Uri uri = Uri.fromFile(file);
     Log.d("uri", uri.getPath());
      */
-        FirebaseVisionImage image;
-        Bitmap bitmap = null;
+        File pictureFile = getOutputMediaFileTest();
+
+        TextRecognitionProcessor imageProcessor = new TextRecognitionProcessor();
+        imageProcessor.process(image.getBitmap(), graphicOverlay);
+        Bitmap bmp = image.getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        bmp.recycle();
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(pictureFile);
+            try {
+                fos.write(byteArray);
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         Log.d("in process", "process called");
         try {
-            if(data != null) {
-                Log.d("in process", "process: data is not null " + data.toString());
-                String imagePath = data.getAbsolutePath();
-                imagePath = imagePath.replace("storage/emulated/0","Internal storage");
-                Log.d("image path", "process: image path: " + imagePath);
-                //bitmap = BitmapFactory.decodeFile(imagePath);
-
-                File test = new File(imagePath);
-                if(test != null) {
-                    Log.d("in process", "test is not null: " + test.toURI().toString().replace("file:/file:/","file:/"));
-                    Log.d("in process", test.getAbsolutePath());
-                } else {
-                    Log.d("in process", "test is null");
-                }
-                Uri uri = Uri.parse(data.getPath());
-                String[] projection = { MediaStore.Images.Media.DATA };
-                Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-                if (cursor == null){
-                    Log.d("in process","cursor is null: " + uri.toString());
-                    return;
-                }
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
-                String s=cursor.getString(column_index);
-                cursor.close();
-                bitmap = BitmapFactory.decodeFile(imagePath);
-                image = FirebaseVisionImage.fromFilePath(this, Uri.parse(s));
-                if (image != null) {
-                    Log.d("in process", "Image is not null");
-                }
-                else{
-                    Log.d("in process", "Image is null");
-                }
+            if(image != null) {
                 FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                         .getOnDeviceTextRecognizer();
                 Task<FirebaseVisionText> result =
@@ -397,6 +423,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
                                             public void onFailure(@NonNull Exception e) {
                                                 // Task failed with an exception
                                                 // ...
+                                                Log.d("firebase","TEXT READING FAILED");
                                             }
                                         });
             } else {
@@ -406,6 +433,8 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         } catch(Exception e) {//(IOException e) {
             e.printStackTrace();
         }
+
+        Bitmap bit = image.getBitmap();
 
     }
 }

@@ -19,6 +19,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -35,6 +36,7 @@ import android.view.WindowManager;
 
 import com.google.android.gms.common.images.Size;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -48,6 +50,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 
 /**
  * Manages the camera and allows UI updates on top of it (e.g. overlaying extra Graphics or
@@ -155,7 +158,10 @@ public class CameraSource {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
-        File mediaStorageDir = new File(activity.getApplicationContext().getFilesDir(), "Pictures");
+        //File mediaStorageDir = new File(activity.getApplicationContext().getFilesDir(), "Pictures");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+
         // This location works best if you want the created images to be shared
         // between applications and persist after your app has been uninstalled.
 
@@ -199,26 +205,49 @@ public class CameraSource {
                 fos.write(data);
                 fos.close();
                 Log.d("Picture", "FILE WRITTEN");
-                activity.process((pictureFile));
+                try {
+                    if(new File(uri.toString()).exists()){
+                        Log.d("Picture", "Exists 1");
+                    }
+                    if(new File(pictureFile.getPath()).exists()){
+                        Log.d("Picture", "Exists 2");
+                    }
+                    if(new File(pictureFile.getAbsolutePath()).exists()){
+                        Log.d("Picture", "Exists 3");
+                    }
+                    if(pictureFile.getAbsoluteFile().exists()){
+                        Log.d("Picture", "Exists 4");
+                    }
+                    Log.d("Picture", "metaBuilderData: " + camera.getParameters().getPictureSize().height + " | " + camera.getParameters().getPictureSize().width + " | " +
+                            ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation() + " | " + camera.getParameters().getPictureFormat());
+                    FirebaseVisionImageMetadata.Builder metaBuilder = new FirebaseVisionImageMetadata.Builder();
+                    metaBuilder.setHeight(camera.getParameters().getPreviewSize().height);
+                    metaBuilder.setWidth(camera.getParameters().getPreviewSize().width);
+                    metaBuilder.setRotation(rotation);
+                    metaBuilder.setFormat(FirebaseVisionImageMetadata.IMAGE_FORMAT_NV21);
+
+                    FirebaseVisionImage fvImage = FirebaseVisionImage.fromByteArray(data, metaBuilder.build());
+                    fvImage = FirebaseVisionImage.fromFilePath(activity, Uri.fromFile(pictureFile));
+                    activity.process(fvImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                camera.startPreview();
+                //activity.process((pictureFile));
             } catch (FileNotFoundException e) {
                 Log.d("Picture", "File not found: " + e.getMessage());
             } catch (IOException e) {
                 Log.d("Picture", "Error accessing file: " + e.getMessage());
             }
-            try {
-                FirebaseVisionImage fvImage = FirebaseVisionImage.fromFilePath(activity.getApplicationContext(), uri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         }
     };
 
-    protected File takePicture() {
+    protected void takePicture() {
         camera.takePicture(null, null, takePictureCallback);
         if(pictureFile == null){
             Log.d("Picture", "Picture file is null");
         }
-        return pictureFile;
     }
     // ==============================================================================================
     // Public
@@ -793,7 +822,7 @@ public class CameraSource {
 
                 try {
                     synchronized (processorLock) {
-                        Log.d(TAG, "Process an image");
+                        //Log.d(TAG, "Process an image");
                         frameProcessor.process(
                                 data,
                                 new FrameMetadata.Builder()

@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 /** An inferface to process the images with different ML Kit detectors and custom image models. */
 public interface VisionImageProcessor {
 
+    FirebaseVisionImage getImage(ByteBuffer data, FrameMetadata frameMetadata);
     /** Processes the images with the underlying machine learning models. */
     void process(ByteBuffer data, FrameMetadata frameMetadata, GraphicOverlay graphicOverlay)
             throws FirebaseMLException;
