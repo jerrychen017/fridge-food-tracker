@@ -9,19 +9,17 @@ import com.oosegroup.fridgefoodtracker.CameraResources.CameraSource;
 import com.oosegroup.fridgefoodtracker.CameraResources.CameraSourcePreview;
 import com.oosegroup.fridgefoodtracker.CameraResources.GraphicOverlay;
 import com.oosegroup.fridgefoodtracker.R;
+import com.oosegroup.fridgefoodtracker.CameraResources.TextRecognitionProcessor;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,8 +37,14 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CameraActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -77,7 +81,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                startPictureIntent();
+                cameraSource.takePicture();
             }
         });
     }
@@ -295,12 +299,12 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
-            process(data);
+            //process(data);
             Log.d("onActivityResult", "onActivityResult: pic selected");
         }
     }
 
-    private void process(Intent data){
+    public void process(FirebaseVisionImage image){
     /*
     File path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS);
     File file = new File(path, filename);
@@ -308,25 +312,32 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     Uri uri = Uri.fromFile(file);
     Log.d("uri", uri.getPath());
      */
-        FirebaseVisionImage image;
-        Bitmap bitmap = null;
 
+        File pictureFile = getOutputMediaFileTest();
+
+        TextRecognitionProcessor imageProcessor = new TextRecognitionProcessor();
+        imageProcessor.process(image.getBitmap(), graphicOverlay);
+        Bitmap bmp = image.getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        bmp.recycle();
+        FileOutputStream fos = null;
         try {
-            if(data != null) {
-                Log.d("in process", "process: data is not null");
-                Uri selectedImageUri = data.getData();
-                String[] filePath = { MediaStore.Images.Media.DATA };
-                Cursor cursor = getContentResolver().query(selectedImageUri, filePath, null, null, null);
-                cursor.moveToFirst();
-                String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-                Log.d("image path", "process: image path: " + imagePath);
-                bitmap = BitmapFactory.decodeFile(imagePath);
+            fos = new FileOutputStream(pictureFile);
+            try {
+                fos.write(byteArray);
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-                image = FirebaseVisionImage.fromBitmap(bitmap);
-                if (image != null) {
-
-                    Log.d("image", "not null");
-                }
+        Log.d("in process", "process called");
+        try {
+            if(image != null) {
                 FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                         .getOnDeviceTextRecognizer();
                 Task<FirebaseVisionText> result =
@@ -356,6 +367,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
                                             public void onFailure(@NonNull Exception e) {
                                                 // Task failed with an exception
                                                 // ...
+                                                Log.d("firebase","TEXT READING FAILED");
                                             }
                                         });
             } else {
@@ -363,8 +375,39 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
             }
 
         } catch(Exception e) {//(IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
 
+        Bitmap bit = image.getBitmap();
+
+    }
+
+    private File getOutputMediaFileTest(){
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+
+        //File mediaStorageDir = new File(activity.getApplicationContext().getFilesDir(), "Pictures");
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "MyCameraApp");
+
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+
+        // Create the storage directory if it does not exist
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+
+        // Create a media file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_TEST"+ timeStamp + ".jpg");
+        Log.d("picture","Created media file: " + mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+        return mediaFile;
     }
 }
