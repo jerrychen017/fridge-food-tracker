@@ -27,7 +27,9 @@ import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Processor for the text recognition demo.
@@ -37,6 +39,8 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
     private static final String TAG = "TextRecProc";
 
     private final FirebaseVisionTextRecognizer detector;
+
+    private HashMap<String, Integer> dict = new HashMap<>();
 
     public TextRecognitionProcessor() {
         detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
@@ -63,6 +67,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
             @NonNull FrameMetadata frameMetadata,
             @NonNull GraphicOverlay graphicOverlay) {
         graphicOverlay.clear();
+        Log.d("onSuccess", "onSuccess: IN SUCCESS");
         if (originalCameraImage != null) {
             CameraImageGraphic imageGraphic = new CameraImageGraphic(graphicOverlay,
                     originalCameraImage);
@@ -74,6 +79,12 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
             for (int j = 0; j < lines.size(); j++) {
                 List<FirebaseVisionText.Element> elements = lines.get(j).getElements();
+                String lineText = lines.get(j).getText();
+                if(isAllUpper(lineText) && !dict.containsKey(lineText) ) {
+                    dict.put(lineText, 1);
+                } else if (isAllUpper(lineText) && dict.containsKey(lineText)) {
+                    dict.put(lineText, dict.get(lineText) + 1);
+                }
                 for (int k = 0; k < elements.size(); k++) {
                     GraphicOverlay.Graphic textGraphic = new TextGraphic(graphicOverlay,
                             elements.get(k));
@@ -82,6 +93,24 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
             }
         }
         graphicOverlay.postInvalidate();
+
+        printDict(dict);
+    }
+    private void printDict (Map<String, Integer> map) {
+        for(Map.Entry<String, Integer> e : map.entrySet())
+        {
+            System.out.println(e.getKey()+": "+e.getValue());
+        }
+    }
+
+    private boolean isAllUpper(String str) {
+
+        for(char c : str.toCharArray()) {
+            if(Character.isLetter(c) && Character.isLowerCase(c)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
