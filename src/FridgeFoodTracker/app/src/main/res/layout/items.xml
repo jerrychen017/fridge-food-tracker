@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/expand_btn"
-        android:width="250dp"
+        android:width="230dp"
         android:text='NAME'
         android:textSize="18sp"
         android:textStyle="bold" />
