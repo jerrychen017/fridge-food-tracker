@@ -94,19 +94,26 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
         }
         graphicOverlay.postInvalidate();
 
-        printDict(dict);
+        Log.d("printing", "dict: " + printDict(dict));
     }
-    private void printDict (Map<String, Integer> map) {
+    private String printDict (Map<String, Integer> map) {
+        String fin = "";
         for(Map.Entry<String, Integer> e : map.entrySet())
         {
-            System.out.println(e.getKey()+": "+e.getValue());
+            fin = fin + e.getKey()+": "+e.getValue() + "\n";
         }
+        return fin;
     }
 
     private boolean isAllUpper(String str) {
 
         for(char c : str.toCharArray()) {
+            if(c == ' ') {
+                continue;
+            }
             if(Character.isLetter(c) && Character.isLowerCase(c)) {
+                return false;
+            } else if(!Character.isLetter(c)) {
                 return false;
             }
         }
