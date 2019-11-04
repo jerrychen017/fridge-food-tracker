@@ -335,6 +335,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
             e.printStackTrace();
         }
 
+        /*
         Log.d("in process", "process called");
         try {
             if(image != null) {
@@ -377,6 +378,8 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
         } catch(Exception e) {//(IOException e) {
             e.printStackTrace();
         }
+
+         */
 
         Bitmap bit = image.getBitmap();
 
