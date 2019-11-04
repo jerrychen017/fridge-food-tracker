@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.queue = Volley.newRequestQueue(this);
-        this.fridge = new Fridge(queue);
+        this.fridge = new Fridge(queue, 0);
+        fridge.initFridge();
         this.tableLayout = findViewById(R.id.tableLayout1);
         this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
 
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void inputItem(View view) {
+        rebuildTableView();
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
         String text = mEdit.getText().toString();
 

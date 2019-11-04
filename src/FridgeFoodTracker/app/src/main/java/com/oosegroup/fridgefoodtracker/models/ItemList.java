@@ -1,6 +1,8 @@
 package com.oosegroup.fridgefoodtracker.models;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +49,15 @@ public class ItemList {
             }
         }
         return result;
+    }
+
+    public void sortByExpiration() {
+        Collections.sort(this.getItems(), new Comparator<Item>() {
+            @Override
+            public int compare(Item o1, Item o2) {
+                return o1.getDateExpired().compareTo(o2.getDateExpired());
+            }
+        });
     }
 
 }

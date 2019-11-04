@@ -10,7 +10,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.oosegroup.fridgefoodtracker.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -259,6 +258,10 @@ public class Fridge {
             }
         }
     }
+
+  public void sortByExpiration() {
+    this.getContent().sortByExpiration();
+  }
 }
 
 
