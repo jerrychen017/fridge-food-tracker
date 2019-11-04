@@ -40,7 +40,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
 
     private final FirebaseVisionTextRecognizer detector;
 
-    private HashMap<String, Integer> dict = new HashMap<>();
+    private HashMap<String, Integer> itemsDict = new HashMap<>();
 
     public TextRecognitionProcessor() {
         detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
@@ -80,10 +80,11 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
             for (int j = 0; j < lines.size(); j++) {
                 List<FirebaseVisionText.Element> elements = lines.get(j).getElements();
                 String lineText = lines.get(j).getText();
-                if(isAllUpper(lineText) && !dict.containsKey(lineText) ) {
-                    dict.put(lineText, 1);
-                } else if (isAllUpper(lineText) && dict.containsKey(lineText)) {
-                    dict.put(lineText, dict.get(lineText) + 1);
+
+                if(isAllUpper(lineText) && !itemsDict.containsKey(lineText) ) {
+                    itemsDict.put(lineText, 1);
+                } else if (isAllUpper(lineText) && itemsDict.containsKey(lineText)) {
+                    itemsDict.put(lineText, itemsDict.get(lineText) + 1);
                 }
                 for (int k = 0; k < elements.size(); k++) {
                     GraphicOverlay.Graphic textGraphic = new TextGraphic(graphicOverlay,
@@ -94,7 +95,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
         }
         graphicOverlay.postInvalidate();
 
-        Log.d("printing", "dict: " + printDict(dict));
+        Log.d("printing", "dict: " + printDict(itemsDict));
     }
     private String printDict (Map<String, Integer> map) {
         String fin = "";
@@ -105,6 +106,8 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
         return fin;
     }
 
+    //parses strings and recognizes items as all capital letters
+    //ignores digits and spaces for more accurate detection
     private boolean isAllUpper(String str) {
 
         for(char c : str.toCharArray()) {
@@ -118,6 +121,10 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
             }
         }
         return true;
+    }
+
+    public HashMap<String, Integer> getItemsDict() {
+        return this.itemsDict;
     }
 
     @Override
