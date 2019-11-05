@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void inputItem(View view) {
-        rebuildTableView();
+        // rebuildTableView();
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
         String text = mEdit.getText().toString();
 
@@ -63,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
         this.rebuildTableView();
         mEdit.setText("");
+    }
+
+    public void deleteItem(View view) {
+        // Button del_btn = view.findViewById(R.id.del_btn);
+        System.out.println(view.getTag());
+        this.fridge.remove(Integer.parseInt(view.getTag().toString()));
+        this.rebuildTableView();
     }
 
     private void rebuildTableView() {
@@ -82,10 +89,22 @@ public class MainActivity extends AppCompatActivity {
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.items, null);
+
         TextView textView = view.findViewById(R.id.list_item_string);
         textView.setText(item.getDescription());
+
         TextView progressBarTextView = view.findViewById(R.id.progress_bar);
         progressBarTextView.setText(ProgressBar.getView(item));
+
+        TextView hidden_item_id = view.findViewById(R.id.hidden_item_id);
+        hidden_item_id.setText(Integer.toString(item.getId()));
+
+        Button del_btn = view.findViewById(R.id.del_btn);
+        //del_btn.setTag(item.getId());
+        del_btn.setTag(1);
+        System.out.println(del_btn.getTag());
+
+        System.out.println(hidden_item_id.getText());
 
         row.addView(view);
         return row;
