@@ -96,15 +96,11 @@ public class MainActivity extends AppCompatActivity {
         TextView progressBarTextView = view.findViewById(R.id.progress_bar);
         progressBarTextView.setText(ProgressBar.getView(item));
 
-        TextView hidden_item_id = view.findViewById(R.id.hidden_item_id);
-        hidden_item_id.setText(Integer.toString(item.getId()));
 
         Button del_btn = view.findViewById(R.id.del_btn);
         //del_btn.setTag(item.getId());
-        del_btn.setTag(1);
-        System.out.println(del_btn.getTag());
+        del_btn.setTag(item.getId());
 
-        System.out.println(hidden_item_id.getText());
 
         row.addView(view);
         return row;
