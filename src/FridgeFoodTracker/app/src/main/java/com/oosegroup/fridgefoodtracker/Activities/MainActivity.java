@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void inputItem(View view) {
-        // rebuildTableView();
+        rebuildTableView();
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
         String text = mEdit.getText().toString();
 

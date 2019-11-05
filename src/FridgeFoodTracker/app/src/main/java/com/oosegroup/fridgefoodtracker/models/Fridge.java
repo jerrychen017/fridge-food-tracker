@@ -77,7 +77,7 @@ public class Fridge {
      */
     public void initFridge() {
         try {
-            String url = "http://10.0.2.2:3000/fridge/" + this.id;
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id;
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                     url, null,
                     new Response.Listener<JSONObject>() {
@@ -161,7 +161,7 @@ public class Fridge {
         }
 
         try {
-            String url = "http://10.0.2.2:3000/fridge/" + this.id;
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id;
             JSONObject postparams = new JSONObject();
             postparams.put("item", item.getDescription());
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -206,7 +206,7 @@ public class Fridge {
         }
 
         try {
-            String url = "http://10.0.2.2:3000/fridge/" + this.id;
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge";
             JSONObject postparams = new JSONObject();
             postparams.put("id", Integer.toString(id));
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.DELETE,
@@ -215,7 +215,7 @@ public class Fridge {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
-                            System.out.println("Successfully posted an item");
+                            System.out.println("Successfully deleted an item");
 
                         }
                     },
@@ -223,14 +223,14 @@ public class Fridge {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //Failure Callback
-                            System.out.println("Failed to post an item");
+                            System.out.println("Failed to delete an item");
                             System.out.println(error.getMessage());
                         }
                     });
             queue.add(jsonObjReq);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            throw new IllegalArgumentException("Exception occured when sending http request. Error: " + e.getMessage());
+            throw new IllegalArgumentException("Exception occured when sending http DELETE request. Error: " + e.getMessage());
         }
     }
 
