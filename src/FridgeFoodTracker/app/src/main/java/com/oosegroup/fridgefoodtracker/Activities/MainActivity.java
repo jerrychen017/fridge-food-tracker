@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
@@ -21,6 +22,10 @@ import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.models.ProgressBar;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
@@ -56,13 +61,29 @@ public class MainActivity extends AppCompatActivity {
     public void inputItem(View view) {
         rebuildTableView();
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
+        EditText dEdit = (EditText) findViewById(R.id.item_date_input);
         String text = mEdit.getText().toString();
+        String date_s = dEdit.getText().toString();
+        Date date;
 
-        Item item = new Item(fridge.getContent().getItems().size(), text);
+        try {
+            date = new SimpleDateFormat("dd/MM/yyyy").parse(date_s);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            date = null;
+            Log.i("invalid date", e.toString());
+        }
+        Item item;
+        if (date != null) {
+            item = new Item(fridge.getContent().getItems().size(), text, date);
+        } else {
+            item = new Item(fridge.getContent().getItems().size(), text);
+        }
+
         this.fridge.addItem(item);
-
         this.rebuildTableView();
         mEdit.setText("");
+        dEdit.setText("");
     }
 
     public void deleteItem(View view) {
