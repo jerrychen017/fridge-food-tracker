@@ -1,10 +1,5 @@
 package com.oosegroup.fridgefoodtracker.models;
 
-import android.view.Gravity;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,7 +11,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +45,7 @@ public class Fridge {
         this.content = new ItemList();
         this.isLocal = isLocal;
         this.queue = null;
+        this.id = id;
     }
 
     /**
@@ -206,17 +201,15 @@ public class Fridge {
         }
 
         try {
-            String url = "http://oose-fridgetracker.herokuapp.com/fridge";
-            JSONObject postparams = new JSONObject();
-            postparams.put("id", Integer.toString(id));
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/item/" + id;
+
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.DELETE,
-                    url, postparams,
+                    url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
                             System.out.println("Successfully deleted an item");
-
                         }
                     },
                     new Response.ErrorListener() {
