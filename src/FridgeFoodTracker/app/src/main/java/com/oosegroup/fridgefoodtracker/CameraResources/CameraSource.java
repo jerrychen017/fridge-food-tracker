@@ -34,6 +34,12 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.images.Size;
 
 import java.io.ByteArrayOutputStream;
@@ -52,6 +58,9 @@ import java.util.Map;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import  com.oosegroup.fridgefoodtracker.Activities.CameraActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Manages the camera and allows UI updates on top of it (e.g. overlaying extra Graphics or
@@ -92,6 +101,7 @@ public class CameraSource {
      */
     private int rotation;
 
+    private ArrayList<String> checkedBarcodes = new ArrayList<String>();
     private Size previewSize;
 
     // These values may be requested by the caller.  Due to hardware limitations, we may need to
@@ -124,7 +134,7 @@ public class CameraSource {
 
     private final Object processorLock = new Object();
     // @GuardedBy("processorLock")
-    private VisionImageProcessor frameProcessor;
+    private BarcodeScanningProcessor frameProcessor;
 
     /**
      * Map to convert between a byte array, received from the camera, and its associated byte buffer.
@@ -696,7 +706,7 @@ public class CameraSource {
         }
     }
 
-    public void setMachineLearningFrameProcessor(VisionImageProcessor processor) {
+    public void setMachineLearningFrameProcessor(BarcodeScanningProcessor processor) {
         synchronized (processorLock) {
             cleanScreen();
             if (frameProcessor != null) {
@@ -833,6 +843,50 @@ public class CameraSource {
                                         .setCameraFacing(facing)
                                         .build(),
                                 graphicOverlay);
+
+                        ArrayList<String> barcodes = frameProcessor.getBarcodeList();
+                        for(String s : barcodes) {
+                            if(checkedBarcodes.contains(s)) {
+                                continue;
+                            } else {
+                                checkedBarcodes.add(s);
+                            }
+                            // Instantiate the RequestQueue.
+                            RequestQueue queue = Volley.newRequestQueue(activity);
+                            String url = "https://chompthis.com/api/product-code.php?token=JFIJqQZRgsUr2iq8e&code=" + s;
+                            Log.d("Barcode", "Sending request: " + url);
+// Request a string response from the provided URL.
+                            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            // Display the first 500 characters of the response string.
+                                            Log.d("RESPONSE", response.toString());
+                                            try {
+                                                JSONObject responseJSON = new JSONObject(response);
+                                                if(responseJSON.getJSONObject("chomp").getJSONObject("response").getInt("products_found") != 0){
+                                                    Log.d("RESPONSE", "Products found");
+                                                    String productName = responseJSON.getJSONObject("products")
+                                                                        .getJSONObject(responseJSON.getJSONObject("chomp").getJSONObject("request").getString("product_code"))
+                                                                        .getString("name");
+                                                    Log.d("RESPONSE", "Product Name: " + productName);
+                                                } else {
+                                                    Log.d("RESPONSE", "Products not found");
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("RESPONSE ERROR", error.toString());
+                                }
+                            });
+
+// Add the request to the RequestQueue.
+                            queue.add(stringRequest);
+                        }
                     }
                 } catch (Throwable t) {
                     Log.e(TAG, "Exception thrown from receiver.", t);
