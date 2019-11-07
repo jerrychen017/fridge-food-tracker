@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
+import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.Gravity;
@@ -23,13 +23,13 @@ import com.oosegroup.fridgefoodtracker.models.ProgressBar;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
-    TableLayout tableLayout;
+    ListView mainItemListView;
+    ItemListViewAdapter itemListViewAdapter;
     RequestQueue queue;
     Button start_camera_button;
 
@@ -41,11 +41,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.queue = Volley.newRequestQueue(this);
+
         this.fridge = new Fridge(queue, 0);
         fridge.initFridge();
-        this.tableLayout = findViewById(R.id.tableLayout1);
-        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
 
+        this.fridge.addItem(new Item(10, "cheese"));
+        this.fridge.addItem(new Item(11, "bread"));
+        this.fridge.addItem(new Item(100, "wine"));
+
+        System.out.println(this.fridge.getContent().getItems().size());
+
+        this.itemListViewAdapter = new ItemListViewAdapter(this, this.fridge);
+        this.mainItemListView = findViewById(R.id.mainItemListView);
+        this.mainItemListView.setAdapter(this.itemListViewAdapter);
+
+        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
         // Capture button clicks
         start_camera_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -59,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void inputItem(View view) {
-        rebuildTableView();
+        // rebuildTableView();
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
         EditText dEdit = (EditText) findViewById(R.id.item_date_input);
         String text = mEdit.getText().toString();
@@ -81,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         this.fridge.addItem(item);
-        this.rebuildTableView();
+        // this.rebuildTableView();
+        this.itemListViewAdapter.notifyDataSetChanged();
         mEdit.setText("");
         dEdit.setText("");
     }
@@ -90,18 +101,20 @@ public class MainActivity extends AppCompatActivity {
         // Button del_btn = view.findViewById(R.id.del_btn);
         System.out.println(view.getTag());
         this.fridge.remove(Integer.parseInt(view.getTag().toString()));
-        this.rebuildTableView();
+        this.itemListViewAdapter.notifyDataSetChanged();
     }
 
+    /*
     private void rebuildTableView() {
-        this.tableLayout.removeAllViews();
+        this.mainItemListView.removeAllViews();
 
         for (Item item : this.fridge.getContent().getItems()) {
             TableRow row = createRow(item);
-            this.tableLayout.addView(row);
+            this.mainItemListView.addView(row);
         }
-    }
+    } */
 
+    /*
     private TableRow createRow(Item item){
         TableRow row = new TableRow(this);
         row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
@@ -117,15 +130,12 @@ public class MainActivity extends AppCompatActivity {
         TextView progressBarTextView = view.findViewById(R.id.progress_bar);
         progressBarTextView.setText(ProgressBar.getView(item));
 
-
         Button del_btn = view.findViewById(R.id.del_btn);
-        //del_btn.setTag(item.getId());
         del_btn.setTag(item.getId());
-
 
         row.addView(view);
         return row;
-    }
+    } */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -148,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_sortByExpiration) {
             this.fridge.sortByExpiration();
-            this.rebuildTableView();
+            this.itemListViewAdapter.notifyDataSetChanged();
         }
 
         return super.onOptionsItemSelected(item);

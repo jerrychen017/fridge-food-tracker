@@ -37,8 +37,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_date_input">
 
-        <TableLayout
-            android:id="@+id/tableLayout1"
+        <ListView
+            android:id="@+id/mainItemListView"
             android:layout_width="410dp"
             android:layout_height="623dp"
             app:layout_constraintEnd_toEndOf="parent"
