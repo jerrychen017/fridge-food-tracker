@@ -25,13 +25,13 @@ public class ItemListViewAdapter extends ArrayAdapter {
     private ProgressBar progressBar; */
 
     public ItemListViewAdapter(Activity context, Fridge fridge) {
-        super(context, R.layout.items, fridge.content.getItems());
+        super(context, R.layout.items, fridge.getContent().getItems());
 
         this.context = context;
 
-        this.descriptionArray = new String[fridge.getContent().getItems().size()];
-        this.progressBarArray = new String[fridge.getContent().getItems().size()];
-        this.itemIDArray = new Integer[fridge.getContent().getItems().size()];
+        this.descriptionArray = new String[fridge.getContent().getItems().size() * 2];
+        this.progressBarArray = new String[fridge.getContent().getItems().size() * 2];
+        this.itemIDArray = new Integer[fridge.getContent().getItems().size() * 2];
         for (int i = 0; i < fridge.getContent().getItems().size(); ++i) {
             this.descriptionArray[i] = fridge.getContent().getItems().get(i).getDescription();
             this.progressBarArray[i] = ProgressBar.getView(fridge.getContent().getItems().get(i));
@@ -65,6 +65,8 @@ public class ItemListViewAdapter extends ArrayAdapter {
         Button deleteButton = rowView.findViewById(R.id.del_btn);
         TextView description = rowView.findViewById(R.id.list_item_string);
         TextView progressBar = rowView.findViewById(R.id.progress_bar);
+
+        System.out.println(this.itemIDArray.length);
 
         deleteButton.setTag(this.itemIDArray[position]);
         description.setText(this.descriptionArray[position]);

@@ -28,8 +28,8 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
-    ListView mainItemListView;
     ItemListViewAdapter itemListViewAdapter;
+    ListView mainItemListView;
     RequestQueue queue;
     Button start_camera_button;
 
@@ -45,15 +45,14 @@ public class MainActivity extends AppCompatActivity {
         this.fridge = new Fridge(queue, 0);
         fridge.initFridge();
 
-        this.fridge.addItem(new Item(10, "cheese"));
+        this.fridge.addItem(new Item(10, "cheese2"));
         this.fridge.addItem(new Item(11, "bread"));
         this.fridge.addItem(new Item(100, "wine"));
 
-        System.out.println(this.fridge.getContent().getItems().size());
-
         this.itemListViewAdapter = new ItemListViewAdapter(this, this.fridge);
+
         this.mainItemListView = findViewById(R.id.mainItemListView);
-        this.mainItemListView.setAdapter(this.itemListViewAdapter);
+        this.mainItemListView.setAdapter(itemListViewAdapter);
 
         this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
         // Capture button clicks
@@ -69,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void inputItem(View view) {
-        // rebuildTableView();
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
         EditText dEdit = (EditText) findViewById(R.id.item_date_input);
         String text = mEdit.getText().toString();
@@ -91,51 +89,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         this.fridge.addItem(item);
-        // this.rebuildTableView();
-        this.itemListViewAdapter.notifyDataSetChanged();
+
+        this.itemListViewAdapter = new ItemListViewAdapter(this, this.fridge);
+        this.mainItemListView = findViewById(R.id.mainItemListView);
+        this.mainItemListView.setAdapter(itemListViewAdapter);
+
         mEdit.setText("");
         dEdit.setText("");
     }
 
     public void deleteItem(View view) {
-        // Button del_btn = view.findViewById(R.id.del_btn);
-        System.out.println(view.getTag());
         this.fridge.remove(Integer.parseInt(view.getTag().toString()));
-        this.itemListViewAdapter.notifyDataSetChanged();
+
+        this.itemListViewAdapter = new ItemListViewAdapter(this, this.fridge);
+        this.mainItemListView = findViewById(R.id.mainItemListView);
+        this.mainItemListView.setAdapter(itemListViewAdapter);
     }
-
-    /*
-    private void rebuildTableView() {
-        this.mainItemListView.removeAllViews();
-
-        for (Item item : this.fridge.getContent().getItems()) {
-            TableRow row = createRow(item);
-            this.mainItemListView.addView(row);
-        }
-    } */
-
-    /*
-    private TableRow createRow(Item item){
-        TableRow row = new TableRow(this);
-        row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-        row.setGravity(Gravity.START);
-
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.items, null);
-
-        TextView textView = view.findViewById(R.id.list_item_string);
-        textView.setText(item.getDescription());
-
-        TextView progressBarTextView = view.findViewById(R.id.progress_bar);
-        progressBarTextView.setText(ProgressBar.getView(item));
-
-        Button del_btn = view.findViewById(R.id.del_btn);
-        del_btn.setTag(item.getId());
-
-        row.addView(view);
-        return row;
-    } */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -158,7 +127,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_sortByExpiration) {
             this.fridge.sortByExpiration();
-            this.itemListViewAdapter.notifyDataSetChanged();
+
+            this.itemListViewAdapter = new ItemListViewAdapter(this, this.fridge);
+            this.mainItemListView = findViewById(R.id.mainItemListView);
+            this.mainItemListView.setAdapter(itemListViewAdapter);
         }
 
         return super.onOptionsItemSelected(item);
