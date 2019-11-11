@@ -33,7 +33,8 @@ public class NotificationController {
                 .setSmallIcon(R.drawable.ic_photo_camera_24px)
                 .setContentTitle(textTitle)
                 .setContentText(textContent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .build();
        this.notification = notification;
     }
@@ -43,6 +44,7 @@ public class NotificationController {
             NotificationChannel channel1 = new NotificationChannel(CHANNEL_ID,
                     "Channel 1", NotificationManager.IMPORTANCE_HIGH);
             channel1.setDescription("This is Channel 1");
+            channel1.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
             NotificationManager manager = mContext.getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);
         }
