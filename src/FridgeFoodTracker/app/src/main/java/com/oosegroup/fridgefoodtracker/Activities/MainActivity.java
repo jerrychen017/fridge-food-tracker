@@ -1,9 +1,15 @@
 package com.oosegroup.fridgefoodtracker.Activities;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     TableLayout tableLayout;
     RequestQueue queue;
     Button start_camera_button;
+    NotificationController notificationController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+        this.notificationController = new NotificationController(this);
+    }
+
+
+    public void sendNotification(View view) {
+        NotificationManagerCompat notificationManger = this.notificationController.getManager();
+        notificationManger.notify(1, this.notificationController.getNotification());
     }
 
     public void inputItem(View view) {
