@@ -45,8 +45,8 @@
 
         android:layout_marginTop="7dp" />
 
-    <TextView
-        android:id="@+id/tv_btn_remove_photo"
+    <Button
+        android:id="@+id/manual_enter_btn"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
@@ -56,8 +56,9 @@
         android:drawableStart="@drawable/ic_photo_camera_24px"
         android:drawableTint="@color/md_bottom_sheet_text_color"
         android:gravity="start|center_vertical"
-        android:text="@string/bottom_sheet_option_remove_photo"
+        android:text="Add item"
         android:textColor="@color/md_bottom_sheet_text_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:onClick="inputItem"/>
 
 </LinearLayout>

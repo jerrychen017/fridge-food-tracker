@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         return detailsMap;
     }
 
-    public void manualEntry(View view) {
+    public void enterManually(View view) {
         ManualEntryFragment manualEntryFragment =
                 ManualEntryFragment.newInstance();
         manualEntryFragment.show(getSupportFragmentManager(),
