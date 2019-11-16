@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,21 +67,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // buildExpandableListAdapter(this, this.fridge);
+        ItemListController.buildExpandableListAdapter(this, this.fridge);
     }
 
-/*    public void buildExpandableListAdapter(Context context, Fridge fridge) {
-        Log.d("adapter", "buildExpandableListAdapter: here");
-        this.mainItemListView = findViewById(R.id.mainItemListView);
-        this.detailsMap = createDetailsMap(fridge);
-        this.expandableListTitle = new ArrayList<String>(detailsMap.keySet());
-        this.itemListViewAdapter = new ItemListViewAdapter(this, fridge, this.expandableListTitle, this.detailsMap);
-        this.mainItemListView.setAdapter(itemListViewAdapter);
 
-    }*/
 
     public HashMap<String, List<String>>  createDetailsMap(Fridge fridge) {
-        HashMap<String, List<String>> detailsMap = new HashMap<String, List<String>>();
+        LinkedHashMap<String, List<String>> detailsMap = new LinkedHashMap<>();
         for(Item item : fridge.getContent().getItems()) {
             List<String> curr = new ArrayList<String>();
             curr.add("Date Entered: " + item.getDateEntered());
@@ -128,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_sortByExpiration) {
             this.fridge.sortByExpiration();
 
-            // buildExpandableListAdapter(this, this.fridge);
+            ItemListController.buildExpandableListAdapter(this, this.fridge);
         }
 
         return super.onOptionsItemSelected(item);
