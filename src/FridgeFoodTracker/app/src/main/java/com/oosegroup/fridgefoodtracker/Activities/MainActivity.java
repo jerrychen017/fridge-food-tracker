@@ -89,6 +89,13 @@ public class MainActivity extends AppCompatActivity {
         return detailsMap;
     }
 
+    public void manualEntry(View view) {
+        ManualEntryFragment manualEntryFragment =
+                ManualEntryFragment.newInstance();
+        manualEntryFragment.show(getSupportFragmentManager(),
+                "add_photo_dialog_fragment");
+    }
+
     public void inputItem(View view) {
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
         EditText dEdit = (EditText) findViewById(R.id.item_date_input);
