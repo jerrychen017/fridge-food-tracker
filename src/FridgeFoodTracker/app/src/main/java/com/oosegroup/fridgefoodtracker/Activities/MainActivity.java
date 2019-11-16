@@ -12,10 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.Gravity;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -23,13 +25,18 @@ import com.oosegroup.fridgefoodtracker.models.ProgressBar;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
-    TableLayout tableLayout;
+    ItemListViewAdapter itemListViewAdapter;
+    ExpandableListView mainItemListView;
+    List<String> expandableListTitle;
+    HashMap<String, List<String>> detailsMap;
     RequestQueue queue;
     Button start_camera_button;
 
@@ -41,11 +48,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.queue = Volley.newRequestQueue(this);
+
         this.fridge = new Fridge(queue, 0);
         fridge.initFridge();
-        this.tableLayout = findViewById(R.id.tableLayout1);
-        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
 
+
+        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
         // Capture button clicks
         start_camera_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -56,10 +64,32 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
+        buildExpandableListAdapter(this, this.fridge);
+    }
+
+    public void buildExpandableListAdapter(Context context, Fridge fridge) {
+        Log.d("adapter", "buildExpandableListAdapter: here");
+        this.mainItemListView = findViewById(R.id.mainItemListView);
+        this.detailsMap = createDetailsMap(fridge);
+        this.expandableListTitle = new ArrayList<String>(detailsMap.keySet());
+        this.itemListViewAdapter = new ItemListViewAdapter(this, fridge, this.expandableListTitle, this.detailsMap);
+        this.mainItemListView.setAdapter(itemListViewAdapter);
+
+    }
+
+    public HashMap<String, List<String>>  createDetailsMap(Fridge fridge) {
+        HashMap<String, List<String>> detailsMap = new HashMap<String, List<String>>();
+        for(Item item : fridge.getContent().getItems()) {
+            List<String> curr = new ArrayList<String>();
+            curr.add("Date Entered: " + item.getDateEntered());
+            curr.add("Date Expires: " + item.getDateExpired());
+            detailsMap.put(item.getDescription(), curr);
+        }
+        return detailsMap;
     }
 
     public void inputItem(View view) {
-        rebuildTableView();
         EditText mEdit = (EditText) findViewById(R.id.item_text_input);
         EditText dEdit = (EditText) findViewById(R.id.item_date_input);
         String text = mEdit.getText().toString();
@@ -81,50 +111,29 @@ public class MainActivity extends AppCompatActivity {
         }
 
         this.fridge.addItem(item);
-        this.rebuildTableView();
+
+        /*
+        this.itemListViewAdapter = new ItemListViewAdapter(this, this.fridge);
+        this.mainItemListView = findViewById(R.id.mainItemListView);
+        this.mainItemListView.setAdapter(itemListViewAdapter);
+        */
+
+        buildExpandableListAdapter(this, this.fridge);
+
         mEdit.setText("");
         dEdit.setText("");
     }
 
     public void deleteItem(View view) {
-        // Button del_btn = view.findViewById(R.id.del_btn);
-        System.out.println(view.getTag());
         this.fridge.remove(Integer.parseInt(view.getTag().toString()));
-        this.rebuildTableView();
-    }
 
-    private void rebuildTableView() {
-        this.tableLayout.removeAllViews();
+        /*
+        this.itemListViewAdapter = new ItemListViewAdapter(this, this.fridge);
+        this.mainItemListView = findViewById(R.id.mainItemListView);
+        this.mainItemListView.setAdapter(itemListViewAdapter);
 
-        for (Item item : this.fridge.getContent().getItems()) {
-            TableRow row = createRow(item);
-            this.tableLayout.addView(row);
-        }
-    }
-
-    private TableRow createRow(Item item){
-        TableRow row = new TableRow(this);
-        row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-        row.setGravity(Gravity.START);
-
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.items, null);
-
-        TextView textView = view.findViewById(R.id.list_item_string);
-        textView.setText(item.getDescription());
-
-        TextView progressBarTextView = view.findViewById(R.id.progress_bar);
-        progressBarTextView.setText(ProgressBar.getView(item));
-
-
-        Button del_btn = view.findViewById(R.id.del_btn);
-        //del_btn.setTag(item.getId());
-        del_btn.setTag(item.getId());
-
-
-        row.addView(view);
-        return row;
+         */
+        buildExpandableListAdapter(this, this.fridge);
     }
 
     @Override
@@ -148,7 +157,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_sortByExpiration) {
             this.fridge.sortByExpiration();
-            this.rebuildTableView();
+
+            /*
+            this.itemListViewAdapter = new ItemListViewAdapter(this, this.fridge);
+            this.mainItemListView = findViewById(R.id.mainItemListView);
+            this.mainItemListView.setAdapter(itemListViewAdapter);
+
+             */
+            buildExpandableListAdapter(this, this.fridge);
         }
 
         return super.onOptionsItemSelected(item);
