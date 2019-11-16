@@ -16,35 +16,27 @@
         android:text="HEADING"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/tv_btn_add_photo_camera"
+    <EditText
+        android:id="@+id/item_text_input"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:backgroundTint="@android:color/white"
         android:drawablePadding="@dimen/dp_32"
         android:drawableStart="@drawable/ic_photo_camera_24px"
-        android:drawableTint="@color/md_bottom_sheet_text_color"
-        android:gravity="start|center_vertical"
-        android:text="@string/bottom_sheet_option_camera"
-        android:textColor="@color/md_bottom_sheet_text_color"
-        android:textSize="16sp" />
+        android:inputType="text"
+        android:hint="item name"/>
 
-    <TextView
-        android:id="@+id/tv_btn_add_photo_gallery"
+    <EditText
+        android:id="@+id/item_date_input"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:backgroundTint="@android:color/white"
         android:drawablePadding="@dimen/dp_32"
         android:drawableStart="@drawable/ic_photo_camera_24px"
-        android:drawableTint="@color/md_bottom_sheet_text_color"
-        android:gravity="start|center_vertical"
-        android:text="@string/bottom_sheet_option_gallery"
-        android:textColor="@color/md_bottom_sheet_text_color"
-        android:textSize="16sp" />
+        android:inputType="text"
+        android:hint="Expiration date (DD/MM/YYYY)"/>
 
     <View
         android:layout_width="match_parent"
