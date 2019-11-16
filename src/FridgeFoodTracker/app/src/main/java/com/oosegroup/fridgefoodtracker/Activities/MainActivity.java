@@ -98,11 +98,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void inputItem(View view) {
-        this.manualEntryFragment.inputItem(this.manualEntryFragment.getView());
+        ItemListController.inputItem(this.manualEntryFragment.getView(), fridge, this);
     }
 
     public void deleteItem(View view) {
-        this.manualEntryFragment.deleteItem(view);
+        ItemListController.deleteItem(view, fridge, this);
     }
 
     @Override

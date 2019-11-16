@@ -35,49 +35,6 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
         return new ManualEntryFragment(fridge);
     }
 
-    public void inputItem(View view) {
-        EditText mEdit = (EditText) view.findViewById(R.id.item_text_input);
-        EditText dEdit = (EditText) view.findViewById(R.id.item_date_input);
-        String text = mEdit.getText().toString();
-        String date_s = dEdit.getText().toString();
-        Date date;
-
-        try {
-            date = new SimpleDateFormat("dd/MM/yyyy").parse(date_s);
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-            date = null;
-            Log.i("invalid date", e.toString());
-        }
-        Item item;
-        if (date != null) {
-            item = new Item(fridge.getContent().getItems().size(), text, date);
-        } else {
-            item = new Item(fridge.getContent().getItems().size(), text);
-        }
-
-        this.fridge.addItem(item);
-
-        this.buildExpandableListAdapter(this.mainActivity, this.fridge);
-
-        mEdit.setText("");
-        dEdit.setText("");
-    }
-
-    public void deleteItem(View view) {
-        this.fridge.remove(Integer.parseInt(view.getTag().toString()));
-        this.buildExpandableListAdapter(this.mainActivity, this.fridge);
-    }
-
-    public void buildExpandableListAdapter(Context context, Fridge fridge) {
-        Log.d("adapter", "buildExpandableListAdapter: here");
-        this.mainActivity.mainItemListView = this.mainActivity.findViewById(R.id.mainItemListView);
-        this.mainActivity.detailsMap = this.mainActivity.createDetailsMap(fridge);
-        this.mainActivity.expandableListTitle = new ArrayList<String>(this.mainActivity.detailsMap.keySet());
-        this.mainActivity.itemListViewAdapter = new ItemListViewAdapter(this.mainActivity, fridge, this.mainActivity.expandableListTitle, this.mainActivity.detailsMap);
-        this.mainActivity.mainItemListView.setAdapter(this.mainActivity.itemListViewAdapter);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
