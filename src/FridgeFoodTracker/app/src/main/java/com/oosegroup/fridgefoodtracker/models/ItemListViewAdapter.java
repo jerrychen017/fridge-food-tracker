@@ -3,6 +3,7 @@ package com.oosegroup.fridgefoodtracker.models;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,35 +20,28 @@ import java.util.List;
 
 public class ItemListViewAdapter extends BaseExpandableListAdapter {
     private Context context;
-    //private final String[] descriptionArray;
-    //private final String[] progressBarArray;
-    //private final Integer[] itemIDArray;
+    private final String[] descriptionArray;
+    private final String[] progressBarArray;
+    private final Integer[] itemIDArray;
     private List<String> descriptionList;
-    private List<String> progressBarList;
-    private List<Integer> itemIDList;
+    //private List<String> progressBarList;
+    //private List<Integer> itemIDList;
     private HashMap<String, List<String>> detailsMap;
-    /*
-    private Button expandButton;
-    private Button deleteButton;
-    private String description;
-    private ProgressBar progressBar; */
 
-    public ItemListViewAdapter(Context context, List<String> description, List<String> progressBar, List<Integer> itemID, HashMap<String, List<String>> details) {
+    public ItemListViewAdapter(Context context, Fridge fridge, List<String> description,  HashMap<String, List<String>> details) {
 
         this.context = context;
         this.descriptionList = description;
-        this.progressBarList = progressBar;
-        this.itemIDList = itemID;
         this.detailsMap = details;
 
-        /*this.descriptionArray = new String[fridge.getContent().getItems().size() * 2];
+        this.descriptionArray = new String[fridge.getContent().getItems().size() * 2];
         this.progressBarArray = new String[fridge.getContent().getItems().size() * 2];
         this.itemIDArray = new Integer[fridge.getContent().getItems().size() * 2];
         for (int i = 0; i < fridge.getContent().getItems().size(); ++i) {
             this.descriptionArray[i] = fridge.getContent().getItems().get(i).getDescription();
             this.progressBarArray[i] = ProgressBar.getView(fridge.getContent().getItems().get(i));
             this.itemIDArray[i] = fridge.getContent().getItems().get(i).getId();
-        }*/
+        }
 
 
     }
@@ -63,12 +57,13 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int listPosition, final int expandedListPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        Log.d("child view", "getChildView: ");
         final String expandedListText = (String) getChild(listPosition, expandedListPosition);
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.items_child, null);
         }
-        TextView expandedListTextView = (TextView) convertView.findViewById(R.id.inpDate);
+        TextView expandedListTextView = (TextView) convertView.findViewById(R.id.items_child);
         expandedListTextView.setText(expandedListText);
         return convertView;
     }
@@ -105,6 +100,13 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
         }
         TextView listTitleTextView = (TextView) convertView.findViewById(R.id.list_item_string);
         listTitleTextView.setText(listTitle);
+
+        Button delButton = convertView.findViewById(R.id.del_btn);
+//        TextView description = convertView.findViewById(R.id.list_item_string);
+        TextView progressBar = convertView.findViewById(R.id.progress_bar);
+
+        delButton.setTag(this.itemIDArray[listPosition]);
+        progressBar.setText(this.progressBarArray[listPosition]);
         return convertView;
     }
 
