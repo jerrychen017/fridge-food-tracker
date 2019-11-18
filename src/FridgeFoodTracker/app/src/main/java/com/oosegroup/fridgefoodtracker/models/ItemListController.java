@@ -48,6 +48,10 @@ public class ItemListController {
         buildExpandableListAdapter(mainActivity, fridge);
     }
 
+    public static void editItem(View view, Fridge fridge, MainActivity mainActivity) {
+
+    }
+
     public static void buildExpandableListAdapter(MainActivity mainActivity, Fridge fridge) {
         Log.d("adapter", "buildExpandableListAdapter: here");
         mainActivity.mainItemListView = mainActivity.findViewById(R.id.mainItemListView);

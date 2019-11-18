@@ -84,10 +84,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enterManually(View view) {
-        this.manualEntryFragment =
-                ManualEntryFragment.newInstance(this.fridge);
-        this.manualEntryFragment.show(getSupportFragmentManager(),
-                "add_photo_dialog_fragment");
+        this.manualEntryFragment = ManualEntryFragment.newInstance();
+        this.manualEntryFragment.show(getSupportFragmentManager(),"add_photo_dialog_fragment");
     }
 
     public void inputItem(View view) {
@@ -96,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteItem(View view) {
         ItemListController.deleteItem(view, fridge, this);
+    }
+
+    public void editItem(View view) {
+        ItemListController.editItem(view, fridge, this);
     }
 
     @Override
@@ -107,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO: broken. need to reimplement buildExpandableListAdapter
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.

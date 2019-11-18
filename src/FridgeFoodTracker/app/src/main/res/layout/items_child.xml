@@ -7,4 +7,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true" />
+
+    <LinearLayout
+        android:id="@+id/items_child_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <Button
+            android:id="@+id/items_child_edit_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="📝 EDIT"/>
+
+        <Button
+            android:id="@+id/items_child_delete_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="deleteItem"
+            android:text="🗑️ DELETE" />
+
+    </LinearLayout>
+
 </LinearLayout>
