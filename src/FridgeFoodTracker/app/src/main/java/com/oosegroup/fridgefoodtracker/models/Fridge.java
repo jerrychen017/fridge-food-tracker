@@ -97,58 +97,63 @@ public class Fridge {
                                             arr.getJSONObject(i).getString("item"));
                                     // retrieve expiration date
                                     String expStr = arr.getJSONObject(i).getString("expiration");
-                                    Calendar expCal = Calendar.getInstance();
-                                    boolean finishM = false;
-                                    String expM = new String();
-                                    boolean finishD = false;
-                                    String expD = new String();
-                                    String expY = new String();
-                                    for (int j = 0; j < expStr.length(); j++) {
-                                        char ch = expStr.charAt(j);
-                                        if (ch == 'D') {
-                                            finishM = true;
-                                        } else if (ch == 'Y') {
-                                            finishD = true;
-                                        } else {
-                                            if (!finishM) {
-                                                expM += ch;
-                                            } else if (!finishD){
-                                                expD += ch;
+                                    if (expStr != "null" && expStr != null) {
+                                        Calendar expCal = Calendar.getInstance();
+                                        boolean finishM = false;
+                                        String expM = new String();
+                                        boolean finishD = false;
+                                        String expD = new String();
+                                        String expY = new String();
+                                        for (int j = 0; j < expStr.length(); j++) {
+                                            char ch = expStr.charAt(j);
+                                            if (ch == 'D') {
+                                                finishM = true;
+                                            } else if (ch == 'Y') {
+                                                finishD = true;
                                             } else {
-                                                expY += ch;
+                                                if (!finishM) {
+                                                    expM += ch;
+                                                } else if (!finishD){
+                                                    expD += ch;
+                                                } else {
+                                                    expY += ch;
+                                                }
                                             }
                                         }
+                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM), Integer.parseInt(expD));
+                                        Date expDate = expCal.getTime();
+                                        it.setDateExpired(expDate);
                                     }
-                                    expCal.set(Integer.parseInt(expY), Integer.parseInt(expM), Integer.parseInt(expD));
-                                    Date expDate = expCal.getTime();
-                                    it.setDateExpired(expDate);
+
                                     // retrieve enter date
                                     String enterStr = arr.getJSONObject(i).getString("enter");
-                                    Calendar enterCal = Calendar.getInstance();
-                                    finishM = false;
-                                    String enterM = new String();
-                                    finishD = false;
-                                    String enterD = new String();
-                                    String enterY = new String();
-                                    for (int j = 0; j < expStr.length(); j++) {
-                                        char ch = enterStr.charAt(j);
-                                        if (ch == 'D') {
-                                            finishM = true;
-                                        } else if (ch == 'Y') {
-                                            finishD = true;
-                                        } else {
-                                            if (!finishM) {
-                                                enterM += ch;
-                                            } else if (!finishD){
-                                                enterD += ch;
+                                    if (enterStr != "null" && enterStr != null) {
+                                        Calendar enterCal = Calendar.getInstance();
+                                        boolean finishM = false;
+                                        String enterM = new String();
+                                        boolean finishD = false;
+                                        String enterD = new String();
+                                        String enterY = new String();
+                                        for (int j = 0; j < expStr.length(); j++) {
+                                            char ch = enterStr.charAt(j);
+                                            if (ch == 'D') {
+                                                finishM = true;
+                                            } else if (ch == 'Y') {
+                                                finishD = true;
                                             } else {
-                                                enterY += ch;
+                                                if (!finishM) {
+                                                    enterM += ch;
+                                                } else if (!finishD){
+                                                    enterD += ch;
+                                                } else {
+                                                    enterY += ch;
+                                                }
                                             }
                                         }
+                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM), Integer.parseInt(enterD));
+                                        Date enterDate = enterCal.getTime();
+                                        it.setDateEntered(enterDate);
                                     }
-                                    expCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM), Integer.parseInt(enterD));
-                                    Date enterDate = enterCal.getTime();
-                                    it.setDateEntered(enterDate);
 
 
                                     content.addItem(it);
