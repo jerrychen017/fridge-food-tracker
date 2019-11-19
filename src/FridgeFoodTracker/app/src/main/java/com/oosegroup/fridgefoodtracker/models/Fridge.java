@@ -24,6 +24,9 @@ public class Fridge {
     // a list of all items in the fridge
     public ItemList content;
 
+    // stores all removed items
+    private ItemHistory history;
+
     // request queue passed to the fridge so that fridge can talk to server
     private RequestQueue queue;
 
@@ -61,18 +64,50 @@ public class Fridge {
         this.id = id;
         this.content = new ItemList();
         this.queue = queue;
-
-
-
-
     }
 
     /**
      * Retrieve all items from the server upon creating the fridge locally
      */
     public void initFridge() {
+        // initialize item list
         try {
             String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id;
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            System.out.println("Successfully posted an item");
+                            try {
+                                JSONArray arr = response.getJSONArray("items");
+                                for (int i = 0; i < arr.length(); i++) {
+                                    content.addItem(new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item")));
+                                }
+                            } catch (JSONException e) {
+                                System.out.println("Error: Response doesn't have an object mapped to \'body\'");
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.out.println("Failed to post an item");
+                            System.out.println(error.getMessage());
+                        }
+                    });
+
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
+        }
+
+        // initializing history
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/history";
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                     url, null,
                     new Response.Listener<JSONObject>() {
