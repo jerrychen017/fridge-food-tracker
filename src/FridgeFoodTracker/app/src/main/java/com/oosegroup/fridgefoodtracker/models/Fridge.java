@@ -110,7 +110,7 @@ public class Fridge {
                                                 finishM = true;
                                             } else if (ch == 'Y') {
                                                 finishD = true;
-                                            } else {
+                                            } else if (ch != 'M'){
                                                 if (!finishM) {
                                                     expM += ch;
                                                 } else if (!finishD){
@@ -140,7 +140,7 @@ public class Fridge {
                                                 finishM = true;
                                             } else if (ch == 'Y') {
                                                 finishD = true;
-                                            } else {
+                                            } else if (ch != 'M'){
                                                 if (!finishM) {
                                                     enterM += ch;
                                                 } else if (!finishD){
