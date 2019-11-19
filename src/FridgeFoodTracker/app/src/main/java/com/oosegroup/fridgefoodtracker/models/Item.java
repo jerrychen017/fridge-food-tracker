@@ -29,6 +29,13 @@ public class Item {
         this.description = description;
     }
 
+    public Item(int id, String description, Date exp) {
+        this.dateEntered = new Date();
+        this.dateExpired = exp;
+        this.id = id;
+        this.description = description;
+    }
+
     public Item(String description) {
         this.dateEntered = new Date();
         this.dateExpired = new Date(this.getDateEntered().getTime() + 86400000);

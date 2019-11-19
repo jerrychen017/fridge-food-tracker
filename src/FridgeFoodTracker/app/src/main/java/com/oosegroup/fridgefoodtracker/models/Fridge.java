@@ -1,22 +1,24 @@
 package com.oosegroup.fridgefoodtracker.models;
 
-import android.view.Gravity;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.content.Context;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.ExpandableListView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.oosegroup.fridgefoodtracker.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +53,7 @@ public class Fridge {
         this.content = new ItemList();
         this.isLocal = isLocal;
         this.queue = null;
+        this.id = id;
     }
 
     /**
@@ -77,7 +80,7 @@ public class Fridge {
      */
     public void initFridge() {
         try {
-            String url = "http://10.0.2.2:3000/fridge/" + this.id;
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id;
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                     url, null,
                     new Response.Listener<JSONObject>() {
@@ -161,7 +164,7 @@ public class Fridge {
         }
 
         try {
-            String url = "http://10.0.2.2:3000/fridge/" + this.id;
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id;
             JSONObject postparams = new JSONObject();
             postparams.put("item", item.getDescription());
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -206,31 +209,29 @@ public class Fridge {
         }
 
         try {
-            String url = "http://10.0.2.2:3000/fridge/" + this.id;
-            JSONObject postparams = new JSONObject();
-            postparams.put("id", Integer.toString(id));
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/item/" + id;
+
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.DELETE,
-                    url, postparams,
+                    url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
-                            System.out.println("Successfully posted an item");
-
+                            System.out.println("Successfully deleted an item");
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //Failure Callback
-                            System.out.println("Failed to post an item");
+                            System.out.println("Failed to delete an item");
                             System.out.println(error.getMessage());
                         }
                     });
             queue.add(jsonObjReq);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            throw new IllegalArgumentException("Exception occured when sending http request. Error: " + e.getMessage());
+            throw new IllegalArgumentException("Exception occured when sending http DELETE request. Error: " + e.getMessage());
         }
     }
 
@@ -259,9 +260,11 @@ public class Fridge {
         }
     }
 
-  public void sortByExpiration() {
+    public void sortByExpiration() {
     this.getContent().sortByExpiration();
   }
+
+
 }
 
 

@@ -2,15 +2,14 @@
 
 <h2>HOW TO START OUR APPLICATION</h2>
 
-1) Start the server manually
-- We haven't yet deployed a server yet, so you have to start it locally. The developers plan to have their own server deployed by the end of Iteration 4.
-
-~~~
-cd server
+1) Start the server manually or use our deployed server at https://oose-fridgetracker.herokuapp.com/
+To start the server manually go to /src/server and type the following commands:
+```
+npm init
 npm start
-~~~
+```
 
-- On Google Chrome, go to localhost:3000/fridge/
+- On Google Chrome, go to localhost:3000/fridge/ if you are running the server manually or https://oose-fridgetracker.herokuapp.com/fridge
   - You should see the below page. By using the input fields in the top left, submitting, and refreshing the page, you should be able to see what items are currently in your fridge.
 ![Server_Screenshot](./docs/Pictures/Server_Screenshot_2019_10_09.PNG)
 
@@ -63,6 +62,6 @@ We've remodeled our item class to work better with our server.
 
 ![App_Screenshot_Iteration3](./docs/Pictures/app_screenshot_10.22.2019.PNG)
 
-
+Due to how Heroku works, the majority of the server work has been splintered off to the server_deployed branch as Heroku needs the deployed application to be at the highest directory level of the project. You will find the latest server code and commits on the server on that branch.
 
 

@@ -5,16 +5,19 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TableLayout;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.Gravity;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -22,11 +25,22 @@ import com.oosegroup.fridgefoodtracker.models.ProgressBar;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
-    TableLayout tableLayout;
+    public ItemListViewAdapter itemListViewAdapter;
+    public ExpandableListView mainItemListView;
+    public List<String> expandableListTitle;
+    public HashMap<String, List<String>> detailsMap;
     RequestQueue queue;
     Button start_camera_button;
+    ManualEntryFragment manualEntryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +50,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.queue = Volley.newRequestQueue(this);
+
         this.fridge = new Fridge(queue, 0);
         fridge.initFridge();
-        this.tableLayout = findViewById(R.id.tableLayout1);
-        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
 
+
+        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
         // Capture button clicks
         start_camera_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -51,44 +66,36 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
+        ItemListController.buildExpandableListAdapter(this, this.fridge);
+    }
+
+
+
+    public HashMap<String, List<String>>  createDetailsMap(Fridge fridge) {
+        LinkedHashMap<String, List<String>> detailsMap = new LinkedHashMap<>();
+        for(Item item : fridge.getContent().getItems()) {
+            List<String> curr = new ArrayList<String>();
+            curr.add("Date Entered: " + item.getDateEntered());
+            curr.add("Date Expires: " + item.getDateExpired());
+            detailsMap.put(item.getDescription(), curr);
+        }
+        return detailsMap;
+    }
+
+    public void enterManually(View view) {
+        this.manualEntryFragment =
+                ManualEntryFragment.newInstance(this.fridge);
+        this.manualEntryFragment.show(getSupportFragmentManager(),
+                "add_photo_dialog_fragment");
     }
 
     public void inputItem(View view) {
-        rebuildTableView();
-        EditText mEdit = (EditText) findViewById(R.id.item_text_input);
-        String text = mEdit.getText().toString();
-
-        Item item = new Item(fridge.getContent().getItems().size(), text);
-        this.fridge.addItem(item);
-
-        this.rebuildTableView();
-        mEdit.setText("");
+        ItemListController.inputItem(this.manualEntryFragment.getView(), fridge, this);
     }
 
-    private void rebuildTableView() {
-        this.tableLayout.removeAllViews();
-
-        for (Item item : this.fridge.getContent().getItems()) {
-            TableRow row = createRow(item);
-            this.tableLayout.addView(row);
-        }
-    }
-
-    private TableRow createRow(Item item){
-        TableRow row = new TableRow(this);
-        row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-        row.setGravity(Gravity.START);
-
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.items, null);
-        TextView textView = view.findViewById(R.id.list_item_string);
-        textView.setText(item.getDescription());
-        TextView progressBarTextView = view.findViewById(R.id.progress_bar);
-        progressBarTextView.setText(ProgressBar.getView(item));
-
-        row.addView(view);
-        return row;
+    public void deleteItem(View view) {
+        ItemListController.deleteItem(view, fridge, this);
     }
 
     @Override
@@ -100,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO: broken. need to reimplement buildExpandableListAdapter
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -112,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_sortByExpiration) {
             this.fridge.sortByExpiration();
-            this.rebuildTableView();
+
+            ItemListController.buildExpandableListAdapter(this, this.fridge);
         }
 
         return super.onOptionsItemSelected(item);
