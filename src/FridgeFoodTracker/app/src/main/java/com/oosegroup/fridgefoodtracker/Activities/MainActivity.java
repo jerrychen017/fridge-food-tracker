@@ -1,33 +1,21 @@
 package com.oosegroup.fridgefoodtracker.Activities;
 import android.content.Intent;
-import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.oosegroup.fridgefoodtracker.models.ProgressBar;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue queue;
     Button start_camera_button;
     ManualEntryFragment manualEntryFragment;
+    EditEntryFragment editEntryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +85,25 @@ public class MainActivity extends AppCompatActivity {
         ItemListController.deleteItem(view, fridge, this);
     }
 
+    public void enterEditDetails(View view) {
+        this.editEntryFragment = EditEntryFragment.newInstance();
+
+        // TODO: auto-populate description and dateExpired w/ previous values. Currently unable to find EditText (null)
+        // Item currItem = fridge.getContent().getItem(Integer.parseInt(view.getTag().toString()));
+
+        // EditText description = (EditText) editEntryFragment.getActivity().findViewById(R.id.edit_item_text_input);
+        // description.setText(currItem.getDescription());
+
+        this.editEntryFragment.show(getSupportFragmentManager(), "edit_item_dialog_fragment");
+
+        // EditText expirationDate = (EditText) view.findViewById(R.id.edit_item_date_input);
+        // expirationDate.setText(currItem.getDateExpired().toString());
+    }
+
     public void editItem(View view) {
-        ItemListController.editItem(view, fridge, this);
+        ItemListController.editItem(this.editEntryFragment.getView(),
+                    view,
+                    fridge, this);
     }
 
     @Override

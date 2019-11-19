@@ -235,6 +235,14 @@ public class Fridge {
         }
     }
 
+    public void edit(int id, String description, Date dateExpired) {
+        // TODO: need to change item in server instead of just locally
+
+        Item currItem = this.getContent().getItem(id);
+        currItem.setDescription(description);
+        currItem.setDateExpired(dateExpired);
+    }
+
     /**
      * get a list of items that expired before today
      * @param today today's date

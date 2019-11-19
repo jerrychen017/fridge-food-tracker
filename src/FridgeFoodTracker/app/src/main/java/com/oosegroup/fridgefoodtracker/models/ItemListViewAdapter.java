@@ -65,6 +65,9 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
         if (isLastChild) {
             buttons.setVisibility(View.VISIBLE);
 
+            Button editButton = convertView.findViewById(R.id.items_child_edit_btn);
+            editButton.setTag(this.itemIDArray[listPosition]);
+
             Button delButton = convertView.findViewById(R.id.items_child_delete_btn);
             delButton.setTag(this.itemIDArray[listPosition]);
         }
