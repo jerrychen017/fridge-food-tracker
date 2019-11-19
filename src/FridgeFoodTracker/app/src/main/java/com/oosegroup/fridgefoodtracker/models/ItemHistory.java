@@ -22,9 +22,9 @@ public class ItemHistory {
     public List<Item> recommend() {
         List<Item> result = new ArrayList<>();
 
-//        Date today = new Date();
+        Date today = new Date();
         Calendar cal = Calendar.getInstance();
-//        cal.setTime(today);
+        cal.setTime(today);
         cal.add(Calendar.DATE, -7);
         Date weekBefore = cal.getTime();
         for (Item i : items) {
