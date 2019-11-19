@@ -58,6 +58,8 @@ import java.util.Map;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import  com.oosegroup.fridgefoodtracker.Activities.CameraActivity;
+import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
+import com.oosegroup.fridgefoodtracker.models.Item;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -866,10 +868,13 @@ public class CameraSource {
                                                 JSONObject responseJSON = new JSONObject(response);
                                                 if(responseJSON.getJSONObject("chomp").getJSONObject("response").getInt("products_found") != 0){
                                                     Log.d("RESPONSE", "Products found");
-                                                    String productName = responseJSON.getJSONObject("products")
-                                                                        .getJSONObject(responseJSON.getJSONObject("chomp").getJSONObject("request").getString("product_code"))
-                                                                        .getString("name");
+                                                    JSONObject products = responseJSON.getJSONObject("products");
+                                                    String productName = products.getJSONObject(products.keys().next()).getString("name");
+                                                                        //.getJSONObject(responseJSON.getJSONObject("chomp").getJSONObject("request").getString("product_code"))
+                                                                        //.getString("name");
                                                     Log.d("RESPONSE", "Product Name: " + productName);
+                                                    Item item = new Item(MainActivity.getFridge().getContent().getItems().size(), productName);
+                                                    MainActivity.getFridge().addItem(item);
                                                 } else {
                                                     Log.d("RESPONSE", "Products not found");
                                                 }

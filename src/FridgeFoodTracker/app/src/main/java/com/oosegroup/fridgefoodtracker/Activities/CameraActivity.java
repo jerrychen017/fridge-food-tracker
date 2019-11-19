@@ -36,6 +36,7 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOption
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.oosegroup.fridgefoodtracker.models.Fridge;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -55,7 +56,6 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     private CameraSource cameraSource = null;
     private CameraSourcePreview preview;
     private GraphicOverlay graphicOverlay;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -33,7 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    Fridge fridge;
+    static Fridge fridge;
     public ItemListViewAdapter itemListViewAdapter;
     public ExpandableListView mainItemListView;
     public List<String> expandableListTitle;
@@ -125,5 +125,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static Fridge getFridge(){
+        return fridge;
     }
 }
