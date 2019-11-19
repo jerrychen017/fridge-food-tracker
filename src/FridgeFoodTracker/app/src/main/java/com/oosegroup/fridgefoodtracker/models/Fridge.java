@@ -272,14 +272,17 @@ public class Fridge {
             if (expiration != null) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(expiration);
-                postparams.put("expiration", "M"+Calendar.MONTH + "D"+Calendar.DATE+"Y"+Calendar.YEAR);
+                postparams.put("expiration", "M"+(calendar.get(Calendar.MONTH)+1)
+                        + "D"+calendar.get(Calendar.DATE)+"Y"+calendar.get(Calendar.YEAR));
             }
             // post enter date calendar
             Date enter = item.getDateEntered();
             if (enter != null) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(enter);
-                postparams.put("enter", "M"+Calendar.MONTH + "D"+Calendar.DATE+"Y"+Calendar.YEAR);
+                postparams.put("enter", "M"+(calendar.get(Calendar.MONTH)+1)
+                        + "D"+calendar.get(Calendar.DATE)
+                        +"Y"+calendar.get(Calendar.YEAR));
             }
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                     url, postparams,
