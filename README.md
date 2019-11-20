@@ -2,7 +2,9 @@
 
 <h2>HOW TO START OUR APPLICATION</h2>
 
-1) Use our deployed server at https://oose-fridgetracker.herokuapp.com/fridge
+<h2>1) Use our deployed server</h2>
+
+https://oose-fridgetracker.herokuapp.com/fridge
 
 Or if you don't want to use our server, start it yourself.
 
@@ -17,21 +19,59 @@ npm start
 ![Server_Screenshot](./docs/Pictures/server_screenshot_20191119.png)
 
 
-2) Open the app
+<h2>2) Open the app</h2>
+
 - Open our project in Android Studio
 - Run our MainActivity on an emulator
   - We are using a Pixel 3a API 29
 
 
-3) Using the app TODO
+<h2>3) Using the app </h2>
+
+<h4>Overview</h4>
+
 ![App_Screenshot](./docs/Pictures/app_screenshot_20191119.png)
-- Hit the floating action button in the bottom right to open the Items Entry fragment
+- Press the floating action button in the bottom right to open the Items Entry fragment
   - The floating action button might be hidden behind the keyboard
 - What you see on your emulator should match what you see on our Heroku server.
   - You will need to refresh your web browser to see the updated database in browser.
+  
+  
+<h4>Adding Items</h4>
+
+![Adding_Items_GIF](./TODO.png)
+- We have a Date Picker to make it easy for you to input an expiration date
+- Expiration date defaults to tomorrow if you don't put one in
 
 
-Troubleshooting
+<h4>Deleting Items</h4>
+
+![Deleting_Items_GIF](./TODO.png)
+- Delete items by first expanding them, and then hitting delete
+
+
+<h4>Editing Items</h4>
+
+![Editing_Items_GIF](./TODO.png)
+- Put in a new name and a new expiration date
+- TODO: put the Date Picker here as well
+
+
+<h4>Sorting Items</h4>
+
+![Sorting_Items_GIF](./TODO.png)
+- Options in the top right corner
+- TODO: set a sorting flag so that adding new items keeps stays in sorting order
+
+
+<h4>To Be Implemented in Interation 6</h4>
+
+- Set up the Date Picker for Editing Items
+- Maintain sorted order when Adding Items
+
+
+<h2>Troubleshooting</h2>
+
 - Server doesn't start
   - Install npm with 
   ~~~
