@@ -11,6 +11,7 @@ public class Item {
     private String description;
     private Date dateEntered;
     private Date dateExpired;
+    private Date dateDeleted;
 
     /**
      * Item can be initialized with an id when having a local fridge
