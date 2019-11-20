@@ -57,14 +57,12 @@ npm start
 
 ![Editing_Items_GIF](./docs/Pictures/edit_entry_cheese.gif)
 - Put in a new name and a new expiration date
-- TODO: put the Date Picker here as well
 
 
 <h4>Sorting Items</h4>
 
 ![Sorting_Items_GIF](./docs/Pictures/sort_expiration.gif)
 - Options in the top right corner
-- TODO: set a sorting flag so that adding new items keeps stays in sorting order
 
 
 <h4>To Be Implemented in Interation 6</h4>
