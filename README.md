@@ -13,8 +13,8 @@ npm start
 ```
 
 - On Google Chrome, go to localhost:3000/fridge/ if you are running the server manually or https://oose-fridgetracker.herokuapp.com/fridge
-  - You should see the below page. By using the input fields in the top left, submitting, and refreshing the page, you should be able to see what items are currently in your fridge. TODO
-![Server_Screenshot](./docs/Pictures/Server_Screenshot_2019_10_09.PNG)
+  - You should see the below page. By using the input fields in the top left, submitting, and refreshing the page, you should be able to see what items are currently in your fridge. 
+![Server_Screenshot](./docs/Pictures/server_screenshot_20191119.png)
 
 
 2) Open the app
@@ -24,7 +24,7 @@ npm start
 
 
 3) Using the app TODO
-![App_Screenshot](./docs/Pictures/App_MainActivity_Screenshot_2019_10_08.png)
+![App_Screenshot](./docs/Pictures/app_screenshot_20191119.png)
 - Hit the floating action button in the bottom right to open the Items Entry fragment
   - The floating action button might be hidden behind the keyboard
 - What you see on your emulator should match what you see on our Heroku server.
