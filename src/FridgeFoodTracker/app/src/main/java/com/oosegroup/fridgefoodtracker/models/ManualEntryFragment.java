@@ -2,7 +2,6 @@ package com.oosegroup.fridgefoodtracker.models;
 
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -10,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ExpandableListView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,29 +17,18 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
 
 public class ManualEntryFragment extends BottomSheetDialogFragment {
 
-    private Fridge fridge;
-    private MainActivity mainActivity;
     public static final int REQUEST_CODE = 11; // Used to identify the result
     String selectedDate;
     EditText dateEntry;
 
     public ManualEntryFragment() { }
 
-    public ManualEntryFragment(Fridge fridge) {
-        this.fridge = fridge;
-    }
-
     public static ManualEntryFragment newInstance() {
         return new ManualEntryFragment();
-    }
-
-    public static ManualEntryFragment newInstance(Fridge fridge) {
-        return new ManualEntryFragment(fridge);
     }
 
     @Nullable
@@ -82,8 +68,6 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
             dateEntry.setText(selectedDate);
         }
     }
-
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

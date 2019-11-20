@@ -1,6 +1,6 @@
 package com.oosegroup.fridgefoodtracker.models;
 
-import android.content.Context;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -61,14 +61,15 @@ public class ItemListController {
             date = new SimpleDateFormat("dd/MM/yyyy").parse(date_s);
         } catch (java.text.ParseException e) {
             e.printStackTrace();
-            date = null;
+            date = new Date(new Date().getTime() + 86400000);
             Log.i("invalid date", e.toString());
         }
 
-        System.out.println("foo");
-        System.out.println(mEdit.getText().toString());
-
-        fridge.edit(Integer.parseInt(editEnterBtnView.getTag().toString()), mEdit.getText().toString(), date);
+        String description = mEdit.getText().toString();
+        if (description == null) {
+            description = "ERROR";
+        }
+        fridge.edit(Integer.parseInt(editEnterBtnView.getTag().toString()), description, date);
 
         buildExpandableListAdapter(mainActivity, fridge);
     }
