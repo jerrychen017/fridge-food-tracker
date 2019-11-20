@@ -48,7 +48,7 @@ public class ItemListController {
         buildExpandableListAdapter(mainActivity, fridge);
     }
 
-    public static void editItem(View view, View editBtnView, Fridge fridge, MainActivity mainActivity) {
+    public static void editItem(View view, View editEnterBtnView, Fridge fridge, MainActivity mainActivity) {
         // Item currItem = fridge.getContent().getItem(Integer.parseInt(view.getTag().toString()));
 
         EditText mEdit = (EditText) view.findViewById(R.id.edit_item_text_input);
@@ -68,7 +68,7 @@ public class ItemListController {
         System.out.println("foo");
         System.out.println(mEdit.getText().toString());
 
-        fridge.edit(Integer.parseInt(editBtnView.getTag().toString()), mEdit.getText().toString(), date);
+        fridge.edit(Integer.parseInt(editEnterBtnView.getTag().toString()), mEdit.getText().toString(), date);
 
         buildExpandableListAdapter(mainActivity, fridge);
     }
@@ -80,6 +80,5 @@ public class ItemListController {
         mainActivity.expandableListTitle = new ArrayList<String>(mainActivity.detailsMap.keySet());
         mainActivity.itemListViewAdapter = new ItemListViewAdapter(mainActivity, fridge, mainActivity.expandableListTitle, mainActivity.detailsMap);
         mainActivity.mainItemListView.setAdapter(mainActivity.itemListViewAdapter);
-        System.out.println("eric");
     }
 }
