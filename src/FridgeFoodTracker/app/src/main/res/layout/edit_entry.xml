@@ -23,7 +23,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:drawablePadding="@dimen/dp_32"
-        android:drawableStart="@drawable/ic_photo_camera_24px"
+        android:drawableStart="@drawable/ic_local_grocery_store_24px"
         android:inputType="text"
         android:hint="item name"/>
 
@@ -34,7 +34,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:drawablePadding="@dimen/dp_32"
-        android:drawableStart="@drawable/ic_photo_camera_24px"
+        android:drawableStart="@drawable/ic_calendar_today_24px"
         android:inputType="text"
         android:hint="Expiration date (DD/MM/YYYY)"/>
 
@@ -52,7 +52,7 @@
         android:layout_marginStart="16dp"
         android:backgroundTint="@android:color/white"
         android:drawablePadding="@dimen/dp_32"
-        android:drawableStart="@drawable/ic_photo_camera_24px"
+        android:drawableStart="@drawable/ic_check_circle_24px"
         android:drawableTint="@color/md_bottom_sheet_text_color"
         android:gravity="start|center_vertical"
         android:text="Edit item"

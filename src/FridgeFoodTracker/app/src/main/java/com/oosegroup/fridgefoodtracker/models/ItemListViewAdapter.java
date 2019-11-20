@@ -70,6 +70,8 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
         LinearLayout buttons = convertView.findViewById(R.id.items_child_buttons);
         if (isLastChild) {
             buttons.setVisibility(View.VISIBLE);
+        } else {
+            buttons.setVisibility(View.GONE);
         }
 
         return convertView;
