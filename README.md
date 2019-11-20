@@ -2,7 +2,10 @@
 
 <h2>HOW TO START OUR APPLICATION</h2>
 
-1) Start the server manually or use our deployed server at https://oose-fridgetracker.herokuapp.com/
+1) Use our deployed server at https://oose-fridgetracker.herokuapp.com/fridge
+
+Or if you don't want to use our server, start it yourself.
+
 To start the server manually go to /src/server and type the following commands:
 ```
 npm init
@@ -10,7 +13,7 @@ npm start
 ```
 
 - On Google Chrome, go to localhost:3000/fridge/ if you are running the server manually or https://oose-fridgetracker.herokuapp.com/fridge
-  - You should see the below page. By using the input fields in the top left, submitting, and refreshing the page, you should be able to see what items are currently in your fridge.
+  - You should see the below page. By using the input fields in the top left, submitting, and refreshing the page, you should be able to see what items are currently in your fridge. TODO
 ![Server_Screenshot](./docs/Pictures/Server_Screenshot_2019_10_09.PNG)
 
 
@@ -18,11 +21,13 @@ npm start
 - Open our project in Android Studio
 - Run our MainActivity on an emulator
   - We are using a Pixel 3a API 29
-- You should see the following screen:
+
+
+3) Using the app TODO
 ![App_Screenshot](./docs/Pictures/App_MainActivity_Screenshot_2019_10_08.png)
-- Enter a food item name in the input field at the top, and submit using the floating action button in the bottom right
+- Hit the floating action button in the bottom right to open the Items Entry fragment
   - The floating action button might be hidden behind the keyboard
-- What you see on your emulator screen should match what you see in your web browser from step (1).
+- What you see on your emulator should match what you see on our Heroku server.
   - You will need to refresh your web browser to see the updated database in browser.
 
 
