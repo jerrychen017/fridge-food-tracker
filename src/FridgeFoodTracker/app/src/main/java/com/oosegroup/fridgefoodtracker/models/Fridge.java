@@ -120,7 +120,7 @@ public class Fridge {
                                                 }
                                             }
                                         }
-                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM), Integer.parseInt(expD));
+                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD)-1);
                                         Date expDate = expCal.getTime();
                                         it.setDateExpired(expDate);
                                     }
@@ -150,7 +150,7 @@ public class Fridge {
                                                 }
                                             }
                                         }
-                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM), Integer.parseInt(enterD));
+                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD)-1);
                                         Date enterDate = enterCal.getTime();
                                         it.setDateEntered(enterDate);
                                     }
