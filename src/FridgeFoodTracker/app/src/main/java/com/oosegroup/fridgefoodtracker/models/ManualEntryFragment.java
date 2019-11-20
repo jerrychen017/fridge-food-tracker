@@ -1,13 +1,15 @@
 package com.oosegroup.fridgefoodtracker.models;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -18,14 +20,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 public class ManualEntryFragment extends BottomSheetDialogFragment {
 
@@ -39,8 +34,8 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
         this.fridge = fridge;
     }
 
-    public static ManualEntryFragment newInstance(Fridge fridge) {
-        return new ManualEntryFragment(fridge);
+    public static ManualEntryFragment newInstance() {
+        return new ManualEntryFragment();
     }
 
     @Nullable
@@ -67,9 +62,7 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
         });
 
         // get the views and attach the listener
-        this.mainActivity = (MainActivity) getActivity();
         return view;
-
     }
 
     @Override

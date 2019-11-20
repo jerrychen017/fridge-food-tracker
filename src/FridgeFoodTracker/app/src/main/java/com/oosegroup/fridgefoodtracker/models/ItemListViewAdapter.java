@@ -1,20 +1,17 @@
 package com.oosegroup.fridgefoodtracker.models;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.oosegroup.fridgefoodtracker.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,8 +21,6 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
     private final String[] progressBarArray;
     private final Integer[] itemIDArray;
     private List<String> descriptionList;
-    //private List<String> progressBarList;
-    //private List<Integer> itemIDList;
     private HashMap<String, List<String>> detailsMap;
 
     public ItemListViewAdapter(Context context, Fridge fridge, List<String> description,  HashMap<String, List<String>> details) {
@@ -42,7 +37,6 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
             this.progressBarArray[i] = ProgressBar.getView(fridge.getContent().getItems().get(i));
             this.itemIDArray[i] = fridge.getContent().getItems().get(i).getId();
         }
-
 
     }
     @Override
@@ -63,15 +57,27 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.items_child, null);
         }
+
         TextView expandedListTextView = (TextView) convertView.findViewById(R.id.items_child);
         expandedListTextView.setText(expandedListText);
+
+        Button editButton = convertView.findViewById(R.id.items_child_edit_btn);
+        editButton.setTag(this.itemIDArray[listPosition]);
+
+        Button delButton = convertView.findViewById(R.id.items_child_delete_btn);
+        delButton.setTag(this.itemIDArray[listPosition]);
+
+        LinearLayout buttons = convertView.findViewById(R.id.items_child_buttons);
+        if (isLastChild) {
+            buttons.setVisibility(View.VISIBLE);
+        }
+
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int listPosition) {
-        return this.detailsMap.get(this.descriptionList.get(listPosition))
-                .size();
+        return this.detailsMap.get(this.descriptionList.get(listPosition)).size();
     }
 
     @Override
@@ -98,13 +104,12 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.items, null);
         }
-        TextView listTitleTextView = (TextView) convertView.findViewById(R.id.list_item_string);
-        listTitleTextView.setText(listTitle);
 
+        TextView listTitleTextView = (TextView) convertView.findViewById(R.id.list_item_string);
         Button delButton = convertView.findViewById(R.id.del_btn);
-//        TextView description = convertView.findViewById(R.id.list_item_string);
         TextView progressBar = convertView.findViewById(R.id.progress_bar);
 
+        listTitleTextView.setText(listTitle);
         delButton.setTag(this.itemIDArray[listPosition]);
         progressBar.setText(this.progressBarArray[listPosition]);
         return convertView;
@@ -119,23 +124,4 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
     }
-
-   /* @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.items, null, true);
-
-        // Button expandButton = rowView.findViewById(R.id.expand_btn);
-        Button deleteButton = rowView.findViewById(R.id.del_btn);
-        TextView description = rowView.findViewById(R.id.list_item_string);
-        TextView progressBar = rowView.findViewById(R.id.progress_bar);
-
-        System.out.println(this.itemIDArray.length);
-
-        deleteButton.setTag(this.itemIDArray[position]);
-        description.setText(this.descriptionArray[position]);
-        progressBar.setText(this.progressBarArray[position]);
-
-        return rowView;
-    }*/
 }

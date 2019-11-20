@@ -48,6 +48,31 @@ public class ItemListController {
         buildExpandableListAdapter(mainActivity, fridge);
     }
 
+    public static void editItem(View view, View editEnterBtnView, Fridge fridge, MainActivity mainActivity) {
+        // Item currItem = fridge.getContent().getItem(Integer.parseInt(view.getTag().toString()));
+
+        EditText mEdit = (EditText) view.findViewById(R.id.edit_item_text_input);
+        EditText dEdit = (EditText) view.findViewById(R.id.edit_item_date_input);
+
+        String date_s = dEdit.getText().toString();
+        Date date;
+
+        try {
+            date = new SimpleDateFormat("dd/MM/yyyy").parse(date_s);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            date = null;
+            Log.i("invalid date", e.toString());
+        }
+
+        System.out.println("foo");
+        System.out.println(mEdit.getText().toString());
+
+        fridge.edit(Integer.parseInt(editEnterBtnView.getTag().toString()), mEdit.getText().toString(), date);
+
+        buildExpandableListAdapter(mainActivity, fridge);
+    }
+
     public static void buildExpandableListAdapter(MainActivity mainActivity, Fridge fridge) {
         Log.d("adapter", "buildExpandableListAdapter: here");
         mainActivity.mainItemListView = mainActivity.findViewById(R.id.mainItemListView);

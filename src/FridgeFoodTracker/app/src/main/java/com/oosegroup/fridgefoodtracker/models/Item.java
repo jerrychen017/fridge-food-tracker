@@ -43,6 +43,13 @@ public class Item {
         this.description = description;
     }
 
+    public Item(Item item) {
+        this.id = item.id;
+        this.description = item.description;
+        this.dateEntered = item.getDateEntered();
+        this.dateExpired = item.getDateExpired();
+    }
+
     public int getId() {
         return id;
     }
