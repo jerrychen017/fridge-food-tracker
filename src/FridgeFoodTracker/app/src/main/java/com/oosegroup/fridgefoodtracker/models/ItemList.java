@@ -40,7 +40,7 @@ public class ItemList {
     public Item getItem(int id) {
         for (Item i : items) {
             if (i.getId() == id) {
-                return new Item(i);
+                return i;
             }
         }
         return null;

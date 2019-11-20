@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enterEditDetails(View view) {
-        this.editEntryFragment = EditEntryFragment.newInstance();
+        this.editEntryFragment = EditEntryFragment.newInstance(Integer.parseInt(view.getTag().toString()));
 
         // TODO: auto-populate description and dateExpired w/ previous values. Currently unable to find EditText (null)
         // Item currItem = fridge.getContent().getItem(Integer.parseInt(view.getTag().toString()));

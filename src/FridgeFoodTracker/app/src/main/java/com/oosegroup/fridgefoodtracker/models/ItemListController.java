@@ -80,5 +80,6 @@ public class ItemListController {
         mainActivity.expandableListTitle = new ArrayList<String>(mainActivity.detailsMap.keySet());
         mainActivity.itemListViewAdapter = new ItemListViewAdapter(mainActivity, fridge, mainActivity.expandableListTitle, mainActivity.detailsMap);
         mainActivity.mainItemListView.setAdapter(mainActivity.itemListViewAdapter);
+        System.out.println("eric");
     }
 }

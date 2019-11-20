@@ -61,15 +61,15 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
         TextView expandedListTextView = (TextView) convertView.findViewById(R.id.items_child);
         expandedListTextView.setText(expandedListText);
 
+        Button editButton = convertView.findViewById(R.id.items_child_edit_btn);
+        editButton.setTag(this.itemIDArray[listPosition]);
+
+        Button delButton = convertView.findViewById(R.id.items_child_delete_btn);
+        delButton.setTag(this.itemIDArray[listPosition]);
+
         LinearLayout buttons = convertView.findViewById(R.id.items_child_buttons);
         if (isLastChild) {
             buttons.setVisibility(View.VISIBLE);
-
-            Button editButton = convertView.findViewById(R.id.items_child_edit_btn);
-            editButton.setTag(this.itemIDArray[listPosition]);
-
-            Button delButton = convertView.findViewById(R.id.items_child_delete_btn);
-            delButton.setTag(this.itemIDArray[listPosition]);
         }
 
         return convertView;
