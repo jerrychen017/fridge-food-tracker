@@ -49,20 +49,20 @@ npm start
 
 <h4>Deleting Items</h4>
 
-![Deleting_Items_GIF](./TODO.png)
+![Deleting_Items_GIF](./docs/Pictures/delete_items.gif)
 - Delete items by first expanding them, and then hitting delete
 
 
 <h4>Editing Items</h4>
 
-![Editing_Items_GIF](./TODO.png)
+![Editing_Items_GIF](./docs/Pictures/edit_entry_cheese.gif)
 - Put in a new name and a new expiration date
 - TODO: put the Date Picker here as well
 
 
 <h4>Sorting Items</h4>
 
-![Sorting_Items_GIF](./TODO.png)
+![Sorting_Items_GIF](./docs/Pictures/sort_expiration.gif)
 - Options in the top right corner
 - TODO: set a sorting flag so that adding new items keeps stays in sorting order
 
