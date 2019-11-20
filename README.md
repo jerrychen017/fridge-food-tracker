@@ -39,7 +39,10 @@ npm start
   
 <h4>Adding Items</h4>
 
-![Adding_Items_GIF](./TODO.png)
+![Open_Adding_Items_GIF](./docs/Pictures/open_manual_entry.gif)
+
+![Enter_Adding_Items_GIF](./docs/Pictures/manual_entry_cheese.gif)
+
 - We have a Date Picker to make it easy for you to input an expiration date
 - Expiration date defaults to tomorrow if you don't put one in
 
