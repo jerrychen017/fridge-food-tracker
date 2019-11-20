@@ -38,6 +38,11 @@ public class ProgressBar {
         Date expDate = item.getDateExpired();
         Date entDate = item.getDateEntered();
         Date currDate = new Date();
+
+        if (currDate.compareTo(expDate) > 0) {
+            return ProgressBar.FULL;
+        }
+
         long timeElapsed = currDate.getTime() - entDate.getTime();
         long timeTotal = expDate.getTime() - entDate.getTime();
 
