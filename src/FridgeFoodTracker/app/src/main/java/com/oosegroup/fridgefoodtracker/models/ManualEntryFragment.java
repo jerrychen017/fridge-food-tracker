@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
 
 public class ManualEntryFragment extends BottomSheetDialogFragment {
@@ -30,12 +31,18 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
     String selectedDate;
     EditText dateEntry;
 
+    public ManualEntryFragment() { }
+
     public ManualEntryFragment(Fridge fridge) {
         this.fridge = fridge;
     }
 
     public static ManualEntryFragment newInstance() {
         return new ManualEntryFragment();
+    }
+
+    public static ManualEntryFragment newInstance(Fridge fridge) {
+        return new ManualEntryFragment(fridge);
     }
 
     @Nullable

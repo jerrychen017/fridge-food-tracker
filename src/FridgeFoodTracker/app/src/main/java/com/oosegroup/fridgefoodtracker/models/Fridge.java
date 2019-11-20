@@ -367,6 +367,34 @@ public class Fridge {
         Item currItem = this.getContent().getItem(id);
         currItem.setDescription(description);
         currItem.setDateExpired(dateExpired);
+
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/";
+            JSONObject postparams = new JSONObject();
+            postparams.put("id", currItem.getId());
+            postparams.put("item", description);
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.PUT,
+                    url, postparams,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            System.out.println("Successfully updated an item");
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.out.println("Failed to updated an item");
+                            System.out.println(error.getMessage());
+                        }
+                    });
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
+        }
     }
 
     /**
