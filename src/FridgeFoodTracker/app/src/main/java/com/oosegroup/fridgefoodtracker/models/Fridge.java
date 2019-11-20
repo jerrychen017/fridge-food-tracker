@@ -263,6 +263,10 @@ public class Fridge {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
         }
 
+        if (isLocal) {
+            return;
+        }
+
         try {
             String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id;
             JSONObject postparams = new JSONObject();
@@ -320,10 +324,14 @@ public class Fridge {
      * @throws IllegalArgumentException
      */
     public void remove(int id) throws IllegalArgumentException {
-        history.addItem(content.getItems().get(id));
+        history.addItem(content.getItem(id));
         content.removeItem(id);
         if (!isLocal && queue == null) {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
+        }
+
+        if (isLocal) {
+            return;
         }
 
         try {
