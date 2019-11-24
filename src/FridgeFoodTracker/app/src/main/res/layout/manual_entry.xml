@@ -13,7 +13,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:gravity="center"
-        android:text="HEADING"
+        android:text="MANUAL ENTRY"
         android:textSize="16sp" />
 
     <EditText
