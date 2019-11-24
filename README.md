@@ -2,32 +2,77 @@
 
 <h2>HOW TO START OUR APPLICATION</h2>
 
-1) Start the server manually
-- We haven't yet deployed a server yet, so you have to start it locally. The developers plan to have their own server deployed by the end of Iteration 4.
+<h2>1) Use our deployed server</h2>
 
-~~~
-cd server
+https://oose-fridgetracker.herokuapp.com/fridge
+
+Or if you don't want to use our server, start it yourself.
+
+To start the server manually go to /src/server and type the following commands:
+```
+npm init
 npm start
-~~~
+```
 
-- On Google Chrome, go to localhost:3000/fridge/
-  - You should see the below page. By using the input fields in the top left, submitting, and refreshing the page, you should be able to see what items are currently in your fridge.
-![Server_Screenshot](./docs/Pictures/Server_Screenshot_2019_10_09.PNG)
+- On Google Chrome, go to localhost:3000/fridge/ if you are running the server manually or https://oose-fridgetracker.herokuapp.com/fridge
+  - You should see the below page. By using the input fields in the top left, submitting, and refreshing the page, you should be able to see what items are currently in your fridge. 
+![Server_Screenshot](./docs/Pictures/server_screenshot_20191119.png)
 
 
-2) Open the app
+<h2>2) Open the app</h2>
+
 - Open our project in Android Studio
 - Run our MainActivity on an emulator
   - We are using a Pixel 3a API 29
-- You should see the following screen:
-![App_Screenshot](./docs/Pictures/App_MainActivity_Screenshot_2019_10_08.png)
-- Enter a food item name in the input field at the top, and submit using the floating action button in the bottom right
+
+
+<h2>3) Using the app </h2>
+
+<h4>Overview</h4>
+
+![App_Screenshot](./docs/Pictures/app_screenshot_20191119.png)
+- Press the floating action button in the bottom right to open the Items Entry fragment
   - The floating action button might be hidden behind the keyboard
-- What you see on your emulator screen should match what you see in your web browser from step (1).
+- What you see on your emulator should match what you see on our Heroku server.
   - You will need to refresh your web browser to see the updated database in browser.
+  
+  
+<h4>Adding Items</h4>
+
+![Open_Adding_Items_GIF](./docs/Pictures/open_manual_entry.gif)
+
+![Enter_Adding_Items_GIF](./docs/Pictures/manual_entry_cheese.gif)
+
+- We have a Date Picker to make it easy for you to input an expiration date
+- Expiration date defaults to tomorrow if you don't put one in
 
 
-Troubleshooting
+<h4>Deleting Items</h4>
+
+![Deleting_Items_GIF](./docs/Pictures/delete_items.gif)
+- Delete items by first expanding them, and then hitting delete
+
+
+<h4>Editing Items</h4>
+
+![Editing_Items_GIF](./docs/Pictures/edit_entry_cheese.gif)
+- Put in a new name and a new expiration date
+
+
+<h4>Sorting Items</h4>
+
+![Sorting_Items_GIF](./docs/Pictures/sort_expiration.gif)
+- Options in the top right corner
+
+
+<h4>To Be Implemented in Interation 6</h4>
+
+- Set up the Date Picker for Editing Items
+- Maintain sorted order when Adding Items
+
+
+<h2>Troubleshooting</h2>
+
 - Server doesn't start
   - Install npm with 
   ~~~
@@ -63,6 +108,6 @@ We've remodeled our item class to work better with our server.
 
 ![App_Screenshot_Iteration3](./docs/Pictures/app_screenshot_10.22.2019.PNG)
 
-
+Due to how Heroku works, the majority of the server work has been splintered off to the server_deployed branch as Heroku needs the deployed application to be at the highest directory level of the project. You will find the latest server code and commits on the server on that branch.
 
 

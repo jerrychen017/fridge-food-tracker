@@ -1,22 +1,24 @@
 package com.oosegroup.fridgefoodtracker.models;
 
-import android.view.Gravity;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.content.Context;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.ExpandableListView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.oosegroup.fridgefoodtracker.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,9 @@ public class Fridge {
 
     // a list of all items in the fridge
     public ItemList content;
+
+    // stores all removed items
+    private ItemHistory history;
 
     // request queue passed to the fridge so that fridge can talk to server
     private RequestQueue queue;
@@ -49,8 +54,10 @@ public class Fridge {
      */
     public Fridge(int id, boolean isLocal) {
         this.content = new ItemList();
+        this.history = new ItemHistory();
         this.isLocal = isLocal;
         this.queue = null;
+        this.id = id;
     }
 
     /**
@@ -65,17 +72,15 @@ public class Fridge {
         this.isLocal = false;
         this.id = id;
         this.content = new ItemList();
+        this.history = new ItemHistory();
         this.queue = queue;
-
-
-
-
     }
 
     /**
      * Retrieve all items from the server upon creating the fridge locally
      */
     public void initFridge() {
+        // initialize item list
         try {
             String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id;
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -88,7 +93,105 @@ public class Fridge {
                             try {
                                 JSONArray arr = response.getJSONArray("items");
                                 for (int i = 0; i < arr.length(); i++) {
-                                    content.addItem(new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item")));
+                                    Item it = new Item(arr.getJSONObject(i).getInt("id"),
+                                            arr.getJSONObject(i).getString("item"));
+                                    // retrieve expiration date
+                                    String expStr = arr.getJSONObject(i).getString("expiration");
+                                    if (expStr != "null" && expStr != null) {
+                                        Calendar expCal = Calendar.getInstance();
+                                        boolean finishM = false;
+                                        String expM = new String();
+                                        boolean finishD = false;
+                                        String expD = new String();
+                                        String expY = new String();
+                                        for (int j = 0; j < expStr.length(); j++) {
+                                            char ch = expStr.charAt(j);
+                                            if (ch == 'D') {
+                                                finishM = true;
+                                            } else if (ch == 'Y') {
+                                                finishD = true;
+                                            } else if (ch != 'M'){
+                                                if (!finishM) {
+                                                    expM += ch;
+                                                } else if (!finishD){
+                                                    expD += ch;
+                                                } else {
+                                                    expY += ch;
+                                                }
+                                            }
+                                        }
+                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD)-1);
+                                        Date expDate = expCal.getTime();
+                                        it.setDateExpired(expDate);
+                                    }
+
+                                    // retrieve enter date
+                                    String enterStr = arr.getJSONObject(i).getString("enter");
+                                    if (enterStr != "null" && enterStr != null) {
+                                        Calendar enterCal = Calendar.getInstance();
+                                        boolean finishM = false;
+                                        String enterM = new String();
+                                        boolean finishD = false;
+                                        String enterD = new String();
+                                        String enterY = new String();
+                                        for (int j = 0; j < expStr.length(); j++) {
+                                            char ch = enterStr.charAt(j);
+                                            if (ch == 'D') {
+                                                finishM = true;
+                                            } else if (ch == 'Y') {
+                                                finishD = true;
+                                            } else if (ch != 'M'){
+                                                if (!finishM) {
+                                                    enterM += ch;
+                                                } else if (!finishD){
+                                                    enterD += ch;
+                                                } else {
+                                                    enterY += ch;
+                                                }
+                                            }
+                                        }
+                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD)-1);
+                                        Date enterDate = enterCal.getTime();
+                                        it.setDateEntered(enterDate);
+                                    }
+
+
+                                    content.addItem(it);
+
+                                }
+                            } catch (JSONException e) {
+                                System.out.println("Error: Response doesn't have an object mapped to \'body\'");
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.out.println("Failed to post an item");
+                            System.out.println(error.getMessage());
+                        }
+                    });
+
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
+        }
+
+        // initializing history
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/history";
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            try {
+                                JSONArray arr = response.getJSONArray("items");
+                                for (int i = 0; i < arr.length(); i++) {
+                                    history.addItem(new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item")));
                                 }
                             } catch (JSONException e) {
                                 System.out.println("Error: Response doesn't have an object mapped to \'body\'");
@@ -160,10 +263,31 @@ public class Fridge {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
         }
 
+        if (isLocal) {
+            return;
+        }
+
         try {
             String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id;
             JSONObject postparams = new JSONObject();
             postparams.put("item", item.getDescription());
+            // post expiration date calendar
+            Date expiration = item.getDateExpired();
+            if (expiration != null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(expiration);
+                postparams.put("expiration", "M"+(calendar.get(Calendar.MONTH)+1)
+                        + "D"+calendar.get(Calendar.DATE)+"Y"+calendar.get(Calendar.YEAR));
+            }
+            // post enter date calendar
+            Date enter = item.getDateEntered();
+            if (enter != null) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(enter);
+                postparams.put("enter", "M"+(calendar.get(Calendar.MONTH)+1)
+                        + "D"+calendar.get(Calendar.DATE)
+                        +"Y"+calendar.get(Calendar.YEAR));
+            }
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                     url, postparams,
                     new Response.Listener<JSONObject>() {
@@ -200,23 +324,26 @@ public class Fridge {
      * @throws IllegalArgumentException
      */
     public void remove(int id) throws IllegalArgumentException {
+        history.addItem(content.getItem(id));
         content.removeItem(id);
         if (!isLocal && queue == null) {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
         }
 
+        if (isLocal) {
+            return;
+        }
+
         try {
-            String url = "http://oose-fridgetracker.herokuapp.com/fridge";
-            JSONObject postparams = new JSONObject();
-            postparams.put("id", Integer.toString(id));
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/item/" + id;
+
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.DELETE,
-                    url, postparams,
+                    url, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
                             System.out.println("Successfully deleted an item");
-
                         }
                     },
                     new Response.ErrorListener() {
@@ -231,6 +358,42 @@ public class Fridge {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new IllegalArgumentException("Exception occured when sending http DELETE request. Error: " + e.getMessage());
+        }
+    }
+
+    public void edit(int id, String description, Date dateExpired) {
+        // TODO: need to change item in server instead of just locally
+
+        Item currItem = this.getContent().getItem(id);
+        currItem.setDescription(description);
+        currItem.setDateExpired(dateExpired);
+
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/";
+            JSONObject postparams = new JSONObject();
+            postparams.put("id", currItem.getId());
+            postparams.put("item", description);
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.PUT,
+                    url, postparams,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            System.out.println("Successfully updated an item");
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.out.println("Failed to updated an item");
+                            System.out.println(error.getMessage());
+                        }
+                    });
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
         }
     }
 
@@ -259,9 +422,15 @@ public class Fridge {
         }
     }
 
-  public void sortByExpiration() {
+    public void sortByExpiration() {
     this.getContent().sortByExpiration();
   }
+
+  public List<Item> recommend() {
+        return this.history.recommend();
+  }
+
+
 }
 
 

@@ -11,6 +11,7 @@ public class Item {
     private String description;
     private Date dateEntered;
     private Date dateExpired;
+    private Date dateDeleted;
 
     /**
      * Item can be initialized with an id when having a local fridge
@@ -29,10 +30,24 @@ public class Item {
         this.description = description;
     }
 
+    public Item(int id, String description, Date exp) {
+        this.dateEntered = new Date();
+        this.dateExpired = exp;
+        this.id = id;
+        this.description = description;
+    }
+
     public Item(String description) {
         this.dateEntered = new Date();
         this.dateExpired = new Date(this.getDateEntered().getTime() + 86400000);
         this.description = description;
+    }
+
+    public Item(Item item) {
+        this.id = item.id;
+        this.description = item.description;
+        this.dateEntered = item.getDateEntered();
+        this.dateExpired = item.getDateExpired();
     }
 
     public int getId() {

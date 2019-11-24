@@ -11,32 +11,37 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
-import android.view.Gravity;
+import android.widget.ExpandableListView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.oosegroup.fridgefoodtracker.models.ProgressBar;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
-    TableLayout tableLayout;
+    public ItemListViewAdapter itemListViewAdapter;
+    public ExpandableListView mainItemListView;
+    public List<String> expandableListTitle;
+    public HashMap<String, List<String>> detailsMap;
     RequestQueue queue;
     Button start_camera_button;
     NotificationController notificationController;
 
+    ManualEntryFragment manualEntryFragment;
+    EditEntryFragment editEntryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +51,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.queue = Volley.newRequestQueue(this);
+
         this.fridge = new Fridge(queue, 0);
         fridge.initFridge();
-        this.tableLayout = findViewById(R.id.tableLayout1);
-        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
 
+
+        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
         // Capture button clicks
         start_camera_button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
@@ -63,69 +69,64 @@ public class MainActivity extends AppCompatActivity {
         });
 
         this.notificationController = new NotificationController(this, this.fridge);
-        sendNotification();
+        sendNotifications();
     }
 
 
-    public void sendNotification() {
+    public void sendNotifications() {
         NotificationManagerCompat notificationManger = this.notificationController.getManager();
         List<Notification> notifications = this.notificationController.getNotifications();
         for(Notification notification : notifications) {
             notificationManger.notify(1, notification);
         }
+        ItemListController.buildExpandableListAdapter(this, this.fridge);
+    }
+
+
+
+    public HashMap<String, List<String>>  createDetailsMap(Fridge fridge) {
+        LinkedHashMap<String, List<String>> detailsMap = new LinkedHashMap<>();
+        for(Item item : fridge.getContent().getItems()) {
+            List<String> curr = new ArrayList<String>();
+            curr.add("Date Entered: " + item.getDateEntered());
+            curr.add("Date Expires: " + item.getDateExpired());
+            detailsMap.put(item.getDescription(), curr);
+        }
+        return detailsMap;
+    }
+
+    public void enterManually(View view) {
+        this.manualEntryFragment = ManualEntryFragment.newInstance();
+        this.manualEntryFragment.show(getSupportFragmentManager(),"add_photo_dialog_fragment");
     }
 
     public void inputItem(View view) {
-        rebuildTableView();
-        EditText mEdit = (EditText) findViewById(R.id.item_text_input);
-        String text = mEdit.getText().toString();
-
-        Item item = new Item(fridge.getContent().getItems().size(), text);
-        this.fridge.addItem(item);
-
-        this.rebuildTableView();
-        mEdit.setText("");
+        ItemListController.inputItem(this.manualEntryFragment.getView(), fridge, this);
     }
 
     public void deleteItem(View view) {
-        // Button del_btn = view.findViewById(R.id.del_btn);
-        System.out.println(view.getTag());
-        this.fridge.remove(Integer.parseInt(view.getTag().toString()));
-        this.rebuildTableView();
+        ItemListController.deleteItem(view, fridge, this);
     }
 
-    private void rebuildTableView() {
-        this.tableLayout.removeAllViews();
+    public void enterEditDetails(View view) {
+        this.editEntryFragment = EditEntryFragment.newInstance(Integer.parseInt(view.getTag().toString()));
 
-        for (Item item : this.fridge.getContent().getItems()) {
-            TableRow row = createRow(item);
-            this.tableLayout.addView(row);
-        }
+        // TODO: auto-populate description and dateExpired w/ previous values. Currently unable to find EditText (null)
+        // Item currItem = fridge.getContent().getItem(Integer.parseInt(view.getTag().toString()));
+
+        // EditText description = (EditText) editEntryFragment.getActivity().findViewById(R.id.edit_item_text_input);
+        // description.setText(currItem.getDescription());
+
+        this.editEntryFragment.show(getSupportFragmentManager(), "edit_item_dialog_fragment");
+
+        // EditText expirationDate = (EditText) view.findViewById(R.id.edit_item_date_input);
+        // expirationDate.setText(currItem.getDateExpired().toString());
     }
 
-    private TableRow createRow(Item item){
-        TableRow row = new TableRow(this);
-        row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-        row.setGravity(Gravity.START);
-
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.items, null);
-
-        TextView textView = view.findViewById(R.id.list_item_string);
-        textView.setText(item.getDescription());
-
-        TextView progressBarTextView = view.findViewById(R.id.progress_bar);
-        progressBarTextView.setText(ProgressBar.getView(item));
-
-
-        Button del_btn = view.findViewById(R.id.del_btn);
-        //del_btn.setTag(item.getId());
-        del_btn.setTag(item.getId());
-
-
-        row.addView(view);
-        return row;
+    public void editItem(View view) {
+        ItemListController.editItem(this.editEntryFragment.getView(),
+                    view,
+                    fridge, this);
     }
 
     @Override
@@ -149,7 +150,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_sortByExpiration) {
             this.fridge.sortByExpiration();
-            this.rebuildTableView();
+
+            ItemListController.buildExpandableListAdapter(this, this.fridge);
         }
 
         return super.onOptionsItemSelected(item);
