@@ -32,19 +32,23 @@ public class NotificationController {
         this.mContext = mContext;
         manager = NotificationManagerCompat.from(mContext);
         createNotificationChannels();
-        buildNotifications(mContext, fridge);
         this.notifications = new ArrayList<Notification>();
+        buildNotifications(mContext, fridge);
     }
 
     private void buildNotifications(Context mContext, Fridge fridge) {
+        System.out.println("building notifications");
         Date currentTime = new Date();
         //2 days in milliseconds
         long notificationTime = 172800 * 1000;
+        if(fridge.getContent().getItems().isEmpty()) {
+            System.out.println("empty");
+        }
         for (Item item : fridge.getContent().getItems()) {
+            System.out.println("in for loop");
             long diff = item.getDateExpired().getTime() - currentTime.getTime();
             if(diff > 0 && diff <= notificationTime) {
                 Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_photo_camera_24px)
                         .setContentTitle(item.getDescription())
                         .setContentText("Item is expiring soon! Use before " + item.getDateExpired())
                         .setGroup(EXPIRING_SOON)
@@ -54,13 +58,13 @@ public class NotificationController {
                 this.notifications.add(notification);
             } else if (diff <= 0) {
                 Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_photo_camera_24px)
                         .setContentTitle(item.getDescription())
                         .setContentText("Item is expired!")
                         .setGroup(EXPIRED)
                         .setPriority(NotificationManager.IMPORTANCE_HIGH)
                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                         .build();
+                this.notifications.add(notification);
             }
         }
     }

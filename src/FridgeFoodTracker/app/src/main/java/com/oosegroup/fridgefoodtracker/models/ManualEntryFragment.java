@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
@@ -17,6 +18,8 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.oosegroup.fridgefoodtracker.Activities.CameraActivity;
+import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
 
 public class ManualEntryFragment extends BottomSheetDialogFragment {
@@ -54,6 +57,17 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
             }
         });
 
+        Button start_camera_button = (Button) view.findViewById(R.id.start_camera_button);
+        // Capture button clicks
+        start_camera_button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+
+                // Start NewActivity.class
+                Intent myIntent = new Intent(getActivity(),
+                        CameraActivity.class);
+                startActivity(myIntent);
+            }
+        });
         // get the views and attach the listener
         return view;
     }

@@ -6,6 +6,15 @@
     android:layout_marginTop="8dp"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/start_camera_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:drawableLeft="@drawable/ic_photo_camera_24px"
+        android:gravity="center"
+        android:text="Add using photo of receipt" />
+
     <TextView
         android:id="@+id/tv_bottom_sheet_heading"
         android:layout_width="wrap_content"
