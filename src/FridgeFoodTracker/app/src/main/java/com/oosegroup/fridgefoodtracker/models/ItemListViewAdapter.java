@@ -108,11 +108,9 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
         }
 
         TextView listTitleTextView = (TextView) convertView.findViewById(R.id.list_item_string);
-        Button delButton = convertView.findViewById(R.id.del_btn);
         TextView progressBar = convertView.findViewById(R.id.progress_bar);
 
         listTitleTextView.setText(listTitle);
-        delButton.setTag(this.itemIDArray[listPosition]);
         progressBar.setText(this.progressBarArray[listPosition]);
         return convertView;
     }
