@@ -44,14 +44,4 @@
         android:drawableLeft="@drawable/ic_photo_camera_24px"
         android:gravity="center"
         android:text="Camera" />
-
-    <Button
-        android:id="@+id/send_notifcation_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:gravity="center"
-        android:layout_margin="@dimen/fab_margin"
-        android:text="Send Notification"
-        android:onClick="sendNotification"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

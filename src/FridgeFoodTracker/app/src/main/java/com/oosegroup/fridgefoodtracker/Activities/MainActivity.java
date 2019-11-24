@@ -28,6 +28,8 @@ import com.oosegroup.fridgefoodtracker.models.ProgressBar;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
     TableLayout tableLayout;
@@ -60,13 +62,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        this.notificationController = new NotificationController(this);
+        this.notificationController = new NotificationController(this, this.fridge);
+        sendNotification();
     }
 
 
-    public void sendNotification(View view) {
+    public void sendNotification() {
         NotificationManagerCompat notificationManger = this.notificationController.getManager();
-        notificationManger.notify(1, this.notificationController.getNotification());
+        List<Notification> notifications = this.notificationController.getNotifications();
+        for(Notification notification : notifications) {
+            notificationManger.notify(1, notification);
+        }
     }
 
     public void inputItem(View view) {

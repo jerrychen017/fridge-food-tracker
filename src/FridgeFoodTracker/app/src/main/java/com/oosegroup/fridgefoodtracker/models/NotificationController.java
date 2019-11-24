@@ -9,34 +9,58 @@ import android.os.Build;
 import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 public class NotificationController {
 
-    Notification notification;
+    List<Notification> notifications;
     NotificationManagerCompat manager;
     Context mContext;
+    String EXPIRING_SOON = "Items expiring soon";
+    String EXPIRED = "Items expired";
     private static final String CHANNEL_ID = "channel1";
     private static final String textTitle = "Title";
     private static final String textContent = "Description";
 
-    public NotificationController(Context mContext) {
+    public NotificationController(Context mContext, Fridge fridge) {
         this.mContext = mContext;
         manager = NotificationManagerCompat.from(mContext);
         createNotificationChannels();
-        buildNotification(mContext);
+        buildNotifications(mContext, fridge);
     }
 
-    private void buildNotification(Context mContext) {
-        Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_photo_camera_24px)
-                .setContentTitle(textTitle)
-                .setContentText(textContent)
-                .setPriority(NotificationManager.IMPORTANCE_HIGH)
-                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-                .build();
-       this.notification = notification;
+    private void buildNotifications(Context mContext, Fridge fridge) {
+        Date currentTime = new Date();
+        //2 days in milliseconds
+        long notificationTime = 172800 * 1000;
+        for (Item item : fridge.getContent().getItems()) {
+            long diff = item.getDateExpired().getTime() - currentTime.getTime();
+            if(diff > 0 && diff <= notificationTime) {
+                Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_photo_camera_24px)
+                        .setContentTitle(item.getDescription())
+                        .setContentText("Item is expiring soon! Use before " + item.getDateExpired())
+                        .setGroup(EXPIRING_SOON)
+                        .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                        .build();
+                this.notifications.add(notification);
+            } else if (diff <= 0) {
+                Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_photo_camera_24px)
+                        .setContentTitle(item.getDescription())
+                        .setContentText("Item is expired!")
+                        .setGroup(EXPIRED)
+                        .setPriority(NotificationManager.IMPORTANCE_HIGH)
+                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                        .build();
+            }
+        }
     }
 
     private void createNotificationChannels() {
@@ -50,8 +74,8 @@ public class NotificationController {
         }
     }
 
-    public Notification getNotification() {
-        return this.notification;
+    public List<Notification> getNotifications() {
+        return this.notifications;
     }
 
     public NotificationManagerCompat getManager() {
