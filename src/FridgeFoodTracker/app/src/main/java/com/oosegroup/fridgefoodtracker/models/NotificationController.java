@@ -9,6 +9,7 @@ import android.os.Build;
 import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +33,7 @@ public class NotificationController {
         manager = NotificationManagerCompat.from(mContext);
         createNotificationChannels();
         buildNotifications(mContext, fridge);
+        this.notifications = new ArrayList<Notification>();
     }
 
     private void buildNotifications(Context mContext, Fridge fridge) {
