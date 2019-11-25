@@ -423,8 +423,12 @@ public class Fridge {
     }
 
     public void sortByExpiration() {
-    this.getContent().sortByExpiration();
-  }
+        this.getContent().sortByExpiration();
+    }
+
+    public void sortByEntryDate() {
+        this.getContent().sortByEntryDate();
+    }
 
   public List<Item> recommend() {
         return this.history.recommend();

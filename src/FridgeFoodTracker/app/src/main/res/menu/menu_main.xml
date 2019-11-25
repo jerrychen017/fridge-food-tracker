@@ -12,4 +12,9 @@
         android:orderInCategory="100"
         android:title="Sort By Expiration"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sortByEntryDate"
+        android:orderInCategory="100"
+        android:title="Sort By Entry Date"
+        app:showAsAction="never" />
 </menu>

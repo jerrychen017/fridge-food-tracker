@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Button start_camera_button;
     ManualEntryFragment manualEntryFragment;
     EditEntryFragment editEntryFragment;
+    public String sortingState = "NONE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,8 +130,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_sortByExpiration) {
+            this.sortingState = "EXPIRATION";
             this.fridge.sortByExpiration();
+            ItemListController.buildExpandableListAdapter(this, this.fridge);
+        }
 
+        if (id == R.id.action_sortByEntryDate) {
+            this.sortingState = "ENTER";
+            this.fridge.sortByEntryDate();
             ItemListController.buildExpandableListAdapter(this, this.fridge);
         }
 

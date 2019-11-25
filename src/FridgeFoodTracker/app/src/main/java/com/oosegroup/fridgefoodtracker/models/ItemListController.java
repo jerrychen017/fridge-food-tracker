@@ -76,10 +76,23 @@ public class ItemListController {
 
     public static void buildExpandableListAdapter(MainActivity mainActivity, Fridge fridge) {
         Log.d("adapter", "buildExpandableListAdapter: here");
+        sort(mainActivity, fridge);
         mainActivity.mainItemListView = mainActivity.findViewById(R.id.mainItemListView);
         mainActivity.detailsMap = mainActivity.createDetailsMap(fridge);
         mainActivity.expandableListTitle = new ArrayList<String>(mainActivity.detailsMap.keySet());
         mainActivity.itemListViewAdapter = new ItemListViewAdapter(mainActivity, fridge, mainActivity.expandableListTitle, mainActivity.detailsMap);
         mainActivity.mainItemListView.setAdapter(mainActivity.itemListViewAdapter);
+    }
+
+    private static void sort(MainActivity mainActivity, Fridge fridge) {
+        String sortingState = mainActivity.sortingState;
+
+        if (sortingState.equals("NONE")) {
+            return;
+        } else if (sortingState.equals("EXPIRATION")) {
+            fridge.sortByExpiration();
+        } else if (sortingState.equals("ENTER")) {
+            fridge.sortByEntryDate();
+        }
     }
 }
