@@ -1,8 +1,15 @@
 package com.oosegroup.fridgefoodtracker.Activities;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.view.View;
 import android.view.Menu;
@@ -31,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     public HashMap<String, List<String>> detailsMap;
     RequestQueue queue;
     Button start_camera_button;
+    NotificationController notificationController;
+
     ManualEntryFragment manualEntryFragment;
     EditEntryFragment editEntryFragment;
 
@@ -59,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        this.notificationController = new NotificationController(this, this.fridge);
+        sendNotifications();
+    }
+
+
+    public void sendNotifications() {
+        NotificationManagerCompat notificationManger = this.notificationController.getManager();
+        List<Notification> notifications = this.notificationController.getNotifications();
+        for(Notification notification : notifications) {
+            notificationManger.notify(1, notification);
+        }
         ItemListController.buildExpandableListAdapter(this, this.fridge);
     }
 
