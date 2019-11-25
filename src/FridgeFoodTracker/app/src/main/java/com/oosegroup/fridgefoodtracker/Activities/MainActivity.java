@@ -56,17 +56,7 @@ public class MainActivity extends AppCompatActivity {
         fridge.initFridge();
 
 
-        this.start_camera_button = (Button) findViewById(R.id.start_camera_button);
-        // Capture button clicks
-        start_camera_button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View arg0) {
 
-                // Start NewActivity.class
-                Intent myIntent = new Intent(MainActivity.this,
-                        CameraActivity.class);
-                startActivity(myIntent);
-            }
-        });
 
         this.notificationController = new NotificationController(this, this.fridge);
         sendNotifications();
@@ -74,9 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void sendNotifications() {
+        System.out.println("inside sending");
         NotificationManagerCompat notificationManger = this.notificationController.getManager();
         List<Notification> notifications = this.notificationController.getNotifications();
         for(Notification notification : notifications) {
+            System.out.println("for loop for each notification");
             notificationManger.notify(1, notification);
         }
         ItemListController.buildExpandableListAdapter(this, this.fridge);
@@ -96,8 +88,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enterManually(View view) {
-        this.manualEntryFragment = ManualEntryFragment.newInstance();
+        if(this.manualEntryFragment == null) {
+            this.manualEntryFragment = ManualEntryFragment.newInstance();
+        }
         this.manualEntryFragment.show(getSupportFragmentManager(),"add_photo_dialog_fragment");
+
     }
 
     public void inputItem(View view) {

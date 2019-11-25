@@ -4,15 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/del_btn"
-        android:focusable="false"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="40dp"
-        android:onClick="deleteItem"
-        android:text="-" />
+
 
     <TextView
         android:id="@+id/list_item_string"
@@ -20,6 +12,8 @@
         android:layout_height="wrap_content"
         android:width="200dp"
         android:text='NAME'
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="40dp"
         android:textSize="18sp"
         android:textStyle="bold" />
 
