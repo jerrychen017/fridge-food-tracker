@@ -69,4 +69,13 @@ public class ItemList {
         });
     }
 
+    public void sortByEntryDate() {
+        Collections.sort(this.getItems(), new Comparator<Item>() {
+            @Override
+            public int compare(Item o1, Item o2) {
+                return o1.getDateEntered().compareTo(o2.getDateEntered());
+            }
+        });
+    }
+
 }
