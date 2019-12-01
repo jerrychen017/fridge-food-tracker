@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 
 import com.android.volley.RequestQueue;
@@ -23,9 +24,11 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.oosegroup.fridgefoodtracker.R;
+import com.oosegroup.fridgefoodtracker.TagConstants;
 import com.oosegroup.fridgefoodtracker.models.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -105,13 +108,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enterEditDetails(View view) {
-        this.editEntryFragment = EditEntryFragment.newInstance(Integer.parseInt(view.getTag().toString()));
-
-        // TODO: auto-populate description and dateExpired w/ previous values. Currently unable to find EditText (null)
-        // Item currItem = fridge.getContent().getItem(Integer.parseInt(view.getTag().toString()));
-
-        // EditText description = (EditText) editEntryFragment.getActivity().findViewById(R.id.edit_item_text_input);
-        // description.setText(currItem.getDescription());
+        this.editEntryFragment = EditEntryFragment.newInstance(Integer.parseInt(view.getTag(R.id.TAG_ID).toString()),
+                (String) view.getTag(R.id.TAG_DESCRIPTION),
+                (Date) view.getTag(R.id.TAG_EXP_DATE));
 
         this.editEntryFragment.show(getSupportFragmentManager(), "edit_item_dialog_fragment");
 
