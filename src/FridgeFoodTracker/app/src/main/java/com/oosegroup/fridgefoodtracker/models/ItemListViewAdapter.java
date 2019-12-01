@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.oosegroup.fridgefoodtracker.R;
+import com.oosegroup.fridgefoodtracker.TagConstants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +23,12 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
     private final Integer[] itemIDArray;
     private List<String> descriptionList;
     private HashMap<String, List<String>> detailsMap;
+    private Fridge fridge;
 
     public ItemListViewAdapter(Context context, Fridge fridge, List<String> description,  HashMap<String, List<String>> details) {
 
         this.context = context;
+        this.fridge = fridge;
         this.descriptionList = description;
         this.detailsMap = details;
 
@@ -62,7 +65,9 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
         expandedListTextView.setText(expandedListText);
 
         Button editButton = convertView.findViewById(R.id.items_child_edit_btn);
-        editButton.setTag(this.itemIDArray[listPosition]);
+        editButton.setTag(R.id.TAG_ID, this.itemIDArray[listPosition]);
+        editButton.setTag(R.id.TAG_DESCRIPTION, this.descriptionArray[listPosition]);
+        editButton.setTag(R.id.TAG_EXP_DATE, this.fridge.getContent().getItems().get(listPosition).getDateExpired());
 
         Button delButton = convertView.findViewById(R.id.items_child_delete_btn);
         delButton.setTag(this.itemIDArray[listPosition]);
