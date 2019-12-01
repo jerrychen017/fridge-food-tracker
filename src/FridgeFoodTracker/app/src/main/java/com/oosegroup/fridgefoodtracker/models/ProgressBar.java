@@ -4,42 +4,32 @@ import java.util.Date;
 
 public class ProgressBar {
 
-    /** URL to database */
-    public static final String TEN_PERCENT = "..........";
+    private static final String TEN_PERCENT = "..........";
 
-    /** URL to database */
-    public static final String TWENTY_PERCENT = "/........";
+    private static final String TWENTY_PERCENT = "/........";
 
-    /** URL to database */
-    public static final String THIRTY_PERCENT = "//.......";
+    private static final String THIRTY_PERCENT = "//.......";
 
-    /** URL to database */
-    public static final String FORTY_PERCENT = "///......";
+    private static final String FORTY_PERCENT = "///......";
 
-    /** URL to database */
-    public static final String FIFTY_PERCENT = "////.....";
+    private static final String FIFTY_PERCENT = "////.....";
 
-    /** URL to database */
-    public static final String SIXTY_PERCENT = "/////....";
+    private static final String SIXTY_PERCENT = "/////....";
 
-    /** URL to database */
-    public static final String SEVENTY_PERCENT = "//////...";
+    private static final String SEVENTY_PERCENT = "//////...";
 
-    /** URL to database */
-    public static final String EIGHTY_PERCENT = "///////..";
+    private static final String EIGHTY_PERCENT = "///////..";
 
-    /** URL to database */
-    public static final String NINETY_PERCENT = "////////.";
+    private static final String NINETY_PERCENT = "////////.";
 
-    /** URL to database */
-    public static final String FULL = "/////////";
+    private static final String FULL = "/////////";
 
     public static String getView(Item item) {
         Date expDate = item.getDateExpired();
         Date entDate = item.getDateEntered();
         Date currDate = new Date();
 
-        if (currDate.compareTo(expDate) < 0) {
+        if (currDate.compareTo(expDate) > 0) {
             return ProgressBar.FULL;
         }
 
