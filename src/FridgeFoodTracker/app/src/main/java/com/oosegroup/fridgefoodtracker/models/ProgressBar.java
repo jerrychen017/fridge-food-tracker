@@ -39,7 +39,7 @@ public class ProgressBar {
         Date entDate = item.getDateEntered();
         Date currDate = new Date();
 
-        if (currDate.compareTo(expDate) > 0) {
+        if (currDate.compareTo(expDate) < 0) {
             return ProgressBar.FULL;
         }
 
