@@ -321,9 +321,10 @@ public class Fridge {
     /**
      * Removes the item with given id from the content of the fridge
      * @param id item id
+     * @param eaten if the item was eaten
      * @throws IllegalArgumentException
      */
-    public void remove(int id) throws IllegalArgumentException {
+    public void remove(int id, boolean eaten) throws IllegalArgumentException {
         history.addItem(content.getItem(id));
         content.removeItem(id);
         if (!isLocal && queue == null) {
@@ -335,7 +336,12 @@ public class Fridge {
         }
 
         try {
-            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/item/" + id;
+            String url;
+            if (eaten) {
+                url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/item/" + id + "/eat";
+            } else {
+                url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/item/" + id + "/trash";
+            }
 
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.DELETE,
                     url, null,
@@ -498,4 +504,19 @@ Delete an item
       }
    ]
 }
+
+
+signup /user/register
+
+signin
+/user/login
+"username"
+"password"
+
+/user/who
+{"role", "fridge" []}
+
+// set the header "authrization" with token
+
+
  */
