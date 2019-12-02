@@ -70,7 +70,7 @@ public class ItemListController {
         if (description == null) {
             description = "ERROR";
         }
-        fridge.edit(Integer.parseInt(editEnterBtnView.getTag().toString()),
+        fridge.edit(Integer.parseInt(editEnterBtnView.getTag(R.id.TAG_ID).toString()),
                 description, date);
 
         buildExpandableListAdapter(mainActivity, fridge);

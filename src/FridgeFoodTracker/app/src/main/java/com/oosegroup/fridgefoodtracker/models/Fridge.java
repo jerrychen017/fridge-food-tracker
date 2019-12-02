@@ -134,7 +134,7 @@ public class Fridge {
                                         boolean finishD = false;
                                         String enterD = new String();
                                         String enterY = new String();
-                                        for (int j = 0; j < expStr.length(); j++) {
+                                        for (int j = 0; j < enterStr.length(); j++) {
                                             char ch = enterStr.charAt(j);
                                             if (ch == 'D') {
                                                 finishM = true;
