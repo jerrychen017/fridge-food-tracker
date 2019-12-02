@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.oosegroup.fridgefoodtracker.R;
-import com.oosegroup.fridgefoodtracker.TagConstants;
 
 import java.util.HashMap;
 import java.util.List;
