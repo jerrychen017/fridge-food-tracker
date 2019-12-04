@@ -24,11 +24,18 @@
             android:text="📝 EDIT"/>
 
         <Button
-            android:id="@+id/items_child_delete_btn"
+        android:id="@+id/items_child_trash_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="deleteItem"
+        android:text="🗑️ TRASH" />
+
+        <Button
+            android:id="@+id/items_child_eat_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="deleteItem"
-            android:text="🗑️ DELETE" />
+            android:text="🍽️️ EAT" />
 
     </LinearLayout>
 
