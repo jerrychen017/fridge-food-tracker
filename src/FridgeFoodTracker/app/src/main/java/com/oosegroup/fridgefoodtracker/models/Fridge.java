@@ -32,8 +32,13 @@ public class Fridge {
     // a list of all items in the fridge
     public ItemList content;
 
-    // stores all removed items
-    private ItemHistory history;
+    // stores all trashed items
+    private ItemHistory trashed;
+
+    // stores all eaten items
+    private ItemHistory eaten;
+
+
 
     // request queue passed to the fridge so that fridge can talk to server
     private RequestQueue queue;
@@ -54,7 +59,8 @@ public class Fridge {
      */
     public Fridge(int id, boolean isLocal) {
         this.content = new ItemList();
-        this.history = new ItemHistory();
+        this.eaten = new ItemHistory();
+        this.trashed = new ItemHistory();
         this.isLocal = isLocal;
         this.queue = null;
         this.id = id;
@@ -72,7 +78,8 @@ public class Fridge {
         this.isLocal = false;
         this.id = id;
         this.content = new ItemList();
-        this.history = new ItemHistory();
+        this.eaten = new ItemHistory();
+        this.trashed = new ItemHistory();
         this.queue = queue;
     }
 
@@ -191,7 +198,15 @@ public class Fridge {
                             try {
                                 JSONArray arr = response.getJSONArray("items");
                                 for (int i = 0; i < arr.length(); i++) {
-                                    history.addItem(new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item")));
+                                    String reason = arr.getJSONObject(i).getString("item");
+                                    Item it = new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item"));
+                                    if (reason.compareTo("eat") == 0) {
+                                        eaten.addItem(it);
+                                    } else if (reason.compareTo("trash") == 0) {
+                                        trashed.addItem(it);
+                                    } else {
+                                        System.out.println("Item was neither trashed nor eaten");
+                                    }
                                 }
                             } catch (JSONException e) {
                                 System.out.println("Error: Response doesn't have an object mapped to \'body\'");
@@ -324,8 +339,12 @@ public class Fridge {
      * @param eaten if the item was eaten
      * @throws IllegalArgumentException
      */
-    public void remove(int id, boolean eaten) throws IllegalArgumentException {
-        history.addItem(content.getItem(id));
+    public void remove(int id, boolean wasEaten) throws IllegalArgumentException {
+        if (wasEaten) {
+            eaten.addItem(content.getItem(id));
+        } else {
+            trashed.addItem(content.getItem(id));
+        }
         content.removeItem(id);
         if (!isLocal && queue == null) {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
@@ -337,7 +356,7 @@ public class Fridge {
 
         try {
             String url;
-            if (eaten) {
+            if (wasEaten) {
                 url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/item/" + id + "/eat";
             } else {
                 url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/item/" + id + "/trash";
@@ -437,7 +456,7 @@ public class Fridge {
     }
 
   public List<Item> recommend() {
-        return this.history.recommend();
+        return this.eaten.recommend();
   }
 
 
