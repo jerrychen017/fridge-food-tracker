@@ -27,14 +27,14 @@
         android:id="@+id/items_child_trash_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="deleteItem"
+        android:onClick="trashItem"
         android:text="🗑️ TRASH" />
 
         <Button
             android:id="@+id/items_child_eat_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="deleteItem"
+            android:onClick="eatItem"
             android:text="🍽️️ EAT" />
 
     </LinearLayout>

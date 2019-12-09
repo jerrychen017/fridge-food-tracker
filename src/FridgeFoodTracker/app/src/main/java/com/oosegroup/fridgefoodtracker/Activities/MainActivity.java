@@ -102,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
         ItemListController.inputItem(this.manualEntryFragment.getView(), fridge, this);
     }
 
+    public void eatItem(View view) {
+        ItemListController.eatItem(view, fridge, this);
+    }
+
+    public void trashItem(View view) {
+        ItemListController.trashItem(view, fridge, this);
+    }
+
     public void deleteItem(View view) {
         ItemListController.deleteItem(view, fridge, this);
     }
