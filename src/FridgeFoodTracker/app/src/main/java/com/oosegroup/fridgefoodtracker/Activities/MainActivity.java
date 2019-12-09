@@ -24,7 +24,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.oosegroup.fridgefoodtracker.R;
-import com.oosegroup.fridgefoodtracker.TagConstants;
 import com.oosegroup.fridgefoodtracker.models.*;
 
 import java.util.ArrayList;
@@ -58,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         this.fridge = new Fridge(queue, 0);
         fridge.initFridge();
-
-
-
 
         this.notificationController = new NotificationController(this, this.fridge);
         sendNotifications();
