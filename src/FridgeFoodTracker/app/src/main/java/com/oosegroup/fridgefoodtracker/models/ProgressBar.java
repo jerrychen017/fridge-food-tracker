@@ -4,27 +4,27 @@ import java.util.Date;
 
 public class ProgressBar {
 
-    private static final String TEN_PERCENT = "..........";
+    private static final int TEN_PERCENT = 10;
 
-    private static final String TWENTY_PERCENT = "/........";
+    private static final int TWENTY_PERCENT = 20;
 
-    private static final String THIRTY_PERCENT = "//.......";
+    private static final int THIRTY_PERCENT = 30;
 
-    private static final String FORTY_PERCENT = "///......";
+    private static final int FORTY_PERCENT = 40;
 
-    private static final String FIFTY_PERCENT = "////.....";
+    private static final int FIFTY_PERCENT = 50;
 
-    private static final String SIXTY_PERCENT = "/////....";
+    private static final int SIXTY_PERCENT = 60;
 
-    private static final String SEVENTY_PERCENT = "//////...";
+    private static final int SEVENTY_PERCENT = 70;
 
-    private static final String EIGHTY_PERCENT = "///////..";
+    private static final int EIGHTY_PERCENT = 80;
 
-    private static final String NINETY_PERCENT = "////////.";
+    private static final int NINETY_PERCENT = 90;
 
-    private static final String FULL = "/////////";
+    private static final int FULL = 100;
 
-    public static String getView(Item item) {
+    public static Integer getView(Item item) {
         Date expDate = item.getDateExpired();
         Date entDate = item.getDateEntered();
         Date currDate = new Date();
