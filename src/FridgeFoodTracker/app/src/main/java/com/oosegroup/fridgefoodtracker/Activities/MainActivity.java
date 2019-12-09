@@ -24,7 +24,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.oosegroup.fridgefoodtracker.R;
-import com.oosegroup.fridgefoodtracker.TagConstants;
 import com.oosegroup.fridgefoodtracker.models.*;
 
 import java.util.ArrayList;
@@ -103,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
         ItemListController.inputItem(this.manualEntryFragment.getView(), fridge, this);
     }
 
+    public void eatItem(View view) {
+        ItemListController.eatItem(view, fridge, this);
+    }
+
+    public void trashItem(View view) {
+        ItemListController.trashItem(view, fridge, this);
+    }
+
     public void deleteItem(View view) {
         ItemListController.deleteItem(view, fridge, this);
     }
@@ -157,4 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    
+
+
 }

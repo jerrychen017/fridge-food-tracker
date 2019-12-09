@@ -7,7 +7,6 @@ import android.widget.EditText;
 
 import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
-import com.oosegroup.fridgefoodtracker.TagConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,9 +44,20 @@ public class ItemListController {
     }
 
     public static void deleteItem(View view, Fridge fridge, MainActivity mainActivity) {
-        fridge.remove(Integer.parseInt(view.getTag().toString()));
+        fridge.remove(Integer.parseInt(view.getTag().toString()), true); // eat every item for now
         buildExpandableListAdapter(mainActivity, fridge);
     }
+
+    public static void trashItem(View view, Fridge fridge, MainActivity mainActivity) {
+        fridge.remove(Integer.parseInt(view.getTag().toString()), false);
+        buildExpandableListAdapter(mainActivity, fridge);
+    }
+
+    public static void eatItem(View view, Fridge fridge, MainActivity mainActivity) {
+        fridge.remove(Integer.parseInt(view.getTag().toString()), true);
+        buildExpandableListAdapter(mainActivity, fridge);
+    }
+
 
     public static void editItem(View view, View editEnterBtnView, Fridge fridge, MainActivity mainActivity) {
         // Item currItem = fridge.getContent().getItem(Integer.parseInt(view.getTag().toString()));
