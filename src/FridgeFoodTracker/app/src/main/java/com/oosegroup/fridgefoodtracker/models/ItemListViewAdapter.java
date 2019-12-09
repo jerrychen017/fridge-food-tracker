@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.oosegroup.fridgefoodtracker.R;
-import com.oosegroup.fridgefoodtracker.TagConstants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.List;
 public class ItemListViewAdapter extends BaseExpandableListAdapter {
     private Context context;
     private final String[] descriptionArray;
-    private final String[] progressBarArray;
+    private final Integer[] progressBarArray;
     private final Integer[] itemIDArray;
     private List<String> descriptionList;
     private HashMap<String, List<String>> detailsMap;
@@ -33,7 +32,7 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
         this.detailsMap = details;
 
         this.descriptionArray = new String[fridge.getContent().getItems().size() * 2];
-        this.progressBarArray = new String[fridge.getContent().getItems().size() * 2];
+        this.progressBarArray = new Integer[fridge.getContent().getItems().size() * 2];
         this.itemIDArray = new Integer[fridge.getContent().getItems().size() * 2];
         for (int i = 0; i < fridge.getContent().getItems().size(); ++i) {
             this.descriptionArray[i] = fridge.getContent().getItems().get(i).getDescription();
@@ -113,10 +112,10 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
         }
 
         TextView listTitleTextView = (TextView) convertView.findViewById(R.id.list_item_string);
-        TextView progressBar = convertView.findViewById(R.id.progress_bar);
+       android.widget.ProgressBar progressBar = convertView.findViewById(R.id.progressBar);
 
         listTitleTextView.setText(listTitle);
-        progressBar.setText(this.progressBarArray[listPosition]);
+        progressBar.setProgress(this.progressBarArray[listPosition]);
         return convertView;
     }
 
