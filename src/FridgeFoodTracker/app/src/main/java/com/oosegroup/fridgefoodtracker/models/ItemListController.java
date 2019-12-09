@@ -7,7 +7,6 @@ import android.widget.EditText;
 
 import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
-import com.oosegroup.fridgefoodtracker.TagConstants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
