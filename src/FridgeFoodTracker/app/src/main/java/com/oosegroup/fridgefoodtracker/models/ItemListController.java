@@ -77,8 +77,8 @@ public class ItemListController {
         }
 
         String description = mEdit.getText().toString();
-        if (description == null) {
-            description = "ERROR";
+        if (description.equals("")) {
+            description = "DEFAULT_NAME";
         }
         fridge.edit(Integer.parseInt(editEnterBtnView.getTag(R.id.TAG_ID).toString()),
                 description, date);
