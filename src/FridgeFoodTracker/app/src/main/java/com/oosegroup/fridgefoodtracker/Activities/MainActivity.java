@@ -58,9 +58,6 @@ public class MainActivity extends AppCompatActivity {
         this.fridge = new Fridge(queue, 0);
         fridge.initFridge();
 
-
-
-
         this.notificationController = new NotificationController(this, this.fridge);
         sendNotifications();
     }
