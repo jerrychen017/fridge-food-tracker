@@ -42,10 +42,8 @@ public class ItemListController {
         Handler handler = new Handler();
 
         fridge.addItem(item);
-
         controllerFridge = fridge;
         controllerMainActivity = mainActivity;
-
         handler.postDelayed(new Runnable() {
             public void run() {
                 callBuildExpandable();
