@@ -86,6 +86,136 @@ public class Fridge {
     /**
      * Retrieve all items from the server upon creating the fridge locally
      */
+    public void initFridge(JSONObject response) {
+        // initialize item list
+        try {
+            System.out.println("Successfully posted an item");
+            try {
+                JSONArray arr = response.getJSONArray("items");
+                for (int i = 0; i < arr.length(); i++) {
+                    Item it = new Item(arr.getJSONObject(i).getInt("id"),
+                            arr.getJSONObject(i).getString("item"));
+                    // retrieve expiration date
+                    String expStr = arr.getJSONObject(i).getString("expiration");
+                    if (expStr != "null" && expStr != null) {
+                        Calendar expCal = Calendar.getInstance();
+                        boolean finishM = false;
+                        String expM = new String();
+                        boolean finishD = false;
+                        String expD = new String();
+                        String expY = new String();
+                        for (int j = 0; j < expStr.length(); j++) {
+                            char ch = expStr.charAt(j);
+                            if (ch == 'D') {
+                                finishM = true;
+                            } else if (ch == 'Y') {
+                                finishD = true;
+                            } else if (ch != 'M'){
+                                if (!finishM) {
+                                    expM += ch;
+                                } else if (!finishD){
+                                    expD += ch;
+                                } else {
+                                    expY += ch;
+                                }
+                            }
+                        }
+                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD)-1);
+                        Date expDate = expCal.getTime();
+                        it.setDateExpired(expDate);
+                    }
+
+                    // retrieve enter date
+                    String enterStr = arr.getJSONObject(i).getString("enter");
+                    if (enterStr != "null" && enterStr != null) {
+                        Calendar enterCal = Calendar.getInstance();
+                        boolean finishM = false;
+                        String enterM = new String();
+                        boolean finishD = false;
+                        String enterD = new String();
+                        String enterY = new String();
+                        for (int j = 0; j < enterStr.length(); j++) {
+                            char ch = enterStr.charAt(j);
+                            if (ch == 'D') {
+                                finishM = true;
+                            } else if (ch == 'Y') {
+                                finishD = true;
+                            } else if (ch != 'M'){
+                                if (!finishM) {
+                                    enterM += ch;
+                                } else if (!finishD){
+                                    enterD += ch;
+                                } else {
+                                    enterY += ch;
+                                }
+                            }
+                        }
+                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD)-1);
+                        Date enterDate = enterCal.getTime();
+                        it.setDateEntered(enterDate);
+                    }
+
+
+                    content.addItem(it);
+
+                }
+            } catch (JSONException e) {
+                System.out.println("Error: Response doesn't have an object mapped to \'body\'");
+            }
+
+        } catch (Exception e) {
+            System.out.println("ERROR");
+        }
+
+        /*
+        // initializing history
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/history";
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            try {
+                                JSONArray arr = response.getJSONArray("items");
+                                for (int i = 0; i < arr.length(); i++) {
+                                    String reason = arr.getJSONObject(i).getString("item");
+                                    Item it = new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item"));
+                                    if (reason.compareTo("eat") == 0) {
+                                        eaten.addItem(it);
+                                    } else if (reason.compareTo("trash") == 0) {
+                                        trashed.addItem(it);
+                                    } else {
+                                        System.out.println("Item was neither trashed nor eaten");
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                System.out.println("Error: Response doesn't have an object mapped to \'body\'");
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.out.println("Failed to post an item");
+                            System.out.println(error.getMessage());
+                        }
+                    });
+
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
+        }
+
+         */
+    }
+
+    /**
+     * Retrieve all items from the server upon creating the fridge locally
+     */
     public void initFridge() {
         // initialize item list
         try {
