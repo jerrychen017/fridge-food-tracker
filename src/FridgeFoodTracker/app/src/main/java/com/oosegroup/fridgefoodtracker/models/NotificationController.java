@@ -52,6 +52,7 @@ public class NotificationController {
                         .setContentTitle(item.getDescription())
                         .setContentText("Item is expiring soon! Use before " + item.getDateExpired())
                         .setGroup(EXPIRING_SOON)
+                        .setSmallIcon(R.drawable.ic_local_grocery_store_24px)
                         .setPriority(NotificationManager.IMPORTANCE_HIGH)
                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                         .build();
@@ -61,6 +62,7 @@ public class NotificationController {
                         .setContentTitle(item.getDescription())
                         .setContentText("Item is expired!")
                         .setGroup(EXPIRED)
+                        .setSmallIcon(R.drawable.ic_local_grocery_store_24px)
                         .setPriority(NotificationManager.IMPORTANCE_HIGH)
                         .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                         .build();

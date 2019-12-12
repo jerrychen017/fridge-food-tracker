@@ -23,8 +23,13 @@ import com.android.volley.toolbox.Volley;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.google.gson.JsonArray;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,10 +59,22 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         this.queue = Volley.newRequestQueue(this);
-
         this.fridge = new Fridge(queue, 0);
-        fridge.initFridge();
 
+        String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
+        JSONArray jsonFridgeData;
+        try {
+            JSONObject jsonObject = new JSONObject(fridgeDataString);
+            fridge.initFridge(jsonObject);
+
+        } catch (JSONException e) {
+            System.out.println(e.toString());
+            jsonFridgeData = new JSONArray();
+        }
+
+
+
+        ItemListController.buildExpandableListAdapter(this, this.fridge);
         this.notificationController = new NotificationController(this, this.fridge);
         sendNotifications();
     }
@@ -67,9 +84,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("inside sending");
         NotificationManagerCompat notificationManger = this.notificationController.getManager();
         List<Notification> notifications = this.notificationController.getNotifications();
+        int count = 1;
         for(Notification notification : notifications) {
             System.out.println("for loop for each notification");
-            notificationManger.notify(1, notification);
+            notificationManger.notify(count, notification);
+            count++;
         }
         ItemListController.buildExpandableListAdapter(this, this.fridge);
     }
