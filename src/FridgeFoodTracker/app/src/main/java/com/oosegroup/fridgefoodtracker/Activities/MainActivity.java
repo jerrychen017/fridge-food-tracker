@@ -62,14 +62,16 @@ public class MainActivity extends AppCompatActivity {
         this.fridge = new Fridge(queue, 0);
 
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
-        JSONArray jsonFridgeData;
         try {
-            JSONObject jsonObject = new JSONObject(fridgeDataString);
-            fridge.initFridge(jsonObject);
-
+            if (fridgeDataString != null) {
+                JSONObject jsonObject = new JSONObject(fridgeDataString);
+                fridge.initFridge(jsonObject);
+            } else {
+                fridge.initFridge();
+            }
         } catch (JSONException e) {
             System.out.println(e.toString());
-            jsonFridgeData = new JSONArray();
+            fridge.initFridge();
         }
 
 
