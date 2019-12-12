@@ -272,14 +272,15 @@ public class Fridge {
      * @param item Item that needs to be added.
      * @throws IllegalArgumentException
      */
-    public void addItem(final Item item) throws IllegalArgumentException {
+    public boolean addItem(final Item item) throws IllegalArgumentException {
         content.addItem(item);
+        // TODO: change error checking
         if (!isLocal && queue == null) {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
         }
 
         if (isLocal) {
-            return;
+            return false;
         }
 
         try {
@@ -330,7 +331,7 @@ public class Fridge {
             System.out.println(e.getMessage());
             throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
         }
-
+        return true;
     }
 
     /**
@@ -340,6 +341,7 @@ public class Fridge {
      * @throws IllegalArgumentException
      */
     public void remove(int id, boolean wasEaten) throws IllegalArgumentException {
+        System.out.println("Called remove here with id " + id); // debug
         if (wasEaten) {
             eaten.addItem(content.getItem(id));
         } else {
