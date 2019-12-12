@@ -58,12 +58,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        this.queue = Volley.newRequestQueue(this);
+        this.fridge = new Fridge(queue, 0);
+
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
         JSONArray jsonFridgeData;
         try {
             JSONObject jsonObject = new JSONObject(fridgeDataString);
-            jsonFridgeData = jsonObject.getJSONArray("items");
-            System.out.println(jsonFridgeData.getJSONObject(0).getString("item"));
+            fridge.initFridge(jsonObject);
+
         } catch (JSONException e) {
             System.out.println(e.toString());
             jsonFridgeData = new JSONArray();
@@ -71,11 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        this.queue = Volley.newRequestQueue(this);
-
-        this.fridge = new Fridge(queue, 0);
-        fridge.initFridge();
-
+        ItemListController.buildExpandableListAdapter(this, this.fridge);
         this.notificationController = new NotificationController(this, this.fridge);
         sendNotifications();
     }
@@ -85,9 +84,11 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("inside sending");
         NotificationManagerCompat notificationManger = this.notificationController.getManager();
         List<Notification> notifications = this.notificationController.getNotifications();
+        int count = 1;
         for(Notification notification : notifications) {
             System.out.println("for loop for each notification");
-            notificationManger.notify(1, notification);
+            notificationManger.notify(count, notification);
+            count++;
         }
         ItemListController.buildExpandableListAdapter(this, this.fridge);
     }
