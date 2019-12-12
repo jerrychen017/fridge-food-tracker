@@ -23,8 +23,13 @@ import com.android.volley.toolbox.Volley;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.google.gson.JsonArray;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -52,6 +57,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
+        JSONArray jsonFridgeData;
+        try {
+            JSONObject jsonObject = new JSONObject(fridgeDataString);
+            jsonFridgeData = jsonObject.getJSONArray("items");
+            System.out.println(jsonFridgeData.getJSONObject(0).getString("item"));
+        } catch (JSONException e) {
+            System.out.println(e.toString());
+            jsonFridgeData = new JSONArray();
+        }
+
+
 
         this.queue = Volley.newRequestQueue(this);
 
