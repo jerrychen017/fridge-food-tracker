@@ -1,6 +1,7 @@
 package com.oosegroup.fridgefoodtracker.models;
 
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -12,7 +13,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 public class ItemListController {
+    static Fridge controllerFridge;
+    static MainActivity controllerMainActivity;
+
 
     public static void inputItem(View view, Fridge fridge, MainActivity mainActivity) {
         EditText mEdit = (EditText) view.findViewById(R.id.item_text_input);
@@ -30,14 +35,20 @@ public class ItemListController {
         }
         Item item;
         if (date != null) {
-            item = new Item(fridge.getContent().getItems().size(), text, date);
+            item = new Item(text, date);
         } else {
-            item = new Item(fridge.getContent().getItems().size(), text);
+            item = new Item(text);
         }
+        Handler handler = new Handler();
 
         fridge.addItem(item);
-
-        buildExpandableListAdapter(mainActivity, fridge);
+        controllerFridge = fridge;
+        controllerMainActivity = mainActivity;
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                callBuildExpandable();
+            }
+        }, 500);
 
         mEdit.setText("");
         dEdit.setText("");
@@ -54,6 +65,7 @@ public class ItemListController {
     }
 
     public static void eatItem(View view, Fridge fridge, MainActivity mainActivity) {
+        System.out.println("called eatItem with id " + Integer.parseInt(view.getTag().toString())); // debug
         fridge.remove(Integer.parseInt(view.getTag().toString()), true);
         buildExpandableListAdapter(mainActivity, fridge);
     }
@@ -107,4 +119,9 @@ public class ItemListController {
             fridge.sortByEntryDate();
         }
     }
+
+    private static void callBuildExpandable() {
+        buildExpandableListAdapter(controllerMainActivity, controllerFridge);
+    }
 }
+
