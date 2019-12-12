@@ -3,74 +3,75 @@ package com.oosegroup.fridgefoodtracker.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.FridgeAccountAuthenticator;
 
-import org.json.JSONObject;
+import org.w3c.dom.Text;
 
-public class RegisterActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     RequestQueue queue;
     String usernameStr;
     String passwordStr;
     SharedPreferences preferences;
-    boolean isRegistered;
 
-    private View.OnClickListener registerOnClickListener = new View.OnClickListener() {
+    private View.OnClickListener loginOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            register(v);
+            login(v);
         }
     };
-
+    private View.OnClickListener registerActivityOnClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent registerActivityIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(registerActivityIntent);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_login);
         this.queue = Volley.newRequestQueue(this);
 //        this.preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
         FridgeAccountAuthenticator.init(queue, preferences);
 
-        CardView register = (CardView) findViewById(R.id.login);
-        register.setOnClickListener(registerOnClickListener);
-
+        CardView login = (CardView) findViewById(R.id.login);
+        login.setOnClickListener(loginOnClickListener);
+        TextView register = (TextView) findViewById(R.id.register);
+        register.setOnClickListener(registerActivityOnClickListener);
     }
 
-    private void register(View view) {
+    private void login(View view) {
         EditText username = (EditText) findViewById(R.id.username);
         EditText password = (EditText) findViewById(R.id.password);
-        EditText confirmPassword = (EditText) findViewById(R.id.confirm);
-
-        if (password.getText().toString().equals(confirmPassword.getText().toString())) {
-            usernameStr = username.getText().toString();
-            passwordStr = password.getText().toString();
-        } else {
-            // passwords do not match
-            new AlertDialog.Builder(this)
-                    .setTitle("Error!")
-                    .setMessage("Passwords do not match")
-                    .setNegativeButton(android.R.string.ok, null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-        }
+        usernameStr = username.getText().toString();
+        passwordStr = password.getText().toString();
 
         if (usernameStr != null && passwordStr != null) {
-            FridgeAccountAuthenticator.createAccount(usernameStr, passwordStr);
+            FridgeAccountAuthenticator.login(usernameStr, passwordStr);
+            if (FridgeAccountAuthenticator.auth()) { // go to SplashActivity
+                Intent splashActivityIntent = new Intent(this, SplashActivity.class);
+                startActivity(splashActivityIntent);
+            } else {
+                new AlertDialog.Builder(this)
+                        .setTitle("Error!")
+                        .setMessage("Username and password do not match")
+                        .setNegativeButton(android.R.string.ok, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
         } else {
             // prompt error
             new AlertDialog.Builder(this)
