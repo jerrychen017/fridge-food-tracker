@@ -1,12 +1,9 @@
 package com.oosegroup.fridgefoodtracker.Activities;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,26 +11,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.R;
-import com.oosegroup.fridgefoodtracker.models.Item;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Calendar;
-import java.util.Date;
-
 public class SplashActivity extends AppCompatActivity {
-
     String jsonString;
     SharedPreferences pref;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         this.pref = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
-
         // checks if there exists a token
         if (this.pref.getString("token", null) != null) {
             // no token available, go to LoginActivity
@@ -41,14 +28,11 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(loginActivityIntent);
         } else {
             // token is available, download fridge data and  go to MainActivity
-            downloadFridgeData(0);
-            Handler handler = new Handler();
+            downloadFridgeData(this.pref.getString("fridge-id", null));
 
+            Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
-                    System.out.println("###########");
-                    System.out.println(jsonString);
-                    System.out.println("###########");
                     goToMainActivity();
                 }
             }, 500);
@@ -61,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(mainActivityIntent);
     }
 
-    private String downloadFridgeData(int id) {
+    private String downloadFridgeData(String id) {
         try {
             String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + id;
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,

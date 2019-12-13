@@ -3,7 +3,7 @@ package com.oosegroup.fridgefoodtracker.models;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,8 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.content.Context.MODE_PRIVATE;
-
+import java.util.HashMap;
+import java.util.Map;
 
 public class FridgeAccountAuthenticator {
     static String username;
@@ -23,7 +23,7 @@ public class FridgeAccountAuthenticator {
     static RequestQueue queue;
     static SharedPreferences pref;
     static Editor editor;
-    static int[] fridgeIDs;
+    static String[] fridgeIDs;
 
     public static void init(RequestQueue reqQueue, SharedPreferences sharedPreferences) {
         queue = reqQueue;
@@ -49,6 +49,7 @@ public class FridgeAccountAuthenticator {
                             try {
                                 // store token in SharedPreferences
                                 editor.putString("token", response.getString("token"));
+                                editor.commit();
                             } catch (JSONException e) {
                                 System.out.println("Error: Response doesn't have an object mapped to \'id\'");
                             }
@@ -58,7 +59,7 @@ public class FridgeAccountAuthenticator {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //Failure Callback
-                            System.out.println("Failed to post an item");
+                            System.out.println("Error: User already exists when creating account");
                             System.out.println(error.getMessage());
                         }
                     });
@@ -88,10 +89,13 @@ public class FridgeAccountAuthenticator {
                                 // store token in SharedPreferences
                                 editor.putString("token", response.getString("token"));
                                 JSONArray fridgeIDsArray = response.getJSONArray("fridge");
-                                fridgeIDs = new int[fridgeIDsArray.length()];
+                                fridgeIDs = new String[fridgeIDsArray.length()];
                                 for (int i = 0; i < fridgeIDsArray.length(); i++) {
-                                    fridgeIDs[i] = fridgeIDsArray.getInt(i);
+                                    fridgeIDs[i] = fridgeIDsArray.getString(i);
                                 }
+                                // store fridge-id in pref
+                                editor.putString("fridge-id", fridgeIDs[0]);
+                                editor.commit();
                             } catch (JSONException e) {
                                 System.out.println("Error: Response doesn't have an object mapped to \'id\'");
                             }
@@ -115,7 +119,50 @@ public class FridgeAccountAuthenticator {
     // authenticate current token
     // returns true if logged in
     // else return false
-    public static boolean auth() {
-        return true;
+    public static void auth() {
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/user/who";
+            JSONObject postparams = new JSONObject();
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            /*
+                            {"role", "fridge" []}
+                            */
+                            //Success Callback
+                            System.out.println("User exists!");
+                            // put fridge ID to SharedPreferences
+                            editor.putBoolean("loggedIn", true);
+                            editor.commit();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.out.println("User does not exist!");
+                            // put fridge ID to SharedPreferences
+                            editor.putBoolean("loggedIn", false);
+                            editor.commit();
+                        }
+                    })
+
+            {
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("token", pref.getString("token", null));
+                    return headers;
+                }
+            };
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
+        }
     }
 }

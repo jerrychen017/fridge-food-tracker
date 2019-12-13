@@ -1,37 +1,23 @@
 package com.oosegroup.fridgefoodtracker.Activities;
-
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.FridgeAccountAuthenticator;
-
-import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
     // TODO:
     /*
-     * 1. link LoginActivity to SplashActivity when user is successfully logged in
-     * 2. link RegisterActivity to LoginActivity when user is successfully registered
-     * 3. add a buttons to switch between login/register
-     * 4. RegisterActivity: if user already exists, prompt dialog
+     *  add a buttons to switch between login/register
+     *  RegisterActivity: if user already exists, prompt dialog
      * 5. A Signout button on MainActivity
-     * 6.
      * */
 
     RequestQueue queue;
@@ -80,6 +66,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (usernameStr != null && passwordStr != null) {
             FridgeAccountAuthenticator.createAccount(usernameStr, passwordStr);
+
+            if ()
         } else {
             // prompt error
             new AlertDialog.Builder(this)
