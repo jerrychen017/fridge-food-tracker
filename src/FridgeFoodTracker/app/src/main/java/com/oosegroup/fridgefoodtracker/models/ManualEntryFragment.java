@@ -15,6 +15,7 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -39,6 +40,8 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
 
         View view = inflater.inflate(R.layout.manual_entry, container,
                 false);
@@ -68,6 +71,7 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
                 startActivity(myIntent);
             }
         });
+
         // get the views and attach the listener
         return view;
     }
