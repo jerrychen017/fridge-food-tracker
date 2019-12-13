@@ -1,73 +1,79 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginTop="8dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <Button
-        android:id="@+id/start_camera_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:drawableLeft="@drawable/ic_photo_camera_24px"
-        android:gravity="center"
-        android:text="Add using photo of receipt" />
-
-    <TextView
-        android:id="@+id/tv_bottom_sheet_heading"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:gravity="center"
-        android:text="MANUAL ENTRY"
-        android:textSize="16sp" />
-
-    <EditText
-        android:id="@+id/item_text_input"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:drawablePadding="@dimen/dp_32"
-        android:drawableStart="@drawable/ic_local_grocery_store_24px"
-        android:inputType="text"
-        android:hint="item name"/>
-
-    <EditText
-        android:id="@+id/item_date_input"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:drawablePadding="@dimen/dp_32"
-        android:drawableStart="@drawable/ic_calendar_today_24px"
-        android:inputType="text"
-        android:hint="Expiration date (DD/MM/YYYY)"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
         android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
 
-        android:layout_marginTop="7dp" />
+        <Button
+            android:id="@+id/start_camera_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:drawableLeft="@drawable/ic_photo_camera_24px"
+            android:gravity="center"
+            android:text="Add using photo of receipt" />
 
-    <Button
-        android:id="@+id/manual_enter_btn"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:backgroundTint="@android:color/white"
-        android:drawablePadding="@dimen/dp_32"
-        android:drawableStart="@drawable/ic_check_circle_24px"
-        android:drawableTint="@color/md_bottom_sheet_text_color"
-        android:gravity="start|center_vertical"
-        android:text="Add item"
-        android:textColor="@color/md_bottom_sheet_text_color"
-        android:textSize="16sp"
-        android:onClick="inputItem"/>
+        <TextView
+            android:id="@+id/tv_bottom_sheet_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:text="MANUAL ENTRY"
+            android:textSize="16sp" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/item_text_input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:drawablePadding="@dimen/dp_32"
+            android:drawableStart="@drawable/ic_local_grocery_store_24px"
+            android:inputType="text"
+            android:hint="item name"/>
+
+        <EditText
+            android:id="@+id/item_date_input"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:drawablePadding="@dimen/dp_32"
+            android:drawableStart="@drawable/ic_calendar_today_24px"
+            android:inputType="text"
+            android:hint="Expiration date (DD/MM/YYYY)"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+
+            android:layout_marginTop="7dp" />
+
+        <Button
+            android:id="@+id/manual_enter_btn"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@android:color/white"
+            android:drawablePadding="@dimen/dp_32"
+            android:drawableStart="@drawable/ic_check_circle_24px"
+            android:drawableTint="@color/md_bottom_sheet_text_color"
+            android:gravity="start|center_vertical"
+            android:text="Add item"
+            android:textColor="@color/md_bottom_sheet_text_color"
+            android:textSize="16sp"
+            android:onClick="inputItem"/>
+
+    </LinearLayout>
+</ScrollView>
