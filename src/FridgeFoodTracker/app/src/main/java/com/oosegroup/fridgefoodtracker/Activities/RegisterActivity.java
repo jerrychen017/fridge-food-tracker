@@ -24,11 +24,20 @@ import org.json.JSONObject;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    // TODO:
+    /*
+     * 1. link LoginActivity to SplashActivity when user is successfully logged in
+     * 2. link RegisterActivity to LoginActivity when user is successfully registered
+     * 3. add a buttons to switch between login/register
+     * 4. RegisterActivity: if user already exists, prompt dialog
+     * 5. A Signout button on MainActivity
+     * 6.
+     * */
+
     RequestQueue queue;
     String usernameStr;
     String passwordStr;
-    SharedPreferences preferences;
-    boolean isRegistered;
+    SharedPreferences pref;
 
     private View.OnClickListener registerOnClickListener = new View.OnClickListener() {
         @Override
@@ -43,8 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         this.queue = Volley.newRequestQueue(this);
-//        this.preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-        FridgeAccountAuthenticator.init(queue, preferences);
+        this.pref = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
+        FridgeAccountAuthenticator.init(queue, pref);
 
         CardView register = (CardView) findViewById(R.id.login);
         register.setOnClickListener(registerOnClickListener);
@@ -82,13 +91,5 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    // TODO:
-    /*
-    * 1. link LoginActivity to SplashActivity when user is successfully logged in
-    * 2. link RegisterActivity to LoginActivity when user is successfully registered
-    * 3. add a buttons to switch between login/register
-    * 4. RegisterActivity: if user already exists, prompt dialog
-    * 5. A Signout button on MainActivity
-    * 6.
-    * */
+
 }

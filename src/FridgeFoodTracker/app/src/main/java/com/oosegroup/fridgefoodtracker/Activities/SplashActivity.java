@@ -1,6 +1,7 @@
 package com.oosegroup.fridgefoodtracker.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -25,24 +26,33 @@ import java.util.Date;
 public class SplashActivity extends AppCompatActivity {
 
     String jsonString;
+    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        this.pref = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
 
-        downloadFridgeData(0);
+        // checks if there exists a token
+        if (this.pref.getString("token", null) != null) {
+            // no token available, go to LoginActivity
+            Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginActivityIntent);
+        } else {
+            // token is available, download fridge data and  go to MainActivity
+            downloadFridgeData(0);
+            Handler handler = new Handler();
 
-        Handler handler = new Handler();
-
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                System.out.println("###########");
-                System.out.println(jsonString);
-                System.out.println("###########");
-                goToMainActivity();
-            }
-        }, 500);
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    System.out.println("###########");
+                    System.out.println(jsonString);
+                    System.out.println("###########");
+                    goToMainActivity();
+                }
+            }, 500);
+        }
     }
 
     private void goToMainActivity() {
