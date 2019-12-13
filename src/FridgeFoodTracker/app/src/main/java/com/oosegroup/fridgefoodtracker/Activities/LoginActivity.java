@@ -16,14 +16,12 @@ import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.FridgeAccountAuthenticator;
 
-import org.w3c.dom.Text;
-
 public class LoginActivity extends AppCompatActivity {
 
     RequestQueue queue;
     String usernameStr;
     String passwordStr;
-    SharedPreferences preferences;
+    SharedPreferences pref;
 
     private View.OnClickListener loginOnClickListener = new View.OnClickListener() {
         @Override
@@ -44,8 +42,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.queue = Volley.newRequestQueue(this);
-//        this.preferences = getSharedPreferences("myPrefs", MODE_PRIVATE);
-        FridgeAccountAuthenticator.init(queue, preferences);
+        this.pref = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
+        FridgeAccountAuthenticator.init(queue, pref);
 
         CardView login = (CardView) findViewById(R.id.login);
         login.setOnClickListener(loginOnClickListener);

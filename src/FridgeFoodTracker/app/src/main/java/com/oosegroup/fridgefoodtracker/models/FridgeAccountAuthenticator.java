@@ -1,6 +1,8 @@
 package com.oosegroup.fridgefoodtracker.models;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,17 +18,17 @@ import static android.content.Context.MODE_PRIVATE;
 
 
 public class FridgeAccountAuthenticator {
-    static String token;
     static String username;
     static String password;
-    static String role;
     static RequestQueue queue;
-    static SharedPreferences preferences;
+    static SharedPreferences pref;
+    static Editor editor;
     static int[] fridgeIDs;
 
     public static void init(RequestQueue reqQueue, SharedPreferences sharedPreferences) {
         queue = reqQueue;
-        preferences = sharedPreferences;
+        pref = sharedPreferences;
+        editor = pref.edit();
     }
 
     public static void createAccount(String usrName, String passWord) {
@@ -45,8 +47,8 @@ public class FridgeAccountAuthenticator {
                             //Success Callback
                             System.out.println("Successfully posted an item");
                             try {
-                                token = response.getString("token");
-
+                                // store token in SharedPreferences
+                                editor.putString("token", response.getString("token"));
                             } catch (JSONException e) {
                                 System.out.println("Error: Response doesn't have an object mapped to \'id\'");
                             }
@@ -83,7 +85,8 @@ public class FridgeAccountAuthenticator {
                             //Success Callback
                             System.out.println("Successfully posted an item");
                             try {
-                                token = response.getString("token");
+                                // store token in SharedPreferences
+                                editor.putString("token", response.getString("token"));
                                 JSONArray fridgeIDsArray = response.getJSONArray("fridge");
                                 fridgeIDs = new int[fridgeIDsArray.length()];
                                 for (int i = 0; i < fridgeIDsArray.length(); i++) {
