@@ -120,7 +120,7 @@ public class Fridge {
                                 }
                             }
                         }
-                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD)-1);
+                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD));
                         Date expDate = expCal.getTime();
                         it.setDateExpired(expDate);
                     }
@@ -150,7 +150,7 @@ public class Fridge {
                                 }
                             }
                         }
-                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD)-1);
+                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD));
                         Date enterDate = enterCal.getTime();
                         it.setDateEntered(enterDate);
                     }
@@ -257,7 +257,7 @@ public class Fridge {
                                                 }
                                             }
                                         }
-                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD)-1);
+                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD));
                                         Date expDate = expCal.getTime();
                                         it.setDateExpired(expDate);
                                     }
@@ -287,7 +287,7 @@ public class Fridge {
                                                 }
                                             }
                                         }
-                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD)-1);
+                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD));
                                         Date enterDate = enterCal.getTime();
                                         it.setDateEntered(enterDate);
                                     }
@@ -467,7 +467,7 @@ public class Fridge {
     /**
      * Removes the item with given id from the content of the fridge
      * @param id item id
-     * @param eaten if the item was eaten
+     * @param wasEaten if the item was eaten
      * @throws IllegalArgumentException
      */
     public void remove(int id, boolean wasEaten) throws IllegalArgumentException {
