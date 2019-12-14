@@ -1,22 +1,12 @@
 package com.oosegroup.fridgefoodtracker.models;
-
-import android.content.Context;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.oosegroup.fridgefoodtracker.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
 import java.util.List;
@@ -587,9 +577,14 @@ public class Fridge {
         this.getContent().sortByEntryDate();
     }
 
-  public List<Item> recommend() {
+    public List<Item> recommend() {
         return this.eaten.recommend();
-  }
+    }
+
+
+    public void reconstruct(int id) {
+        // reconstruct the fridge based on the id
+    }
 
 
 }
