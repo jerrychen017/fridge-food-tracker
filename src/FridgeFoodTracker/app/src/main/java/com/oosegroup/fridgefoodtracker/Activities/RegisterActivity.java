@@ -1,7 +1,9 @@
 package com.oosegroup.fridgefoodtracker.Activities;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
@@ -51,11 +53,10 @@ public class RegisterActivity extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.username);
         EditText password = (EditText) findViewById(R.id.password);
         EditText confirmPassword = (EditText) findViewById(R.id.confirm);
+        usernameStr = username.getText().toString();
+        passwordStr = password.getText().toString();
 
-        if (password.getText().toString().equals(confirmPassword.getText().toString())) {
-            usernameStr = username.getText().toString();
-            passwordStr = password.getText().toString();
-        } else {
+        if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
             // passwords do not match
             new AlertDialog.Builder(this)
                     .setTitle("Error!")
@@ -63,26 +64,12 @@ public class RegisterActivity extends AppCompatActivity {
                     .setNegativeButton(android.R.string.ok, null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            return;
         }
+        System.out.println("username is " + usernameStr);
 
-        if (usernameStr != null && passwordStr != null) {
-            // try create account
-            FridgeAccountAuthenticator.createAccount(usernameStr, passwordStr);
-            // check if account creation was successful
-            if (pref.getBoolean("registered", true)) {
-                // got to LoginActivity
-                Intent loginActivityIntent = new Intent(this, LoginActivity.class);
-                startActivity(loginActivityIntent);
-            } else {
-                // account registration failed, prompt user
-                new AlertDialog.Builder(this)
-                        .setTitle("Error!")
-                        .setMessage("Username already exists")
-                        .setNegativeButton(android.R.string.ok, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
-        } else {
+
+        if (usernameStr.isEmpty() || passwordStr.isEmpty()) {
             // either username or password is empty, prompt error
             new AlertDialog.Builder(this)
                     .setTitle("Error!")
@@ -90,7 +77,41 @@ public class RegisterActivity extends AppCompatActivity {
                     .setNegativeButton(android.R.string.ok, null)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+            return;
         }
+
+            // try create account
+            FridgeAccountAuthenticator.createAccount(usernameStr, passwordStr);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    // check if account creation was successful
+                    if (pref.getBoolean("registered", true)) {
+                        new AlertDialog.Builder(RegisterActivity.this)
+                                .setTitle("Account")
+                                .setMessage("Account was successfully registered!")
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // got to LoginActivity
+                                        Intent loginActivityIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                        startActivity(loginActivityIntent);
+                                    }
+                                })
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
+                    } else {
+                        // account registration failed, prompt user
+                        new AlertDialog.Builder(RegisterActivity.this)
+                                .setTitle("Error!")
+                                .setMessage("Registration failed!")
+                                .setNegativeButton(android.R.string.ok, null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                }
+            }, 500);
+
     }
 
 

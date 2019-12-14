@@ -3,6 +3,7 @@ package com.oosegroup.fridgefoodtracker.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -60,17 +61,25 @@ public class LoginActivity extends AppCompatActivity {
         if (usernameStr != null && passwordStr != null) {
             FridgeAccountAuthenticator.login(usernameStr, passwordStr);
 //            FridgeAccountAuthenticator.auth();
-            if (pref.getBoolean("loggedIn", true)) { // go to SplashActivity
-                Intent splashActivityIntent = new Intent(this, SplashActivity.class);
-                startActivity(splashActivityIntent);
-            } else {
-                new AlertDialog.Builder(this)
-                        .setTitle("Error!")
-                        .setMessage("Username and password do not match")
-                        .setNegativeButton(android.R.string.ok, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
-            }
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (pref.getBoolean("loggedIn", true)) { // go to SplashActivity
+                        Intent splashActivityIntent = new Intent(LoginActivity.this, SplashActivity.class);
+                        startActivity(splashActivityIntent);
+                    } else {
+                        new AlertDialog.Builder(LoginActivity.this)
+                                .setTitle("Error!")
+                                .setMessage("Username and password do not match")
+                                .setNegativeButton(android.R.string.ok, null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+                    }
+                }
+            }, 500);
+
         } else {
             // prompt error
             new AlertDialog.Builder(this)

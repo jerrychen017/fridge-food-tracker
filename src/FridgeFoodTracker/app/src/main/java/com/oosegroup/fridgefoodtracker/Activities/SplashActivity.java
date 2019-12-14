@@ -21,21 +21,28 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         this.pref = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
-        // checks if there exists a token
-        if (this.pref.getString("token", null) != null) {
-            // no token available, go to LoginActivity
-            Intent loginActivityIntent = new Intent(this, LoginActivity.class);
-            startActivity(loginActivityIntent);
-        } else {
-            // token is available, download fridge data and  go to MainActivity
-            downloadFridgeData(this.pref.getInt("fridge-id", -1));
 
+        // checks if there exists a token and user is logged in
+        if (this.pref.getString("token", null) != null
+                && this.pref.getBoolean("loggedIn", true)) {
+            System.out.println("splash: token exists");
+            System.out.println("token is : " + this.pref.getString("token", null));
+            // token is available, download fridge data and  go to MainActivity
+//            downloadFridgeData(this.pref.getInt("fridge-id", -1));
+            downloadFridgeData(0);
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
                     goToMainActivity();
                 }
             }, 500);
+        } else {
+            System.out.println("token doesn't exist");
+            System.out.println("token is " + this.pref.getString("token", null));
+            System.out.println("loggedIn is " + this.pref.getBoolean("loggedIn", true));
+            // no token available, go to LoginActivity
+            Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginActivityIntent);
         }
     }
 

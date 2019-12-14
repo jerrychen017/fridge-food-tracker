@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -24,6 +25,7 @@ public class FridgeAccountAuthenticator {
     static SharedPreferences pref;
     static Editor editor;
     static int[] fridgeIDs;
+    private static int mStatusCode;
 
     public static void init(RequestQueue reqQueue, SharedPreferences sharedPreferences) {
         queue = reqQueue;
@@ -45,7 +47,8 @@ public class FridgeAccountAuthenticator {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
-                            System.out.println("Successfully posted an item");
+                            System.out.println("Successfully registered ");
+                            System.out.println("register response is " + response.toString());
                             try {
                                 // store token in SharedPreferences
                                 editor.putString("token", response.getString("token"));
@@ -87,17 +90,18 @@ public class FridgeAccountAuthenticator {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
-                            System.out.println("Successfully posted an item");
+                            System.out.println("Successfully logged in");
                             try {
                                 // store token in SharedPreferences
+                                System.out.println("login response is " + response.toString());
                                 editor.putString("token", response.getString("token"));
-                                JSONArray fridgeIDsArray = response.getJSONArray("fridge");
-                                fridgeIDs = new int[fridgeIDsArray.length()];
-                                for (int i = 0; i < fridgeIDsArray.length(); i++) {
-                                    fridgeIDs[i] = fridgeIDsArray.getInt(i);
-                                }
-                                // store fridge-id in pref
-                                editor.putInt("fridge-id", fridgeIDs[0]);
+//                                JSONArray fridgeIDsArray = response.getJSONArray("fridge");
+//                                fridgeIDs = new int[fridgeIDsArray.length()];
+//                                for (int i = 0; i < fridgeIDsArray.length(); i++) {
+//                                    fridgeIDs[i] = fridgeIDsArray.getInt(i);
+//                                }
+//                                // store fridge-id in pref
+//                                editor.putInt("fridge-id", fridgeIDs[0]);
                                 editor.putBoolean("loggedIn", true);
                                 editor.commit();
                             } catch (JSONException e) {
@@ -109,12 +113,18 @@ public class FridgeAccountAuthenticator {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //Failure Callback
-                            System.out.println("Failed to post an item");
+                            System.out.println("Failed to log in");
                             System.out.println(error.getMessage());
                             editor.putBoolean("loggedIn", false);
                             editor.commit();
                         }
-                    });
+                    }) {
+                    @Override
+                    protected Response<JSONObject> parseNetworkResponse(NetworkResponse res) {
+                    mStatusCode = res.statusCode;
+                    return super.parseNetworkResponse(res);
+                }
+            };
             queue.add(jsonObjReq);
         } catch (Exception e) {
             System.out.println(e.getMessage());
