@@ -1,5 +1,7 @@
 package com.oosegroup.fridgefoodtracker.Activities;
 import android.app.Notification;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -41,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue queue;
     Button start_camera_button;
     NotificationController notificationController;
-
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     ManualEntryFragment manualEntryFragment;
     EditEntryFragment editEntryFragment;
     public String sortingState = "NONE";
@@ -54,25 +57,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withName("Logout");
+        setupNavDrawer(toolbar);
 
-        Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                System.out.println(drawerItem);
-                return false;
-            }
-        };
-
-        Drawer result = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item3)
-                .withOnDrawerItemClickListener(onDrawerItemClickListener)
-                .build();
-
+        this.sharedPreferences = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
+        this.editor = this.sharedPreferences.edit();
 
         this.queue = Volley.newRequestQueue(this);
         this.fridge = new Fridge(queue, 0);
@@ -97,6 +85,31 @@ public class MainActivity extends AppCompatActivity {
         sendNotifications();
     }
 
+    private void setupNavDrawer(Toolbar toolbar) {
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(0).withName("Logout");
+
+        Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                System.out.println(drawerItem);
+                if (drawerItem.getIdentifier() == 0) {
+                    System.out.println("logging out");
+                    loggout();
+                }
+                return false;
+            }
+        };
+
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item3)
+                .withOnDrawerItemClickListener(onDrawerItemClickListener)
+                .build();
+    }
 
     public void sendNotifications() {
         System.out.println("inside sending");
@@ -200,9 +213,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loggout() {
-        FridgeAccountAuthenticator.logout();
+        this.editor.clear();
+        this.editor.commit();
+        goToLoginActivity();
     }
-    
+
+    private void goToLoginActivity() {
+        Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginActivityIntent);
+    }
+
 
 
 }
