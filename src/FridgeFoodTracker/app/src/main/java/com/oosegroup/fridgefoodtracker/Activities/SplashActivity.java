@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
                 System.out.println("###########");
                 goToMainActivity();
             }
-        }, 500);
+        }, 1000);
     }
 
     private void goToMainActivity() {

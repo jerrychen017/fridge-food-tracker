@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -59,6 +60,8 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
                 newFragment.show(fm, "datePicker");
             }
         });
+
+
 
         Button start_camera_button = (Button) view.findViewById(R.id.start_camera_button);
         // Capture button clicks
