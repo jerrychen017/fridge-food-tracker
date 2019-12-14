@@ -171,7 +171,7 @@ public class FridgeAccountAuthenticator {
                 public Map getHeaders() throws AuthFailureError {
                     HashMap headers = new HashMap();
                     headers.put("Content-Type", "application/json");
-                    headers.put("token", pref.getString("token", null));
+                    headers.put("authorization", pref.getString("token", null));
                     return headers;
                 }
             };

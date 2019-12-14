@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         this.editor = this.sharedPreferences.edit();
 
         this.queue = Volley.newRequestQueue(this);
-        this.fridge = new Fridge(queue, 0);
+        this.fridge = new Fridge(queue, sharedPreferences, 0);
 
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
         try {

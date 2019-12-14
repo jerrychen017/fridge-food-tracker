@@ -1,4 +1,7 @@
 package com.oosegroup.fridgefoodtracker.models;
+import android.content.SharedPreferences;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -9,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +42,7 @@ public class Fridge {
      * the server as well.
      */
     private boolean isLocal;
+    private SharedPreferences pref;
 
 
     /**
@@ -64,13 +69,14 @@ public class Fridge {
      *              it can be accessed by http://10.0.2.2:3000/fridge/id (for running android emulator)
      *              or http://localhost:300/fridge/id
      */
-    public Fridge(RequestQueue queue, int id) {
+    public Fridge(RequestQueue queue, SharedPreferences sharedPreferences, int id) {
         this.isLocal = false;
         this.id = id;
         this.content = new ItemList();
         this.eaten = new ItemHistory();
         this.trashed = new ItemHistory();
         this.queue = queue;
+        this.pref = sharedPreferences;
     }
 
     /**
@@ -298,7 +304,16 @@ public class Fridge {
                             System.out.println("Failed to post an item");
                             System.out.println(error.getMessage());
                         }
-                    });
+                    }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
 
             queue.add(jsonObjReq);
         } catch (Exception e) {
@@ -445,7 +460,16 @@ public class Fridge {
                             System.out.println("Failed to post an item");
                             System.out.println(error.getMessage());
                         }
-                    });
+                    }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
             queue.add(jsonObjReq);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -500,7 +524,16 @@ public class Fridge {
                             System.out.println("Failed to delete an item");
                             System.out.println(error.getMessage());
                         }
-                    });
+                    }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
             queue.add(jsonObjReq);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -536,7 +569,16 @@ public class Fridge {
                             System.out.println("Failed to updated an item");
                             System.out.println(error.getMessage());
                         }
-                    });
+                    }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
             queue.add(jsonObjReq);
         } catch (Exception e) {
             System.out.println(e.getMessage());
