@@ -92,14 +92,8 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
         }
     }
+    @Override
+    public void onBackPressed() {
 
-    // TODO:
-    /*
-    * 1. link LoginActivity to SplashActivity when user is successfully logged in
-    * 2. link RegisterActivity to LoginActivity when user is successfully registered
-    * 3. add a buttons to switch between login/register
-    * 4. RegisterActivity: if user already exists, prompt dialog
-    * 5. A Signout button on MainActivity
-    * 6.
-    * */
+    }
 }
