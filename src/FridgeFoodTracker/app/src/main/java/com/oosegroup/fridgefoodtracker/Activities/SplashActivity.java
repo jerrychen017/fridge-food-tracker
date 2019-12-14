@@ -29,6 +29,7 @@ public class SplashActivity extends AppCompatActivity {
             System.out.println("token is : " + this.pref.getString("token", null));
             // token is available, download fridge data and  go to MainActivity
 //            downloadFridgeData(this.pref.getInt("fridge-id", -1));
+
             downloadFridgeData(0);
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
