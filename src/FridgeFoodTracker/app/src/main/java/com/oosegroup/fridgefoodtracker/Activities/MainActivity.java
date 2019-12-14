@@ -1,5 +1,6 @@
 package com.oosegroup.fridgefoodtracker.Activities;
 import android.app.Notification;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     ManualEntryFragment manualEntryFragment;
     EditEntryFragment editEntryFragment;
     public String sortingState = "NONE";
+    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         this.queue = Volley.newRequestQueue(this);
-        this.fridge = new Fridge(queue, 0);
+        this.pref = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
+        this.fridge = new Fridge(queue, pref, 0);
 
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
         try {

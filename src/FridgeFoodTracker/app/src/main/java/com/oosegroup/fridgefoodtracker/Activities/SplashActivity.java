@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -12,6 +14,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.R;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SplashActivity extends AppCompatActivity {
     String jsonString;
@@ -74,7 +79,16 @@ public class SplashActivity extends AppCompatActivity {
                             System.out.println("Failed to post an item");
                             System.out.println(error.getMessage());
                         }
-                    });
+                    }) {
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
 
             RequestQueue queue = Volley.newRequestQueue(this);
             queue.add(jsonObjReq);
