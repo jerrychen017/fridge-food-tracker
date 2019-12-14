@@ -182,8 +182,4 @@ public class FridgeAccountAuthenticator {
         }
     }
 
-    public static void logout() {
-        editor.clear();
-        editor.commit();
-    }
 }
