@@ -53,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Home");
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Second");
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withName("Logout");
 
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         Drawer result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
-                .addDrawerItems(item1, item2, new DividerDrawerItem())
+                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item3)
                 .withOnDrawerItemClickListener(onDrawerItemClickListener)
                 .build();
 
