@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import androidx.appcompat.app.AlertDialog;
@@ -53,6 +54,8 @@ public class RegisterActivity extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.username);
         EditText password = (EditText) findViewById(R.id.password);
         EditText confirmPassword = (EditText) findViewById(R.id.confirm);
+        password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         usernameStr = username.getText().toString();
         passwordStr = password.getText().toString();
 
