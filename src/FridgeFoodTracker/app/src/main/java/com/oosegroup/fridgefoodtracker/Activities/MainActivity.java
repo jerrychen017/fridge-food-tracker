@@ -13,10 +13,16 @@ import android.widget.ExpandableListView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,21 +50,44 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withName("Logout");
+
+        Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                System.out.println(drawerItem);
+                return false;
+            }
+        };
+
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item3)
+                .withOnDrawerItemClickListener(onDrawerItemClickListener)
+                .build();
+
 
         this.queue = Volley.newRequestQueue(this);
         this.fridge = new Fridge(queue, 0);
 
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
-        JSONArray jsonFridgeData;
         try {
-            JSONObject jsonObject = new JSONObject(fridgeDataString);
-            fridge.initFridge(jsonObject);
-
+            if (fridgeDataString != null) {
+                JSONObject jsonObject = new JSONObject(fridgeDataString);
+                fridge.initFridge(jsonObject);
+            } else {
+                fridge.initFridge();
+            }
         } catch (JSONException e) {
             System.out.println(e.toString());
-            jsonFridgeData = new JSONArray();
+            fridge.initFridge();
         }
 
 

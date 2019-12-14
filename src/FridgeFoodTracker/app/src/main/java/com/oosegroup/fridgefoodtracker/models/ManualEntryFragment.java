@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -40,6 +42,8 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
+
         View view = inflater.inflate(R.layout.manual_entry, container,
                 false);
 
@@ -57,6 +61,8 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
             }
         });
 
+
+
         Button start_camera_button = (Button) view.findViewById(R.id.start_camera_button);
         // Capture button clicks
         start_camera_button.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +74,7 @@ public class ManualEntryFragment extends BottomSheetDialogFragment {
                 startActivity(myIntent);
             }
         });
+
         // get the views and attach the listener
         return view;
     }
