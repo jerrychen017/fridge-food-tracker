@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -55,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login(View view) {
         EditText username = (EditText) findViewById(R.id.username);
         EditText password = (EditText) findViewById(R.id.password);
+        password.setTransformationMethod(PasswordTransformationMethod.getInstance());
         usernameStr = username.getText().toString();
         passwordStr = password.getText().toString();
 

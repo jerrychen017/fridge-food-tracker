@@ -28,7 +28,7 @@
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/ic_lock_24px"
         android:hint="Password"
-        android:inputType="textPersonName"/>
+        android:inputType="textPassword"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"
