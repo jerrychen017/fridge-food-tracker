@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="md_bottom_sheet_text_color">#000000</color>
+    <color name="colorPrimary">#4054D5</color>
+    <color name="colorPrimaryDark">#4054D5</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="md_bottom_sheet_text_color">#050505</color>
 </resources>
