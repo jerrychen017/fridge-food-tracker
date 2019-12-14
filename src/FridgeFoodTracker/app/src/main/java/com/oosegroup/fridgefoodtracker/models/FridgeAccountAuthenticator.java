@@ -23,7 +23,7 @@ public class FridgeAccountAuthenticator {
     static RequestQueue queue;
     static SharedPreferences pref;
     static Editor editor;
-    static String[] fridgeIDs;
+    static int[] fridgeIDs;
 
     public static void init(RequestQueue reqQueue, SharedPreferences sharedPreferences) {
         queue = reqQueue;
@@ -49,6 +49,7 @@ public class FridgeAccountAuthenticator {
                             try {
                                 // store token in SharedPreferences
                                 editor.putString("token", response.getString("token"));
+                                editor.putBoolean("registered", true);
                                 editor.commit();
                             } catch (JSONException e) {
                                 System.out.println("Error: Response doesn't have an object mapped to \'id\'");
@@ -61,6 +62,8 @@ public class FridgeAccountAuthenticator {
                             //Failure Callback
                             System.out.println("Error: User already exists when creating account");
                             System.out.println(error.getMessage());
+                            editor.putBoolean("registered", false);
+                            editor.commit();
                         }
                     });
             queue.add(jsonObjReq);
@@ -89,12 +92,13 @@ public class FridgeAccountAuthenticator {
                                 // store token in SharedPreferences
                                 editor.putString("token", response.getString("token"));
                                 JSONArray fridgeIDsArray = response.getJSONArray("fridge");
-                                fridgeIDs = new String[fridgeIDsArray.length()];
+                                fridgeIDs = new int[fridgeIDsArray.length()];
                                 for (int i = 0; i < fridgeIDsArray.length(); i++) {
-                                    fridgeIDs[i] = fridgeIDsArray.getString(i);
+                                    fridgeIDs[i] = fridgeIDsArray.getInt(i);
                                 }
                                 // store fridge-id in pref
-                                editor.putString("fridge-id", fridgeIDs[0]);
+                                editor.putInt("fridge-id", fridgeIDs[0]);
+                                editor.putBoolean("loggedIn", true);
                                 editor.commit();
                             } catch (JSONException e) {
                                 System.out.println("Error: Response doesn't have an object mapped to \'id\'");
@@ -107,6 +111,8 @@ public class FridgeAccountAuthenticator {
                             //Failure Callback
                             System.out.println("Failed to post an item");
                             System.out.println(error.getMessage());
+                            editor.putBoolean("loggedIn", false);
+                            editor.commit();
                         }
                     });
             queue.add(jsonObjReq);
@@ -164,5 +170,10 @@ public class FridgeAccountAuthenticator {
             System.out.println(e.getMessage());
             throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
         }
+    }
+
+    public static void logout() {
+        editor.clear();
+        editor.commit();
     }
 }

@@ -1,4 +1,5 @@
 package com.oosegroup.fridgefoodtracker.Activities;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -65,11 +66,24 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         if (usernameStr != null && passwordStr != null) {
+            // try create account
             FridgeAccountAuthenticator.createAccount(usernameStr, passwordStr);
-
-            if ()
+            // check if account creation was successful
+            if (pref.getBoolean("registered", true)) {
+                // got to LoginActivity
+                Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+                startActivity(loginActivityIntent);
+            } else {
+                // account registration failed, prompt user
+                new AlertDialog.Builder(this)
+                        .setTitle("Error!")
+                        .setMessage("Username already exists")
+                        .setNegativeButton(android.R.string.ok, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
         } else {
-            // prompt error
+            // either username or password is empty, prompt error
             new AlertDialog.Builder(this)
                     .setTitle("Error!")
                     .setMessage("Username or password is empty")

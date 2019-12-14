@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (usernameStr != null && passwordStr != null) {
             FridgeAccountAuthenticator.login(usernameStr, passwordStr);
-            FridgeAccountAuthenticator.auth();
+//            FridgeAccountAuthenticator.auth();
             if (pref.getBoolean("loggedIn", true)) { // go to SplashActivity
                 Intent splashActivityIntent = new Intent(this, SplashActivity.class);
                 startActivity(splashActivityIntent);

@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
             startActivity(loginActivityIntent);
         } else {
             // token is available, download fridge data and  go to MainActivity
-            downloadFridgeData(this.pref.getString("fridge-id", null));
+            downloadFridgeData(this.pref.getInt("fridge-id", -1));
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -45,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(mainActivityIntent);
     }
 
-    private String downloadFridgeData(String id) {
+    private String downloadFridgeData(int id) {
         try {
             String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + id;
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,

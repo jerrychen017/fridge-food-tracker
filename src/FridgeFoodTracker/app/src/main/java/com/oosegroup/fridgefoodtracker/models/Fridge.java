@@ -587,9 +587,14 @@ public class Fridge {
         this.getContent().sortByEntryDate();
     }
 
-  public List<Item> recommend() {
+    public List<Item> recommend() {
         return this.eaten.recommend();
-  }
+    }
+
+
+    public void reconstruct(int id) {
+        // reconstruct the fridge based on the id
+    }
 
 
 }
