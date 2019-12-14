@@ -56,6 +56,22 @@ What were some of the biggest challenges you found when developing your project?
 
 Android is ubiquitous. It's been around for a long time, and there are tons of devices throughout the world running it. We wanted our app to run on as many of these devices as possible, so we set our minimum APK version to be quite low. This meant we couldn't take advantage of many of the quality-of-life updates Android has had over the years, and so it sometimes felt like we were writing legacy software right out of the gate.
 
+### Git and GitHub
+
+This is many of our first times working in a larger team. As such, it's the first time many of us have adopted a branching & merging workflow. We did have some troubles, especially at first, but we were all able to implement this flow quickly. We had good success with this workflow, and we would be happy to do it again.
+
+### Postman
+
+We used Postman to test our Server calls. It was pretty good.
+
+### Heroku
+
+We used Heroku to host our Server. It was pretty good.
+
+### JUnit
+
+We used JUnit to test many of the classes that we had created. It helped us find some of the bugs we were having more quickly. The tool would have been more useful if we had integrated with Travis CI so that the tests ran automatically, but with our small codebase we found that running the tests manually was fine. YAGNI.
+
 <!--
 Which tools did you learn to like? Why?
 
@@ -63,6 +79,8 @@ Which tools did you learn to dislike? Why? And what other tools would you have r
 -->
 
 # Iteration 7 & Beyond
+
+We would finish some of the features in our project proposal that we couldn't get to in time, like recommending items based on known recipes. Beyond these, we would want to release the app on iOS and desktop, 
 
 <!--
 Where would you take your project from here? What features would you add to make your application even more awesome? How would you prioritize that work?
