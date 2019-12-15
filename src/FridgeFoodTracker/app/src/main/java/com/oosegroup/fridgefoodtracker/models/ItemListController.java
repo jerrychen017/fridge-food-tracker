@@ -128,12 +128,20 @@ public class ItemListController {
         buildExpandableListAdapter(controllerMainActivity, controllerFridge);
     }
 
+    public static void setControllerFridge(Fridge fridge){
+        controllerFridge = fridge;
+    }
+
     public static void setControllerMainActivity(MainActivity mainActivity){
         controllerMainActivity = mainActivity;
     }
 
     public static MainActivity getControllerMainActivity(){
         return controllerMainActivity;
+    }
+
+    public static Fridge getControllerFridge(){
+        return controllerFridge;
     }
 }
 

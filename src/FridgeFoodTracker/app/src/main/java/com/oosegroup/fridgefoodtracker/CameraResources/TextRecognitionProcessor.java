@@ -56,7 +56,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
     private final FirebaseVisionTextRecognizer detector;
     public CameraActivity activity;
 
-    private HashMap<String, Integer> itemsDict = new HashMap<>();
+    private static HashMap<String, Integer> itemsDict = new HashMap<>();
 
     public TextRecognitionProcessor() {
         detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
@@ -65,51 +65,8 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
     @Override
     public void stop() {
         try {
+            Log.d("OCR", "STOP TEXT RECOGNITION");
             detector.close();
-            for(String s : itemsDict.keySet()) {
-                final String line = s;
-                RequestQueue queue = Volley.newRequestQueue(activity);
-                String url = "https://oose-fridgetracker.herokuapp.com/barcode/i/" + s;
-                Log.d("Barcode", "Sending request: " + url);
-// Request a string response from the provided URL.
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                // Display the first 500 characters of the response string.
-                                Log.d("RESPONSE", response.toString());
-                                try {
-                                    JSONObject responseJSON = new JSONObject(response);
-                                    if (responseJSON.getJSONArray("items").length() == 0) {
-                                        Log.d("RESPONSE", "Products found");
-                                        JSONArray products = responseJSON.getJSONArray("items");
-                                        String productName = products.getJSONObject(0).getString("item");
-                                        long expiration = products.getJSONObject(0).getLong("expiration");
-                                        Log.d("RESPONSE", "Product Name: " + productName);
-                                        ItemListController.inputItemWithLifespan(MainActivity.getFridge(), productName, expiration);
-                                    } else {
-                                        Log.d("RESPONSE", "Products not found");
-                                        Context context = activity.getApplicationContext();
-                                        CharSequence text =  line + " not found in the database!";
-                                        int duration = Toast.LENGTH_SHORT;
-
-                                        Toast toast = Toast.makeText(context, text, duration);
-                                        toast.show();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("RESPONSE ERROR", error.toString());
-                    }
-                });
-
-// Add the request to the RequestQueue.
-                queue.add(stringRequest);
-            }
         } catch (IOException e) {
             Log.e(TAG, "Exception thrown while trying to close Text Detector: " + e);
         }
@@ -137,13 +94,15 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
         List<FirebaseVisionText.TextBlock> blocks = results.getTextBlocks();
         for (int i = 0; i < blocks.size(); i++) {
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
+            Log.d("firebase","GET BLOCK: " + i);
             for (int j = 0; j < lines.size(); j++) {
                 List<FirebaseVisionText.Element> elements = lines.get(j).getElements();
                 String lineText = lines.get(j).getText();
 
-                if(isAllUpper(lineText) && !itemsDict.containsKey(lineText) ) {
+                Log.d("firebase", "ADD TO DICT: " + lineText);
+                if(!itemsDict.containsKey(lineText) ) {
                     itemsDict.put(lineText, 1);
-                } else if (isAllUpper(lineText) && itemsDict.containsKey(lineText)) {
+                } else if (itemsDict.containsKey(lineText)) { //isAllUpper(lineText) &&
                     itemsDict.put(lineText, itemsDict.get(lineText) + 1);
                 }
                 for (int k = 0; k < elements.size(); k++) {
@@ -184,7 +143,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
     }
 
     public HashMap<String, Integer> getItemsDict() {
-        return this.itemsDict;
+        return itemsDict;
     }
 
     @Override
