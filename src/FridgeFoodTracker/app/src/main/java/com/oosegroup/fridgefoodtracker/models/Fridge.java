@@ -142,7 +142,7 @@ public class Fridge {
         try {
             JSONArray arr = response.getJSONArray("items");
             for (int i = 0; i < arr.length(); i++) {
-                String reason = arr.getJSONObject(i).getString("item");
+                String reason = arr.getJSONObject(i).getString("reason");
                 Item it = new Item(arr.getJSONObject(i).getInt("id"),
                         arr.getJSONObject(i).getString("item"));
                 if (reason.compareTo("eat") == 0) {
