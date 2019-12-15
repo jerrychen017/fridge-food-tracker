@@ -100,9 +100,9 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
                 String lineText = lines.get(j).getText();
 
                 Log.d("firebase", "ADD TO DICT: " + lineText);
-                if(!itemsDict.containsKey(lineText) ) {
+                if(isAllUpper(lineText) && !itemsDict.containsKey(lineText) ) {
                     itemsDict.put(lineText, 1);
-                } else if (itemsDict.containsKey(lineText)) { //isAllUpper(lineText) &&
+                } else if (isAllUpper(lineText) && itemsDict.containsKey(lineText)) {
                     itemsDict.put(lineText, itemsDict.get(lineText) + 1);
                 }
                 for (int k = 0; k < elements.size(); k++) {
