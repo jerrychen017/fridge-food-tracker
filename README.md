@@ -28,26 +28,21 @@ npm start
 
 <h2>3) Using the app </h2>
 
-<h4>Overview</h4>
-
-![App_Screenshot](./docs/Pictures/app_screenshot_20191119.png)
-- Press the floating action button in the bottom right to open the Items Entry fragment
-  - The floating action button might be hidden behind the keyboard
-- What you see on your emulator should match what you see on our Heroku server.
-  - You will need to refresh your web browser to see the updated database in browser.
-
 <h4>Register and Login New User</h4> 
+
 ![Register_User_GIF](./docs/Pictures/register_login_20191215.gif)
 
 <h4>Login Existing User</h4>
-![Login_Existing_User_GIF](./docs/Pictures/loging_existing_20191215.gif)
+
+![Login_Existing_User_GIF](./docs/Pictures/login_existing_20191215.gif)
 
 <h4>Create Fridge</h4>  
+
 ![Create_Fridge_GIF](./docs/Pictures/create_fridge_20191215.gif)
 
 <h4>Manual Add Items</h4>
 
-![Manual_Add_Item_GIF](./docs/Pictures/manual_add_itme_20191215.gif)
+![Manual_Add_Item_GIF](./docs/Pictures/manual_add_item_20191215.gif)
 
 - We have a Date Picker to make it easy for you to input an expiration date
 - Expiration date defaults to tomorrow if you don't put one in
@@ -61,6 +56,7 @@ npm start
 - Eaten items will be stored for recommendation data
 
 <h4>Trashing Items</h4>
+
 ![Trash_Item_GIF](./docs/Pictures/trash_item_20191215.gif)
 - Eat items by first expanding them, and then hitting trash
 
