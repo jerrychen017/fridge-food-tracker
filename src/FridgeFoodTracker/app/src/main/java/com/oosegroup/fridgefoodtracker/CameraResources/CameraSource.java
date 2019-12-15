@@ -26,14 +26,13 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
-
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
-
+import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -41,8 +40,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.images.Size;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -59,9 +56,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import  com.oosegroup.fridgefoodtracker.Activities.CameraActivity;
 import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
-import com.oosegroup.fridgefoodtracker.models.Item;
 import com.oosegroup.fridgefoodtracker.models.ItemListController;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,7 +73,7 @@ public class CameraSource {
 
     @SuppressLint("InlinedApi")
     public static final int CAMERA_FACING_FRONT = CameraInfo.CAMERA_FACING_FRONT;
-    private static final String TAG = "MIDemoApp:CameraSource";
+    private static final String TAG = "OOSEGroup:CameraSource";
 
     /**
      * The dummy surface texture must be assigned a chosen name. Since we never use an OpenGL context,
@@ -183,7 +178,6 @@ public class CameraSource {
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
                 return null;
             }
         }
@@ -193,8 +187,6 @@ public class CameraSource {
         File mediaFile;
         mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_"+ timeStamp + ".jpg");
-        Log.d("picture","Created media file: " + mediaStorageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
         return mediaFile;
     }
 
@@ -203,14 +195,9 @@ public class CameraSource {
 
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            Log.d("Picture", "On Picture Taken called");
             pictureFile = getOutputMediaFile();
             if (pictureFile == null){
-                Log.d("Picture", "Error creating media file, check storage permissions");
                 return;
-            }
-            else {
-                Log.d("Picture", "Success creating media file");
             }
 
             Uri uri = Uri.parse(pictureFile.getPath());
@@ -219,22 +206,7 @@ public class CameraSource {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
-                Log.d("Picture", "FILE WRITTEN");
                 try {
-                    if(new File(uri.toString()).exists()){
-                        Log.d("Picture", "Exists 1");
-                    }
-                    if(new File(pictureFile.getPath()).exists()){
-                        Log.d("Picture", "Exists 2");
-                    }
-                    if(new File(pictureFile.getAbsolutePath()).exists()){
-                        Log.d("Picture", "Exists 3");
-                    }
-                    if(pictureFile.getAbsoluteFile().exists()){
-                        Log.d("Picture", "Exists 4");
-                    }
-                    Log.d("Picture", "metaBuilderData: " + camera.getParameters().getPictureSize().height + " | " + camera.getParameters().getPictureSize().width + " | " +
-                            ((WindowManager) activity.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation() + " | " + camera.getParameters().getPictureFormat());
                     FirebaseVisionImageMetadata.Builder metaBuilder = new FirebaseVisionImageMetadata.Builder();
                     metaBuilder.setHeight(camera.getParameters().getPreviewSize().height);
                     metaBuilder.setWidth(camera.getParameters().getPreviewSize().width);
@@ -250,9 +222,9 @@ public class CameraSource {
                 camera.startPreview();
                 //activity.process((pictureFile));
             } catch (FileNotFoundException e) {
-                Log.d("Picture", "File not found: " + e.getMessage());
+                Log.d(TAG, "File not found: " + e.getMessage());
             } catch (IOException e) {
-                Log.d("Picture", "Error accessing file: " + e.getMessage());
+                Log.d(TAG, "Error accessing file: " + e.getMessage());
             }
 
         }
@@ -260,13 +232,7 @@ public class CameraSource {
 
     public void takePicture() {
         camera.takePicture(null, null, takePictureCallback);
-        if(pictureFile == null){
-            Log.d("Picture", "Picture file is null");
-        }
     }
-    // ==============================================================================================
-    // Public
-    // ==============================================================================================
 
     /** Stops the camera and releases the resources of the camera and underlying detector. */
     public void release() {
@@ -836,8 +802,14 @@ public class CameraSource {
                 // frame.
 
                 try {
+                    /*
+                        This is where the data from the camera is processed for barcodes.
+                        The barcodes are then plugged into our API, which returns a JSON response (if an
+                        item with that barcode exists in our database).
+
+                        The response is then parsed into an Item object, and added to the fridge.
+                     */
                     synchronized (processorLock) {
-                        //Log.d(TAG, "Process an image");
                         frameProcessor.process(
                                 data,
                                 new FrameMetadata.Builder()
@@ -855,28 +827,22 @@ public class CameraSource {
                             } else {
                                 checkedBarcodes.add(s);
                             }
-                            // Instantiate the RequestQueue.
                             RequestQueue queue = Volley.newRequestQueue(activity);
                             String url = "https://oose-fridgetracker.herokuapp.com/barcode/b/" + s;
-                            Log.d("Barcode", "Sending request: " + url);
-// Request a string response from the provided URL.
                             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                                     new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
-                                            // Display the first 500 characters of the response string.
-                                            Log.d("RESPONSE", response.toString());
                                             try {
                                                 JSONObject responseJSON = new JSONObject(response);
                                                 if(responseJSON.getJSONArray("items").length() != 0){
-                                                    Log.d("RESPONSE", "Products found");
                                                     JSONArray products = responseJSON.getJSONArray("items");
                                                     String productName = products.getJSONObject(0).getString("item");
                                                     long expiration = products.getJSONObject(0).getLong("expiration");
-                                                    Log.d("RESPONSE", "Product Name: " + productName);
                                                     ItemListController.inputItemWithLifespan(MainActivity.getFridge(), productName, expiration);
                                                 } else {
-                                                    Log.d("RESPONSE", "Products not found");
+                                                    Toast toast = Toast.makeText(activity.getApplicationContext(), "No item with this barcode found in our database.", Toast.LENGTH_SHORT);
+                                                    toast.show();
                                                 }
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
@@ -885,11 +851,10 @@ public class CameraSource {
                                     }, new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Log.d("RESPONSE ERROR", error.toString());
+                                    Log.d(TAG, error.toString());
                                 }
                             });
 
-// Add the request to the RequestQueue.
                             queue.add(stringRequest);
                         }
                     }

@@ -1,5 +1,9 @@
 package com.oosegroup.fridgefoodtracker.CameraResources;
 
+/*
+The source of this file can be found here:
+    https://github.com/firebase/quickstart-android/blob/master/mlkit/app/src/main/java/com/google/firebase/samples/apps/mlkit/common/CameraImageGraphic.java
+*/
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;

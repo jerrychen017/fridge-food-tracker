@@ -14,33 +14,16 @@ package com.oosegroup.fridgefoodtracker.CameraResources;
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.oosegroup.fridgefoodtracker.Activities.CameraActivity;
-import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
-import com.oosegroup.fridgefoodtracker.models.ItemListController;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +60,15 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
         return detector.processImage(image);
     }
 
+    /*
+        Called when the image is successfully parsed for characters. ALL-CAP phrases are added to the
+        'itemsDict' HashMap. We only add those phrases because items in reciepts are usually in that format.
+        This should prevent unnecessary things (dates, cashier names, store names, etc.)
+        from being added to our dict - and slowing down our processing.
+
+        If a valid phrase is already in the HashMap, we increment its value, to indicate that the 'count' of that
+        item has increased.
+     */
     @Override
     protected void onSuccess(
             @Nullable Bitmap originalCameraImage,
@@ -84,22 +76,17 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
             @NonNull FrameMetadata frameMetadata,
             @NonNull GraphicOverlay graphicOverlay) {
         graphicOverlay.clear();
-        Log.d("onSuccess", "onSuccess: IN SUCCESS");
         if (originalCameraImage != null) {
             CameraImageGraphic imageGraphic = new CameraImageGraphic(graphicOverlay,
                     originalCameraImage);
             graphicOverlay.add(imageGraphic);
         }
-        Log.d("firebase","RESULT GET TEXT: " + results.getText());
         List<FirebaseVisionText.TextBlock> blocks = results.getTextBlocks();
         for (int i = 0; i < blocks.size(); i++) {
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
-            Log.d("firebase","GET BLOCK: " + i);
             for (int j = 0; j < lines.size(); j++) {
                 List<FirebaseVisionText.Element> elements = lines.get(j).getElements();
                 String lineText = lines.get(j).getText();
-
-                Log.d("firebase", "ADD TO DICT: " + lineText);
                 if(isAllUpper(lineText) && !itemsDict.containsKey(lineText) ) {
                     itemsDict.put(lineText, 1);
                 } else if (isAllUpper(lineText) && itemsDict.containsKey(lineText)) {
@@ -113,8 +100,6 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
             }
         }
         graphicOverlay.postInvalidate();
-
-        Log.d("printing", "dict: " + printDict(itemsDict));
     }
     private String printDict (Map<String, Integer> map) {
         String fin = "";

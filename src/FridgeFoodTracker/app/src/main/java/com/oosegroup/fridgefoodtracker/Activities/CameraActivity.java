@@ -1,4 +1,17 @@
 package com.oosegroup.fridgefoodtracker.Activities;
+// Copyright 2018 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,10 +43,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -43,9 +54,6 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
-import com.oosegroup.fridgefoodtracker.models.Fridge;
 import com.oosegroup.fridgefoodtracker.models.ItemListController;
 
 import org.json.JSONArray;
@@ -64,7 +72,7 @@ import java.util.List;
 
 public class CameraActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private static final String TAG = "LivePreviewActivity";
+    private static final String TAG = "OOSEGroup:CameraAct";
     private static final int PERMISSION_REQUESTS = 1;
     private String selectedModel = "Barcode Detection";
     private CameraSource cameraSource = null;
@@ -94,82 +102,12 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
         select_photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Photo processed. Please take another photo OR return to the previous screen.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 cameraSource.takePicture();
             }
         });
     }
-
-    public void onCheckedChanged() {
-
-        preview.stop();
-        startCameraSource();
-    }
-    /*
-        PLEASE NOTE THAT THIS CODE COMES FROM GOOGLE'S MLKIT QR-CODE TUTORIAL
-        WHICH CAN BE FOUND HERE: https://firebase.google.com/docs/ml-kit/android/read-barcodes
-     */
-    private void scanBarcodes(FirebaseVisionImage image) {
-        // [START set_detector_options]
-        FirebaseVisionBarcodeDetectorOptions options =
-                new FirebaseVisionBarcodeDetectorOptions.Builder()
-                        .setBarcodeFormats(
-                                FirebaseVisionBarcode.FORMAT_QR_CODE,
-                                FirebaseVisionBarcode.FORMAT_AZTEC)
-                        .build();
-        // [END set_detector_options]
-
-        // [START get_detector]
-        FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
-                .getVisionBarcodeDetector();
-        // Or, to specify the formats to recognize:
-        // FirebaseVisionBarcodeDetector detector = FirebaseVision.getInstance()
-        //        .getVisionBarcodeDetector(options);
-        // [END get_detector]
-
-        // [START run_detector]
-        Task<List<FirebaseVisionBarcode>> result = detector.detectInImage(image)
-                .addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionBarcode>>() {
-                    @Override
-                    public void onSuccess(List<FirebaseVisionBarcode> barcodes) {
-                        // Task completed successfully
-                        // [START_EXCLUDE]
-                        // [START get_barcodes]
-                        for (FirebaseVisionBarcode barcode: barcodes) {
-                            Rect bounds = barcode.getBoundingBox();
-                            Point[] corners = barcode.getCornerPoints();
-
-                            String rawValue = barcode.getRawValue();
-
-                            int valueType = barcode.getValueType();
-                            // See API reference for complete list of supported types
-                            switch (valueType) {
-                                case FirebaseVisionBarcode.TYPE_WIFI:
-                                    String ssid = barcode.getWifi().getSsid();
-                                    String password = barcode.getWifi().getPassword();
-                                    int type = barcode.getWifi().getEncryptionType();
-                                    break;
-                                case FirebaseVisionBarcode.TYPE_URL:
-                                    String title = barcode.getUrl().getTitle();
-                                    String url = barcode.getUrl().getUrl();
-                                    break;
-                            }
-                        }
-                        // [END get_barcodes]
-                        // [END_EXCLUDE]
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Task failed with an exception
-                        // ...
-                    }
-                });
-        // [END run_detector]
-    }
-
 
     private void createCameraSource(String model) {
         // If there's no existing cameraSource, create one.
@@ -178,7 +116,6 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
             cameraSource.setFacing(CameraSource.CAMERA_FACING_BACK);
         }
         try {
-            Log.i(TAG, "Using Barcode Detector Processor");
             cameraSource.setMachineLearningFrameProcessor(new BarcodeScanningProcessor());
         } catch (Exception e) {
             Log.e(TAG, "Can not create image processor: " + model, e);
@@ -198,12 +135,6 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     private void startCameraSource() {
         if (cameraSource != null) {
             try {
-                if (preview == null) {
-                    Log.d(TAG, "resume: Preview is null");
-                }
-                if (graphicOverlay == null) {
-                    Log.d(TAG, "resume: graphOverlay is null");
-                }
                 preview.start(cameraSource, graphicOverlay);
             } catch (IOException e) {
                 Log.e(TAG, "Unable to start camera source.", e);
@@ -229,36 +160,30 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
         preview.stop();
     }
 
+    /*
+        This is where the result of the OCR code is processed. Unlike the barcode results, which are scanned
+        individually as new barcodes are detected, all of the OCR data is processed at once, as CameraActivity is closed.
+
+        The barcodes are then plugged into our API, which returns a JSON response (if an item with that barcode exists
+        in our database). The response is then parsed into an Item object, and added to the fridge.
+     */
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("CAMERA ACTIVITY","DESTROYED");
-        Log.d("IMAGE PROCESSOR", imageProcessor.getItemsDict().keySet().toString());
         for(String s : imageProcessor.getItemsDict().keySet()) {
-            Log.d("IMAGE PROCESSOR", "KEY: " + s);
-            final String line = s;
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = "https://oose-fridgetracker.herokuapp.com/barcode/i/" + s;
-            Log.d("OCR", "Sending request: " + url);
-// Request a string response from the provided URL.
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                         public void onResponse(String response) {
-                            // Display the first 500 characters of the response string.
-                            Log.d("RESPONSE", response);
                             try {
                                 JSONObject responseJSON = new JSONObject(response);
-                                Log.d("RESPONSE", "ITEMS: " + responseJSON.getJSONArray("items") + " " + responseJSON.getJSONArray("items").length());
                                 if (responseJSON.getJSONArray("items").length() != 0) {
-                                    Log.d("RESPONSE", "Products found");
                                     JSONArray products = responseJSON.getJSONArray("items");
                                     String productName = products.getJSONObject(0).getString("item");
                                     long expiration = products.getJSONObject(0).getLong("expiration");
-                                    Log.d("RESPONSE", "Product Name: " + productName);
                                     ItemListController.inputItemWithLifespan(MainActivity.getFridge(), productName, expiration);
-                                } else {
-                                    Log.d("RESPONSE", "Products not found: " + line);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -268,11 +193,10 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("RESPONSE ERROR", error.toString());
+                        Log.d(TAG, error.toString());
                     }
             });
 
-// Add the request to the RequestQueue.
                 queue.add(stringRequest);
         }
         if (cameraSource != null) {
@@ -345,40 +269,9 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
         Log.i(TAG, "Permission NOT granted: " + permission);
         return false;
     }
-    public static final int PICK_IMAGE = 1;
-    private void startPictureIntent(){
-        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        getIntent.setType("image/*");
-
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/*");
-
-        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
-
-        startActivityForResult(chooserIntent, PICK_IMAGE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE) {
-            //process(data);
-            Log.d("onActivityResult", "onActivityResult: pic selected");
-        }
-    }
 
     public void process(FirebaseVisionImage image){
-    /*
-    File path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS);
-    File file = new File(path, filename);
-    Log.d("filename", filename);
-    Uri uri = Uri.fromFile(file);
-    Log.d("uri", uri.getPath());
-     */
-
-        File pictureFile = getOutputMediaFileTest();
+        File pictureFile = getOutputMediaFile();
         imageProcessor.activity = this;
         imageProcessor.process(image.getBitmap(), graphicOverlay);
         Bitmap bmp = image.getBitmap();
@@ -398,58 +291,12 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        /*
-        Log.d("in process", "process called");
-        try {
-            if(image != null) {
-                FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
-                        .getOnDeviceTextRecognizer();
-                Task<FirebaseVisionText> result =
-                        detector.processImage(image)
-                                .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
-                                    @Override
-                                    public void onSuccess(FirebaseVisionText result) {
-                                        // Task completed successfully
-                                        // ...
-                                        String resultText = result.getText();
-                                        String res = "";
-                                        for (FirebaseVisionText.TextBlock block: result.getTextBlocks()) {
-                                            for (FirebaseVisionText.Line line: block.getLines()) {
-                                                res.concat(line.getText() + "\n");
-                                            }
-                                        }
-                                        if(res.equals("")) {
-                                            Log.d("firebase", "res is null");
-                                        }
-                                        Log.d("firebase", "On Success: " + res);
-                                        Log.d("firebase", "On Success: " + resultText);
-                                    }
-                                })
-                                .addOnFailureListener(
-                                        new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                // Task failed with an exception
-                                                // ...
-                                                Log.d("firebase","TEXT READING FAILED");
-                                            }
-                                        });
-            } else {
-                Log.d("process", "process: data is null");
-            }
-
-        } catch(Exception e) {//(IOException e) {
-            e.printStackTrace();
-        }
-
-         */
-
-        Bitmap bit = image.getBitmap();
-
     }
 
-    private File getOutputMediaFileTest(){
+    /*
+        PLEASE NOTE: This Method Is Taken From: https://developer.android.com/guide/topics/media/camera.html
+     */
+    private File getOutputMediaFile(){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
@@ -463,7 +310,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
+                Log.d(TAG, "failed to create directory");
                 return null;
             }
         }
@@ -473,8 +320,6 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
         File mediaFile;
         mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                 "IMG_TEST"+ timeStamp + ".jpg");
-        Log.d("picture","Created media file: " + mediaStorageDir.getPath() + File.separator +
-                "IMG_"+ timeStamp + ".jpg");
         return mediaFile;
     }
 }
