@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SplashActivity extends AppCompatActivity {
-    String jsonString;
+    static String jsonString;
     SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
