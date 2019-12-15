@@ -38,7 +38,9 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".Activities.RecommendActivity">
+        <activity android:name=".Activities.RecommendActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".Activities.CameraActivity"/>
         <meta-data
