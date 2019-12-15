@@ -36,7 +36,7 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
     private List<String> descriptionList;
 
     //hashes the descriptions
-    private HashMap<String, List<String>> detailsMap;
+    private HashMap<Integer, List<String>> detailsMap;
 
     //the fridge to be converted to a list
     private Fridge fridge;
@@ -48,7 +48,7 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
      * @param description the name of the item
      * @param details the string of details
      */
-    public ItemListViewAdapter(Context context, Fridge fridge, List<String> description,  HashMap<String, List<String>> details) {
+    public ItemListViewAdapter(Context context, Fridge fridge, List<String> description,  HashMap<Integer, List<String>> details) {
 
         this.context = context;
         this.fridge = fridge;
@@ -74,7 +74,7 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public Object getChild(int listPosition, int expandedListPosition) {
-        return this.detailsMap.get(this.descriptionList.get(listPosition)).get(expandedListPosition);
+        return this.detailsMap.get(this.itemIDArray[listPosition]).get(expandedListPosition);
     }
 
     /**
@@ -147,7 +147,7 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public int getChildrenCount(int listPosition) {
-        return this.detailsMap.get(this.descriptionList.get(listPosition)).size();
+        return 2;//this.detailsMap.get(this.descriptionList.get(listPosition)).size();
     }
 
     /**

@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     public ItemListViewAdapter itemListViewAdapter;
     public ExpandableListView mainItemListView;
     public List<String> expandableListTitle;
-    public HashMap<String, List<String>> detailsMap;
+    public HashMap<Integer, List<String>> detailsMap;
     RequestQueue queue;
     NotificationController notificationController;
     SharedPreferences sharedPreferences;
@@ -200,13 +200,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public HashMap<String, List<String>> createDetailsMap(Fridge fridge) {
-        LinkedHashMap<String, List<String>> detailsMap = new LinkedHashMap<>();
+    public HashMap<Integer, List<String>> createDetailsMap(Fridge fridge) {
+        LinkedHashMap<Integer, List<String>> detailsMap = new LinkedHashMap<>();
         for (Item item : fridge.getContent().getItems()) {
             List<String> curr = new ArrayList<String>();
             curr.add("Date Entered: " + item.getDateEntered());
             curr.add("Date Expires: " + item.getDateExpired());
-            detailsMap.put(item.getDescription(), curr);
+            detailsMap.put(item.getId(), curr);
         }
         return detailsMap;
     }

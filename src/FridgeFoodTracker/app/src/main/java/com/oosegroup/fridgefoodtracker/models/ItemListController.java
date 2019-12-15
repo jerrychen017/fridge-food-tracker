@@ -146,7 +146,14 @@ public class ItemListController {
         sort(mainActivity, fridge);
         mainActivity.mainItemListView = mainActivity.findViewById(R.id.mainItemListView);
         mainActivity.detailsMap = mainActivity.createDetailsMap(fridge);
-        mainActivity.expandableListTitle = new ArrayList<String>(mainActivity.detailsMap.keySet());
+
+
+        mainActivity.expandableListTitle = new ArrayList<>();
+        for(int id : mainActivity.detailsMap.keySet()) {
+
+            mainActivity.expandableListTitle.add(fridge.getContent().getItem(id).getDescription());
+        }
+
         mainActivity.itemListViewAdapter = new ItemListViewAdapter(mainActivity, fridge, mainActivity.expandableListTitle, mainActivity.detailsMap);
         mainActivity.mainItemListView.setAdapter(mainActivity.itemListViewAdapter);
     }
