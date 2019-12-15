@@ -247,8 +247,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public static Fridge getFridge(){
-        return fridge;
-    }
 }
