@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (pref.getBoolean("loggedIn", true)) { // go to SplashActivity
+                    if (pref.getBoolean("loggedIn", false)) { // go to SplashActivity
                         Intent splashActivityIntent = new Intent(LoginActivity.this, SplashActivity.class);
                         startActivity(splashActivityIntent);
                     } else {

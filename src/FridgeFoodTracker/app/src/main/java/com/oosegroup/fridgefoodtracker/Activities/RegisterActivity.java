@@ -89,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 public void run() {
                     // check if account creation was successful
-                    if (pref.getBoolean("registered", true)) {
+                    if (pref.getBoolean("registered", false)) {
                         new AlertDialog.Builder(RegisterActivity.this)
                                 .setTitle("Account")
                                 .setMessage("Account was successfully registered!")
