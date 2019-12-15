@@ -219,8 +219,16 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d("CAMERA ACTIVITY","DESTROYED");
         if (cameraSource != null) {
             cameraSource.release();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    ItemListController.callBuildExpandable();
+                }
+            }, 500);
+
         }
     }
 

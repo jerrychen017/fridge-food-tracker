@@ -81,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
+        if(ItemListController.getControllerMainActivity() == null) {
+            ItemListController.setControllerMainActivity(this);
+        }
         ItemListController.buildExpandableListAdapter(this, this.fridge);
         this.notificationController = new NotificationController(this, this.fridge);
         sendNotifications();

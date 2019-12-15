@@ -54,17 +54,11 @@ public class ItemListController {
         dEdit.setText("");
     }
 
+
     public static void inputItemWithLifespan(Fridge fridge, String productName, long lifespan){
         Item item = new Item(fridge.getContent().getItems().size(), productName, lifespan);
         fridge.addItem(item);
         controllerFridge = fridge;
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                callBuildExpandable();
-            }
-        }, 500);
-
     }
 
     public static void trashItem(View view, Fridge fridge, MainActivity mainActivity) {
@@ -132,6 +126,14 @@ public class ItemListController {
 
     public static void callBuildExpandable() {
         buildExpandableListAdapter(controllerMainActivity, controllerFridge);
+    }
+
+    public static void setControllerMainActivity(MainActivity mainActivity){
+        controllerMainActivity = mainActivity;
+    }
+
+    public static MainActivity getControllerMainActivity(){
+        return controllerMainActivity;
     }
 }
 
