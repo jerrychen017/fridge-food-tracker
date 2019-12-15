@@ -2,6 +2,9 @@ package com.oosegroup.fridgefoodtracker.models;
 
 import java.util.Date;
 
+/**
+ * handles the populating of the progress bars
+ */
 public class ProgressBar {
 
     private static final int TEN_PERCENT = 10;
@@ -24,6 +27,11 @@ public class ProgressBar {
 
     private static final int FULL = 100;
 
+    /**
+     * returns the correct progress status of the bar
+     * @param item the item to generate the expiration date
+     * @return the percent as an integer out of 100
+     */
     public static Integer getView(Item item) {
         Date expDate = item.getDateExpired();
         Date entDate = item.getDateEntered();

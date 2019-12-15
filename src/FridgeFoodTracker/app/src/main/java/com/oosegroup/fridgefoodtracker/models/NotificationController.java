@@ -15,6 +15,9 @@ import java.util.List;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+/**
+ * class for handling notifications
+ */
 public class NotificationController {
 
     List<Notification> notifications;
@@ -26,6 +29,12 @@ public class NotificationController {
     private static final String textTitle = "Title";
     private static final String textContent = "Description";
 
+
+    /**
+     * constructor for handlign notifications
+     * @param mContext the activity
+     * @param fridge the fridge for notifications
+     */
     public NotificationController(Context mContext, Fridge fridge) {
         this.mContext = mContext;
         manager = NotificationManagerCompat.from(mContext);
@@ -34,6 +43,11 @@ public class NotificationController {
         buildNotifications(mContext, fridge);
     }
 
+    /**
+     * build the notifications
+     * @param mContext the activity
+     * @param fridge the fridge for the notifications
+     */
     private void buildNotifications(Context mContext, Fridge fridge) {
         System.out.println("building notifications");
         Date currentTime = new Date();
@@ -69,6 +83,9 @@ public class NotificationController {
         }
     }
 
+    /**
+     * creates channels for notifications
+     */
     private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(CHANNEL_ID,
@@ -80,10 +97,18 @@ public class NotificationController {
         }
     }
 
+    /**
+     * creates list of notifications
+     * @return the list of notifications
+     */
     public List<Notification> getNotifications() {
         return this.notifications;
     }
 
+    /**
+     * manages the notifications
+     * @return the manager
+     */
     public NotificationManagerCompat getManager() {
         return this.manager;
     }

@@ -15,10 +15,22 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * Fragment that allows user to select a date
+ */
 public class DatePickerFragment extends AppCompatDialogFragment implements DatePickerDialog.OnDateSetListener {
+
+    // tag for checking date picked
     private static final String TAG = "DatePickerFragment";
+
+    // calendar to retrieve date from
     final Calendar c = Calendar.getInstance();
 
+    /**
+     *
+     * @param savedInstanceState
+     * @return dialog containing date picker
+     */
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -32,7 +44,16 @@ public class DatePickerFragment extends AppCompatDialogFragment implements DateP
         return new DatePickerDialog(getActivity(), DatePickerFragment.this, year, month, day);
     }
 
+
     // called when a date has been selected
+
+    /**
+     *
+     * @param view the datepicker view
+     * @param year the year selected
+     * @param month the month selected
+     * @param day the day selected
+     */
     public void onDateSet(DatePicker view, int year, int month, int day) {
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
