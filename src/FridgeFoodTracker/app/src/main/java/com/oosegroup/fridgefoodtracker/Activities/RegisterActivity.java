@@ -17,12 +17,6 @@ import com.oosegroup.fridgefoodtracker.models.FridgeAccountAuthenticator;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    // TODO:
-    /*
-     *  add a buttons to switch between login/register
-     *  RegisterActivity: if user already exists, prompt dialog
-     * 5. A Signout button on MainActivity
-     * */
 
     RequestQueue queue;
     String usernameStr;
