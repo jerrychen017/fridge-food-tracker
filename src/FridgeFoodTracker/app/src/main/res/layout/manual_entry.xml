@@ -16,7 +16,7 @@
             android:layout_gravity="bottom|start"
             android:drawableLeft="@drawable/ic_photo_camera_24px"
             android:gravity="center"
-            android:text="Add using photo of receipt" />
+            android:text="Add Using Barcode or Photo of Receipt" />
 
         <TextView
             android:id="@+id/tv_bottom_sheet_heading"

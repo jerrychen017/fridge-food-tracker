@@ -31,6 +31,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -89,7 +90,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
             getRuntimePermissions();
         }
 
-        Button select_photo_button = findViewById(R.id.select_photo_button);
+        ImageButton select_photo_button = findViewById(R.id.select_photo_button);
         select_photo_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
