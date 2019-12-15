@@ -60,7 +60,6 @@ public class RecommendActivity extends AppCompatActivity {
 
         Fridge fridge = mainActivity.getFridge();
         System.out.println(fridge.getID());
-        //System.out.println(fridge.);
         List<Item> eatenItems = fridge.recommend();
         List<String> eatenString = new ArrayList<>();
         for (Item i: eatenItems) {
@@ -141,7 +140,6 @@ public class RecommendActivity extends AppCompatActivity {
             System.out.println("splash: token exists");
             System.out.println("token is : " + this.sharedPreferences.getString("token", null));
             // token is available, download fridge data and  go to MainActivity
-//            downloadFridgeData(this.pref.getInt("fridge-id", -1));
 
             downloadFridgeData(0);
             Handler handler = new Handler();
@@ -256,7 +254,6 @@ public class RecommendActivity extends AppCompatActivity {
                                 editor.commit();
                                 Intent splashActivityIntent = new Intent(RecommendActivity.this, SplashActivity.class);
                                 startActivity(splashActivityIntent);
-//                                changeFridge(size);
                             } catch (JSONException e) {
                                 System.out.println("Error occurred when parsing json string");
                             }

@@ -30,7 +30,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -43,9 +42,6 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.text.FirebaseVisionText;
-import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
-import com.oosegroup.fridgefoodtracker.models.Fridge;
 import com.oosegroup.fridgefoodtracker.models.ItemListController;
 
 import org.json.JSONArray;
@@ -370,13 +366,6 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     }
 
     public void process(FirebaseVisionImage image){
-    /*
-    File path = Environment.getExternalStoragePublicDirectory(DIRECTORY_DOWNLOADS);
-    File file = new File(path, filename);
-    Log.d("filename", filename);
-    Uri uri = Uri.fromFile(file);
-    Log.d("uri", uri.getPath());
-     */
 
         File pictureFile = getOutputMediaFileTest();
         imageProcessor.activity = this;
@@ -398,52 +387,6 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        /*
-        Log.d("in process", "process called");
-        try {
-            if(image != null) {
-                FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
-                        .getOnDeviceTextRecognizer();
-                Task<FirebaseVisionText> result =
-                        detector.processImage(image)
-                                .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
-                                    @Override
-                                    public void onSuccess(FirebaseVisionText result) {
-                                        // Task completed successfully
-                                        // ...
-                                        String resultText = result.getText();
-                                        String res = "";
-                                        for (FirebaseVisionText.TextBlock block: result.getTextBlocks()) {
-                                            for (FirebaseVisionText.Line line: block.getLines()) {
-                                                res.concat(line.getText() + "\n");
-                                            }
-                                        }
-                                        if(res.equals("")) {
-                                            Log.d("firebase", "res is null");
-                                        }
-                                        Log.d("firebase", "On Success: " + res);
-                                        Log.d("firebase", "On Success: " + resultText);
-                                    }
-                                })
-                                .addOnFailureListener(
-                                        new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                // Task failed with an exception
-                                                // ...
-                                                Log.d("firebase","TEXT READING FAILED");
-                                            }
-                                        });
-            } else {
-                Log.d("process", "process: data is null");
-            }
-
-        } catch(Exception e) {//(IOException e) {
-            e.printStackTrace();
-        }
-
-         */
 
         Bitmap bit = image.getBitmap();
 

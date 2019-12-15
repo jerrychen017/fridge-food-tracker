@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,7 +20,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.oosegroup.fridgefoodtracker.Activities.CameraActivity;
-import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
 
 public class ManualEntryFragment extends BottomSheetDialogFragment {

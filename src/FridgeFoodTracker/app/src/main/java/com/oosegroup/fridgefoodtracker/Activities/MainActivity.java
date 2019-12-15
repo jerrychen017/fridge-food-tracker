@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     public List<String> expandableListTitle;
     public HashMap<String, List<String>> detailsMap;
     RequestQueue queue;
-    Button start_camera_button;
     NotificationController notificationController;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -169,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-//                .setSelection(curFridgeIndex);
                 return false;
             }
         };
@@ -242,8 +238,6 @@ public class MainActivity extends AppCompatActivity {
 
         this.editEntryFragment.show(getSupportFragmentManager(), "edit_item_dialog_fragment");
 
-        // EditText expirationDate = (EditText) view.findViewById(R.id.edit_item_date_input);
-        // expirationDate.setText(currItem.getDateExpired().toString());
     }
 
     public void editItem(View view) {
@@ -330,7 +324,6 @@ public class MainActivity extends AppCompatActivity {
                                 editor.commit();
                                 Intent splashActivityIntent = new Intent(MainActivity.this, SplashActivity.class);
                                 startActivity(splashActivityIntent);
-//                                changeFridge(size);
                             } catch (JSONException e) {
                                 System.out.println("Error occurred when parsing json string");
                             }
