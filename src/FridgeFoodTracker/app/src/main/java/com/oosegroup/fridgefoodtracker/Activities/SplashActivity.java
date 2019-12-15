@@ -14,7 +14,7 @@ import com.oosegroup.fridgefoodtracker.R;
 import org.json.JSONObject;
 
 public class SplashActivity extends AppCompatActivity {
-    String jsonString;
+    static String jsonString;
     SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
