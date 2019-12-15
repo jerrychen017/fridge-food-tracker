@@ -13,11 +13,18 @@
 // limitations under the License.
 package com.oosegroup.fridgefoodtracker.CameraResources;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
@@ -25,6 +32,7 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +41,7 @@ import java.util.List;
 public class BarcodeScanningProcessor extends VisionProcessorBase<List<FirebaseVisionBarcode>> {
 
     private static final String TAG = "BarcodeScanProc";
-
+    private ArrayList<String> barcodeList = new ArrayList<String>();
     private final FirebaseVisionBarcodeDetector detector;
 
     public BarcodeScanningProcessor() {
@@ -73,10 +81,19 @@ public class BarcodeScanningProcessor extends VisionProcessorBase<List<FirebaseV
         for (int i = 0; i < barcodes.size(); ++i) {
             FirebaseVisionBarcode barcode = barcodes.get(i);
             BarcodeGraphic barcodeGraphic = new BarcodeGraphic(graphicOverlay, barcode);
+
+            if(!this.barcodeList.contains(barcode.getRawValue())){
+                this.barcodeList.add(barcode.getRawValue());
+            }
             graphicOverlay.add(barcodeGraphic);
         }
         graphicOverlay.postInvalidate();
     }
+
+    protected ArrayList<String> getBarcodeList(){
+        return this.barcodeList;
+    }
+
 
     @Override
     protected void onFailure(@NonNull Exception e) {

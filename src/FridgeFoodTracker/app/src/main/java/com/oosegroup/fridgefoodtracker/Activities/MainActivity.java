@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    Fridge fridge;
+    static Fridge fridge;
     public ItemListViewAdapter itemListViewAdapter;
     public ExpandableListView mainItemListView;
     public List<String> expandableListTitle;
@@ -68,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         this.editor = this.sharedPreferences.edit();
 
         setupNavDrawer(toolbar);
-
 
 
         this.queue = Volley.newRequestQueue(this);
@@ -100,6 +101,13 @@ public class MainActivity extends AppCompatActivity {
             fridge.initHistory();
         }
 
+        if (ItemListController.getControllerMainActivity() == null) {
+            ItemListController.setControllerMainActivity(this);
+        }
+
+        if (ItemListController.getControllerFridge() == null) {
+            ItemListController.setControllerFridge(this.fridge);
+        }
 
         ItemListController.buildExpandableListAdapter(this, this.fridge);
         this.notificationController = new NotificationController(this, this.fridge);
@@ -108,11 +116,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupNavDrawer(Toolbar toolbar) {
 
-//        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
-//        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
         PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(-3).withName("Create A Fridge");
         PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(-2).withName("Logout");
-
+        PrimaryDrawerItem itemRecommend = new PrimaryDrawerItem().withIdentifier(-4).withName("Recommendations");
 
 
         DrawerBuilder result = new DrawerBuilder()
@@ -124,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i).withName("Fridge " + (i + 1)), new DividerDrawerItem());
         }
 
+
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -132,9 +139,12 @@ public class MainActivity extends AppCompatActivity {
                 if (identifier == -2) {
                     System.out.println("logging out");
                     logout();
+
                 } else if (identifier == -3) {
                     System.out.println("creating a fridge");
                     createFridge();
+                } else if (identifier == -4) {
+                    goToRecommendActivity();
                 } else {
                     for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
                         if (i == identifier) {
@@ -142,16 +152,25 @@ public class MainActivity extends AppCompatActivity {
                             changeFridge(i);
                         }
                     }
+
                 }
                 return false;
             }
         };
 
-        result.addDrawerItems(itemCreate)
-                .addDrawerItems(itemLogout)
-                .withOnDrawerItemClickListener(onDrawerItemClickListener);
 
-        Drawer resultBuilt = result.build();
+        result.addDrawerItems(itemCreate, new DividerDrawerItem())
+                .addDrawerItems(itemRecommend, new DividerDrawerItem())
+                .addDrawerItems(itemLogout)
+                .withOnDrawerItemClickListener(onDrawerItemClickListener)
+                .build();
+
+//        Drawer resultBuilt = result.build();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     public void sendNotifications() {
@@ -197,10 +216,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void trashItem(View view) {
         ItemListController.trashItem(view, fridge, this);
-    }
-
-    public void deleteItem(View view) {
-        ItemListController.deleteItem(view, fridge, this);
     }
 
     public void enterEditDetails(View view) {
@@ -260,10 +275,16 @@ public class MainActivity extends AppCompatActivity {
         goToLoginActivity();
     }
 
+    private void goToRecommendActivity() {
+        Intent recommendActivityIntent = new Intent(this, RecommendActivity.class);
+        startActivity(recommendActivityIntent);
+    }
+
     private void goToLoginActivity() {
         Intent loginActivityIntent = new Intent(this, LoginActivity.class);
         startActivity(loginActivityIntent);
     }
+
 
     public void createFridge() {
         System.out.println("MainActivity: creating a fridge");
@@ -306,7 +327,9 @@ public class MainActivity extends AppCompatActivity {
                             System.out.println(error.getMessage());
                         }
                     }) {
-                /** Passing some request headers* */
+                /**
+                 * Passing some request headers*
+                 */
                 @Override
                 public Map getHeaders() throws AuthFailureError {
                     HashMap headers = new HashMap();
@@ -320,6 +343,11 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(e.getMessage());
             throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
         }
+
+    }
+
+    public static Fridge getFridge() {
+        return fridge;
     }
 
     public void changeFridge(int index) {

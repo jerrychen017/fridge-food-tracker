@@ -14,17 +14,32 @@ package com.oosegroup.fridgefoodtracker.CameraResources;
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.oosegroup.fridgefoodtracker.Activities.CameraActivity;
+import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
+import com.oosegroup.fridgefoodtracker.models.ItemListController;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,8 +54,9 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
     private static final String TAG = "TextRecProc";
 
     private final FirebaseVisionTextRecognizer detector;
+    public CameraActivity activity;
 
-    private HashMap<String, Integer> itemsDict = new HashMap<>();
+    private static HashMap<String, Integer> itemsDict = new HashMap<>();
 
     public TextRecognitionProcessor() {
         detector = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
@@ -49,6 +65,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
     @Override
     public void stop() {
         try {
+            Log.d("OCR", "STOP TEXT RECOGNITION");
             detector.close();
         } catch (IOException e) {
             Log.e(TAG, "Exception thrown while trying to close Text Detector: " + e);
@@ -77,13 +94,15 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
         List<FirebaseVisionText.TextBlock> blocks = results.getTextBlocks();
         for (int i = 0; i < blocks.size(); i++) {
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
+            Log.d("firebase","GET BLOCK: " + i);
             for (int j = 0; j < lines.size(); j++) {
                 List<FirebaseVisionText.Element> elements = lines.get(j).getElements();
                 String lineText = lines.get(j).getText();
 
-                if(isAllUpper(lineText) && !itemsDict.containsKey(lineText) ) {
+                Log.d("firebase", "ADD TO DICT: " + lineText);
+                if(!itemsDict.containsKey(lineText) ) {
                     itemsDict.put(lineText, 1);
-                } else if (isAllUpper(lineText) && itemsDict.containsKey(lineText)) {
+                } else if (itemsDict.containsKey(lineText)) { //isAllUpper(lineText) &&
                     itemsDict.put(lineText, itemsDict.get(lineText) + 1);
                 }
                 for (int k = 0; k < elements.size(); k++) {
@@ -124,7 +143,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
     }
 
     public HashMap<String, Integer> getItemsDict() {
-        return this.itemsDict;
+        return itemsDict;
     }
 
     @Override

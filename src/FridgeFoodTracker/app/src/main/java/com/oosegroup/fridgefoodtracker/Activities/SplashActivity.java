@@ -23,9 +23,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SplashActivity extends AppCompatActivity {
+
     String jsonStringData;
     String jsonStringHistory;
     String jsonFridgeIDs;
+
     SharedPreferences pref;
     Editor editor;
     @Override
@@ -62,7 +64,7 @@ public class SplashActivity extends AppCompatActivity {
                 public void run() {
                     goToMainActivity();
                 }
-            }, 500);
+            }, 1000);
         } else {
             System.out.println("token doesn't exist");
             System.out.println("token is " + this.pref.getString("token", null));

@@ -54,17 +54,21 @@ public class ItemListController {
         dEdit.setText("");
     }
 
-    public static void deleteItem(View view, Fridge fridge, MainActivity mainActivity) {
-        fridge.remove(Integer.parseInt(view.getTag().toString()), true); // eat every item for now
-        buildExpandableListAdapter(mainActivity, fridge);
+
+    public static void inputItemWithLifespan(Fridge fridge, String productName, long lifespan){
+        Item item = new Item(fridge.getContent().getItems().size(), productName, lifespan);
+        fridge.addItem(item);
+        controllerFridge = fridge;
     }
 
     public static void trashItem(View view, Fridge fridge, MainActivity mainActivity) {
+        Log.d("ItemListController", "TRASH: " + view.getTag().toString());
         fridge.remove(Integer.parseInt(view.getTag().toString()), false);
         buildExpandableListAdapter(mainActivity, fridge);
     }
 
     public static void eatItem(View view, Fridge fridge, MainActivity mainActivity) {
+        Log.d("ItemListController", "EAT: " + view.getTag().toString());
         System.out.println("called eatItem with id " + Integer.parseInt(view.getTag().toString())); // debug
         fridge.remove(Integer.parseInt(view.getTag().toString()), true);
         buildExpandableListAdapter(mainActivity, fridge);
@@ -73,7 +77,7 @@ public class ItemListController {
 
     public static void editItem(View view, View editEnterBtnView, Fridge fridge, MainActivity mainActivity) {
         // Item currItem = fridge.getContent().getItem(Integer.parseInt(view.getTag().toString()));
-
+        Log.d("ItemListController", "EDIT: " + editEnterBtnView.getTag(R.id.TAG_ID).toString());
         EditText mEdit = (EditText) view.findViewById(R.id.edit_item_text_input);
         EditText dEdit = (EditText) view.findViewById(R.id.edit_item_date_input);
 
@@ -120,8 +124,24 @@ public class ItemListController {
         }
     }
 
-    private static void callBuildExpandable() {
+    public static void callBuildExpandable() {
         buildExpandableListAdapter(controllerMainActivity, controllerFridge);
+    }
+
+    public static void setControllerFridge(Fridge fridge){
+        controllerFridge = fridge;
+    }
+
+    public static void setControllerMainActivity(MainActivity mainActivity){
+        controllerMainActivity = mainActivity;
+    }
+
+    public static MainActivity getControllerMainActivity(){
+        return controllerMainActivity;
+    }
+
+    public static Fridge getControllerFridge(){
+        return controllerFridge;
     }
 }
 
