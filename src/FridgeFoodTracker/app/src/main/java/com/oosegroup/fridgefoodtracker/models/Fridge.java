@@ -1,4 +1,5 @@
 package com.oosegroup.fridgefoodtracker.models;
+
 import android.content.SharedPreferences;
 
 import com.android.volley.AuthFailureError;
@@ -7,9 +8,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -32,34 +35,10 @@ public class Fridge {
     // stores all eaten items
     private ItemHistory eaten;
 
-
-
     // request queue passed to the fridge so that fridge can talk to server
     private RequestQueue queue;
 
-    /**
-     * Determines if the fridge store all its items locally. If false, all items will be stored
-     * the server as well.
-     */
-    private boolean isLocal;
     private SharedPreferences pref;
-
-
-    /**
-     * A constructor that only initializes Fridge id. Only store items locally.
-     * RequestQueue is set to null. If fridge is not a local fridge, RequestQueue has to be set later.
-     *
-     * @param id      Fridge ID
-     * @param isLocal True if only store all items locally. Otherwise items will be
-     */
-    public Fridge(int id, boolean isLocal) {
-        this.content = new ItemList();
-        this.eaten = new ItemHistory();
-        this.trashed = new ItemHistory();
-        this.isLocal = isLocal;
-        this.queue = null;
-        this.id = id;
-    }
 
     /**
      * A constructor that initializes RequestQueue and Fridge ID. It by default stores all items remotely
@@ -70,7 +49,6 @@ public class Fridge {
      *              or http://localhost:300/fridge/id
      */
     public Fridge(RequestQueue queue, SharedPreferences sharedPreferences, int id) {
-        this.isLocal = false;
         this.id = id;
         this.content = new ItemList();
         this.eaten = new ItemHistory();
@@ -106,17 +84,17 @@ public class Fridge {
                                 finishM = true;
                             } else if (ch == 'Y') {
                                 finishD = true;
-                            } else if (ch != 'M'){
+                            } else if (ch != 'M') {
                                 if (!finishM) {
                                     expM += ch;
-                                } else if (!finishD){
+                                } else if (!finishD) {
                                     expD += ch;
                                 } else {
                                     expY += ch;
                                 }
                             }
                         }
-                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD));
+                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM) - 1, Integer.parseInt(expD));
                         Date expDate = expCal.getTime();
                         it.setDateExpired(expDate);
                     }
@@ -136,17 +114,17 @@ public class Fridge {
                                 finishM = true;
                             } else if (ch == 'Y') {
                                 finishD = true;
-                            } else if (ch != 'M'){
+                            } else if (ch != 'M') {
                                 if (!finishM) {
                                     enterM += ch;
-                                } else if (!finishD){
+                                } else if (!finishD) {
                                     enterD += ch;
                                 } else {
                                     enterY += ch;
                                 }
                             }
                         }
-                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD));
+                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM) - 1, Integer.parseInt(enterD));
                         Date enterDate = enterCal.getTime();
                         it.setDateEntered(enterDate);
                     }
@@ -162,51 +140,6 @@ public class Fridge {
         } catch (Exception e) {
             System.out.println("ERROR");
         }
-
-        /*
-        // initializing history
-        try {
-            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/history";
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                    url, null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            //Success Callback
-                            try {
-                                JSONArray arr = response.getJSONArray("items");
-                                for (int i = 0; i < arr.length(); i++) {
-                                    String reason = arr.getJSONObject(i).getString("item");
-                                    Item it = new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item"));
-                                    if (reason.compareTo("eat") == 0) {
-                                        eaten.addItem(it);
-                                    } else if (reason.compareTo("trash") == 0) {
-                                        trashed.addItem(it);
-                                    } else {
-                                        System.out.println("Item was neither trashed nor eaten");
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                System.out.println("Error: Response doesn't have an object mapped to \'body\'");
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //Failure Callback
-                            System.out.println("Failed to post an item");
-                            System.out.println(error.getMessage());
-                        }
-                    });
-
-            queue.add(jsonObjReq);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
-        }
-
-         */
     }
 
     /**
@@ -243,17 +176,17 @@ public class Fridge {
                                                 finishM = true;
                                             } else if (ch == 'Y') {
                                                 finishD = true;
-                                            } else if (ch != 'M'){
+                                            } else if (ch != 'M') {
                                                 if (!finishM) {
                                                     expM += ch;
-                                                } else if (!finishD){
+                                                } else if (!finishD) {
                                                     expD += ch;
                                                 } else {
                                                     expY += ch;
                                                 }
                                             }
                                         }
-                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD));
+                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM) - 1, Integer.parseInt(expD));
                                         Date expDate = expCal.getTime();
                                         it.setDateExpired(expDate);
                                     }
@@ -273,17 +206,17 @@ public class Fridge {
                                                 finishM = true;
                                             } else if (ch == 'Y') {
                                                 finishD = true;
-                                            } else if (ch != 'M'){
+                                            } else if (ch != 'M') {
                                                 if (!finishM) {
                                                     enterM += ch;
-                                                } else if (!finishD){
+                                                } else if (!finishD) {
                                                     enterD += ch;
                                                 } else {
                                                     enterY += ch;
                                                 }
                                             }
                                         }
-                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD));
+                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM) - 1, Integer.parseInt(enterD));
                                         Date enterDate = enterCal.getTime();
                                         it.setDateEntered(enterDate);
                                     }
@@ -304,7 +237,7 @@ public class Fridge {
                             System.out.println("Failed to post an item");
                             System.out.println(error.getMessage());
                         }
-                    }){
+                    }) {
                 /** Passing some request headers* */
                 @Override
                 public Map getHeaders() throws AuthFailureError {
@@ -320,7 +253,35 @@ public class Fridge {
             System.out.println(e.getMessage());
             throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
         }
+    }
 
+    /**
+     * Retrieve all items from the server upon creating the fridge locally
+     */
+    public void initHistory(JSONObject response) {
+        try {
+            JSONArray arr = response.getJSONArray("items");
+            for (int i = 0; i < arr.length(); i++) {
+                String reason = arr.getJSONObject(i).getString("item");
+                Item it = new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item"));
+                if (reason.compareTo("eat") == 0) {
+                    eaten.addItem(it);
+                } else if (reason.compareTo("trash") == 0) {
+                    trashed.addItem(it);
+                } else {
+                    System.out.println("Item was neither trashed nor eaten");
+                }
+            }
+        } catch (JSONException e) {
+            System.out.println("Error: Response doesn't have an object mapped to \'body\'");
+        }
+
+    }
+
+    /**
+     * Retrieve all items from the server upon creating the fridge locally
+     */
+    public void initHistory() {
         // initializing history
         try {
             String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/history";
@@ -365,42 +326,6 @@ public class Fridge {
     }
 
     /**
-     * Add every item in the list to the content of this fridge
-     *
-     * @param list a list of items to be added
-     * @throws IllegalArgumentException Cannot set request queue to a local fridge.
-     *                                  Cannot set request queue if it was set already.
-     */
-    public void addItems(List<Item> list) throws IllegalArgumentException {
-        for (Item i : list) {
-            try {
-                this.addItem(i);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException();
-            }
-
-        }
-    }
-
-    /**
-     * Sets request queue if it hasn't been set yet.
-     *
-     * @param requestQueue RequestQueue that will be set to this fridge.
-     * @throws IllegalArgumentException Cannot set request queue to a local fridge.
-     *                                  Cannot set request queue if it was set already.
-     */
-    public void setRequestQueue(RequestQueue requestQueue) throws IllegalArgumentException {
-        if (isLocal) {
-            throw new IllegalArgumentException("A local fridge doesn't need Request Queue.");
-        }
-        if (queue != null) {
-            throw new IllegalArgumentException("A Request Queue has already been set.");
-        }
-
-        this.queue = requestQueue;
-    }
-
-    /**
      * Add an item to the fridge. Add the item to the server as well if the fridge stores items remotely.
      * Item will be generated automatically either by the server or the fridge.
      *
@@ -410,12 +335,8 @@ public class Fridge {
     public boolean addItem(final Item item) throws IllegalArgumentException {
         content.addItem(item);
         // TODO: change error checking
-        if (!isLocal && queue == null) {
+        if (queue == null) {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
-        }
-
-        if (isLocal) {
-            return false;
         }
 
         try {
@@ -427,17 +348,17 @@ public class Fridge {
             if (expiration != null) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(expiration);
-                postparams.put("expiration", "M"+(calendar.get(Calendar.MONTH)+1)
-                        + "D"+calendar.get(Calendar.DATE)+"Y"+calendar.get(Calendar.YEAR));
+                postparams.put("expiration", "M" + (calendar.get(Calendar.MONTH) + 1)
+                        + "D" + calendar.get(Calendar.DATE) + "Y" + calendar.get(Calendar.YEAR));
             }
             // post enter date calendar
             Date enter = item.getDateEntered();
             if (enter != null) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(enter);
-                postparams.put("enter", "M"+(calendar.get(Calendar.MONTH)+1)
-                        + "D"+calendar.get(Calendar.DATE)
-                        +"Y"+calendar.get(Calendar.YEAR));
+                postparams.put("enter", "M" + (calendar.get(Calendar.MONTH) + 1)
+                        + "D" + calendar.get(Calendar.DATE)
+                        + "Y" + calendar.get(Calendar.YEAR));
             }
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
                     url, postparams,
@@ -460,7 +381,7 @@ public class Fridge {
                             System.out.println("Failed to post an item");
                             System.out.println(error.getMessage());
                         }
-                    }){
+                    }) {
                 /** Passing some request headers* */
                 @Override
                 public Map getHeaders() throws AuthFailureError {
@@ -480,7 +401,8 @@ public class Fridge {
 
     /**
      * Removes the item with given id from the content of the fridge
-     * @param id item id
+     *
+     * @param id       item id
      * @param wasEaten if the item was eaten
      * @throws IllegalArgumentException
      */
@@ -492,12 +414,8 @@ public class Fridge {
             trashed.addItem(content.getItem(id));
         }
         content.removeItem(id);
-        if (!isLocal && queue == null) {
+        if (queue == null) {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
-        }
-
-        if (isLocal) {
-            return;
         }
 
         try {
@@ -524,7 +442,7 @@ public class Fridge {
                             System.out.println("Failed to delete an item");
                             System.out.println(error.getMessage());
                         }
-                    }){
+                    }) {
                 /** Passing some request headers* */
                 @Override
                 public Map getHeaders() throws AuthFailureError {
@@ -569,7 +487,7 @@ public class Fridge {
                             System.out.println("Failed to updated an item");
                             System.out.println(error.getMessage());
                         }
-                    }){
+                    }) {
                 /** Passing some request headers* */
                 @Override
                 public Map getHeaders() throws AuthFailureError {
@@ -588,6 +506,7 @@ public class Fridge {
 
     /**
      * get a list of items that expired before today
+     *
      * @param today today's date
      * @return list of expired items
      */
@@ -601,9 +520,10 @@ public class Fridge {
 
     /**
      * Adds a map of <String, Integer> as items into the fridge
+     *
      * @param m target map of <String, Integer> where string is the item description and integer is the item count
      */
-    public void addMapItems(Map<String, Integer> m){
+    public void addMapItems(Map<String, Integer> m) {
         for (Map.Entry<String, Integer> entry : m.entrySet()) {
             for (int i = 0; i < entry.getValue(); i++) {
                 addItem(new Item(entry.getKey()));
@@ -624,10 +544,12 @@ public class Fridge {
     }
 
 
-    public void reconstruct(int id) {
+    /*
+     * Reconstruct the fridge with id
+     * */
+    public void change(int id) {
         // reconstruct the fridge based on the id
     }
-
 
 }
 

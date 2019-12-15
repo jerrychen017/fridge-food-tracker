@@ -1,8 +1,10 @@
 package com.oosegroup.fridgefoodtracker.Activities;
+
 import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
@@ -15,7 +17,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.mikepenz.materialdrawer.Drawer;
@@ -35,6 +42,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     static Fridge fridge;
@@ -58,16 +66,17 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        setupNavDrawer(toolbar);
-
         this.sharedPreferences = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
         this.editor = this.sharedPreferences.edit();
 
+        setupNavDrawer(toolbar);
+
+
         this.queue = Volley.newRequestQueue(this);
-        this.fridge = new Fridge(queue, sharedPreferences, 0);
+        this.fridge = new Fridge(queue, sharedPreferences, this.sharedPreferences.getInt("fridge-id_cur", -1));
 
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
+        String fridgeHistoryString = getIntent().getExtras().getString("fridgeHistoryTag");
         try {
             if (fridgeDataString != null) {
                 JSONObject jsonObject = new JSONObject(fridgeDataString);
@@ -80,12 +89,23 @@ public class MainActivity extends AppCompatActivity {
             fridge.initFridge();
         }
 
+        try {
+            if (fridgeHistoryString != null) {
+                JSONObject jsonObject = new JSONObject(fridgeHistoryString);
+                fridge.initHistory(jsonObject);
+            } else {
+                fridge.initHistory();
+            }
+        } catch (JSONException e) {
+            System.out.println(e.toString());
+            fridge.initHistory();
+        }
 
-        if(ItemListController.getControllerMainActivity() == null) {
+        if (ItemListController.getControllerMainActivity() == null) {
             ItemListController.setControllerMainActivity(this);
         }
 
-        if(ItemListController.getControllerFridge() == null) {
+        if (ItemListController.getControllerFridge() == null) {
             ItemListController.setControllerFridge(this.fridge);
         }
 
@@ -96,32 +116,56 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupNavDrawer(Toolbar toolbar) {
 
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
-        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(1).withName("Recommendations");
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(0).withName("Logout");
+        PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(-3).withName("Create A Fridge");
+        PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(-2).withName("Logout");
+        PrimaryDrawerItem itemRecommend = new PrimaryDrawerItem().withIdentifier(-4).withName("Recommendations");
+
+
+        DrawerBuilder result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar);
+
+
+        for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
+            result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i).withName("Fridge " + (i + 1)), new DividerDrawerItem());
+        }
+
 
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 System.out.println(drawerItem);
-                if (drawerItem.getIdentifier() == 0) {
+                long identifier = drawerItem.getIdentifier();
+                if (identifier == -2) {
                     System.out.println("logging out");
                     logout();
-                } else if (drawerItem.getIdentifier() == 1) {
+
+                } else if (identifier == -3) {
+                    System.out.println("creating a fridge");
+                    createFridge();
+                } else if (identifier == -4) {
                     goToRecommendActivity();
+                } else {
+                    for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
+                        if (i == identifier) {
+                            System.out.println("changing fridge");
+                            changeFridge(i);
+                        }
+                    }
+
                 }
                 return false;
             }
         };
 
 
-        Drawer result = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item4, new DividerDrawerItem(), item3)
+        result.addDrawerItems(itemCreate, new DividerDrawerItem())
+                .addDrawerItems(itemRecommend, new DividerDrawerItem())
+                .addDrawerItems(itemLogout)
                 .withOnDrawerItemClickListener(onDrawerItemClickListener)
                 .build();
+
+//        Drawer resultBuilt = result.build();
     }
 
     @Override
@@ -134,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationManagerCompat notificationManger = this.notificationController.getManager();
         List<Notification> notifications = this.notificationController.getNotifications();
         int count = 1;
-        for(Notification notification : notifications) {
+        for (Notification notification : notifications) {
             System.out.println("for loop for each notification");
             notificationManger.notify(count, notification);
             count++;
@@ -143,10 +187,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public HashMap<String, List<String>>  createDetailsMap(Fridge fridge) {
+    public HashMap<String, List<String>> createDetailsMap(Fridge fridge) {
         LinkedHashMap<String, List<String>> detailsMap = new LinkedHashMap<>();
-        for(Item item : fridge.getContent().getItems()) {
+        for (Item item : fridge.getContent().getItems()) {
             List<String> curr = new ArrayList<String>();
             curr.add("Date Entered: " + item.getDateEntered());
             curr.add("Date Expires: " + item.getDateExpired());
@@ -156,10 +199,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enterManually(View view) {
-        if(this.manualEntryFragment == null) {
+        if (this.manualEntryFragment == null) {
             this.manualEntryFragment = ManualEntryFragment.newInstance();
         }
-        this.manualEntryFragment.show(getSupportFragmentManager(),"add_photo_dialog_fragment");
+        this.manualEntryFragment.show(getSupportFragmentManager(), "add_photo_dialog_fragment");
 
     }
 
@@ -188,8 +231,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void editItem(View view) {
         ItemListController.editItem(this.editEntryFragment.getView(),
-                    view,
-                    fridge, this);
+                view,
+                fridge, this);
     }
 
     @Override
@@ -233,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToRecommendActivity() {
-        Intent recommendActivityIntent = new Intent (this, RecommendActivity.class);
+        Intent recommendActivityIntent = new Intent(this, RecommendActivity.class);
         startActivity(recommendActivityIntent);
     }
 
@@ -242,9 +285,83 @@ public class MainActivity extends AppCompatActivity {
         startActivity(loginActivityIntent);
     }
 
+
+    public void createFridge() {
+        System.out.println("MainActivity: creating a fridge");
+        System.out.println("MainActivity: fridge ID arr size is " + sharedPreferences.getInt("fridge-id_size", -1));
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/user/f/new";
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            System.out.println("MainActivity: successfully created a fridge");
+                            try {
+                                int id = response.getInt("id");
+                                int size = sharedPreferences.getInt("fridge-id_size", -1);
+                                if (size == -1) {
+                                    System.out.println("Error occured when creating a new fridge");
+                                }
+                                editor.remove("fridge-id_size");
+                                editor.putInt("fridge-id_size", size + 1);
+                                editor.putInt("fridge-id_" + size, id);
+                                editor.remove("fridge-id_cur");
+                                editor.putInt("fridge-id_cur", id);
+                                editor.putBoolean("fridge-change", true);
+                                editor.commit();
+                                Intent splashActivityIntent = new Intent(MainActivity.this, SplashActivity.class);
+                                startActivity(splashActivityIntent);
+//                                changeFridge(size);
+                            } catch (JSONException e) {
+                                System.out.println("Error occurred when parsing json string");
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.out.println("Failed to create an item");
+                            System.out.println(error.getMessage());
+                        }
+                    }) {
+                /**
+                 * Passing some request headers*
+                 */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", sharedPreferences.getString("token", null));
+                    return headers;
+                }
+            };
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
+        }
+
+    }
+
     public static Fridge getFridge() {
         return fridge;
     }
 
-
+    public void changeFridge(int index) {
+        int id = sharedPreferences.getInt("fridge-id_" + index, -1);
+        System.out.println("changing fridge with current id " + id);
+        if (id == -1) {
+            System.out.println("Error occurred when changing the fridge");
+            return;
+        }
+        editor.remove("fridge-id_cur");
+        editor.putInt("fridge-id_cur", id);
+        editor.putBoolean("fridge-change", true);
+        editor.commit();
+        Intent splashActivityIntent = new Intent(MainActivity.this, SplashActivity.class);
+        startActivity(splashActivityIntent);
+    }
 }
