@@ -19,26 +19,59 @@ import com.oosegroup.fridgefoodtracker.R;
 
 import java.util.Date;
 
+/**
+ * Fragment that allows user to edit an item in the fridge
+ */
 public class EditEntryFragment extends BottomSheetDialogFragment {
 
+    // id of the item
     private int id;
+
+    // name of the item
     private String description;
+
+    // expiration date of the item
     private Date expDate;
 
-    private static final int REQUEST_CODE = 11; // Used to identify the result
+    // used to trigger the datepicker fragment
+    private static final int REQUEST_CODE = 11;
+
+    // selected date of the item
     private String selectedDate;
+
+    // edittext for entering date
     private EditText dateEntry;
 
+    /**
+     * A constructor that creates the EditEntry Fragment
+     * @param id the id of the item
+     * @param description the name of the item
+     * @param expDate the expiration date of the item
+     */
     public EditEntryFragment(int id, String description, Date expDate) {
         this.id = id;
         this.description = description;
         this.expDate = expDate;
     }
 
+    /**
+     * Returns a new instance of the EditEntry Fragment
+     * @param id the id of the item
+     * @param description the name of the item
+     * @param expDate the expiration date of the item
+     * @return a new instance of the EditEntry Fragment
+     */
     public static EditEntryFragment newInstance(int id, String description, Date expDate) {
         return new EditEntryFragment(id, description, expDate);
     }
 
+    /**
+     *
+     * @param inflater inflater for inflating the layout
+     * @param container container that holds the view
+     * @param savedInstanceState previously saved state of the parent activity
+     * @return the fragment view
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -74,6 +107,12 @@ public class EditEntryFragment extends BottomSheetDialogFragment {
         return view;
     }
 
+    /**
+     * Returns the result of the fragment
+     * @param requestCode for identifying the result
+     * @param resultCode for ok'ing the result
+     * @param data the data returned
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // check for the results
@@ -85,6 +124,11 @@ public class EditEntryFragment extends BottomSheetDialogFragment {
         }
     }
 
+    /**
+     * create view
+     * @param view view used
+     * @param savedInstanceState previous saved state of activity
+     */
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
