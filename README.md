@@ -42,7 +42,7 @@ npm start
 
 <h4>Manual Add Items</h4>
 
-![Manual_Add_Item_GIF](./docs/Pictures/manual_add_item_20191215.gif)
+![Manual_Add_Item_GIF](./docs/Pictures/manual_ad_item_20191215.gif)
 
 - We have a Date Picker to make it easy for you to input an expiration date
 - Expiration date defaults to tomorrow if you don't put one in
