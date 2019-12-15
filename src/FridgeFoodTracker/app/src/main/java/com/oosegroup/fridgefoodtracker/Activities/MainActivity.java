@@ -35,7 +35,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    Fridge fridge;
+    static Fridge fridge;
     public ItemListViewAdapter itemListViewAdapter;
     public ExpandableListView mainItemListView;
     public List<String> expandableListTitle;
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
         PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
+        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(1).withName("Recommendations");
         PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(0).withName("Logout");
 
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
@@ -97,16 +98,19 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(drawerItem);
                 if (drawerItem.getIdentifier() == 0) {
                     System.out.println("logging out");
-                    loggout();
+                    logout();
+                } else if (drawerItem.getIdentifier() == 1) {
+                    goToRecommendActivity();
                 }
                 return false;
             }
         };
 
+
         Drawer result = new DrawerBuilder()
                 .withActivity(this)
                 .withToolbar(toolbar)
-                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item3)
+                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item4, new DividerDrawerItem(), item3)
                 .withOnDrawerItemClickListener(onDrawerItemClickListener)
                 .build();
     }
@@ -212,15 +216,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void loggout() {
+    public void logout() {
         this.editor.clear();
         this.editor.commit();
         goToLoginActivity();
     }
 
+    private void goToRecommendActivity() {
+        Intent recommendActivityIntent = new Intent (this, RecommendActivity.class);
+        startActivity(recommendActivityIntent);
+    }
+
     private void goToLoginActivity() {
         Intent loginActivityIntent = new Intent(this, LoginActivity.class);
         startActivity(loginActivityIntent);
+    }
+
+    public static Fridge getFridge() {
+        return fridge;
     }
 
 
