@@ -433,14 +433,14 @@ public class Fridge {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
-                            System.out.println("Successfully deleted an item");
+                            System.out.println("Successfully deleted an item in remove");
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //Failure Callback
-                            System.out.println("Failed to delete an item");
+                            System.out.println("Failed to delete an item in remove");
                             System.out.println(error.getMessage());
                         }
                     }) {
