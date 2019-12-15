@@ -64,14 +64,15 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        setupNavDrawer(toolbar);
-
         this.sharedPreferences = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
         this.editor = this.sharedPreferences.edit();
 
+        setupNavDrawer(toolbar);
+
+
+
         this.queue = Volley.newRequestQueue(this);
-        this.fridge = new Fridge(queue, sharedPreferences, 0);
+        this.fridge = new Fridge(queue, sharedPreferences, this.sharedPreferences.getInt("fridge-id_cur", -1));
 
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
         String fridgeHistoryString = getIntent().getExtras().getString("fridgeHistoryTag");
@@ -109,20 +110,10 @@ public class MainActivity extends AppCompatActivity {
 
 //        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
 //        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
-        PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(0).withName("Create A Fridge");
-        PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(0).withName("Logout");
+        PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(-3).withName("Create A Fridge");
+        PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(-2).withName("Logout");
 
-        Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                System.out.println(drawerItem);
-                if (drawerItem.getIdentifier() == 0) {
-                    System.out.println("logging out");
-                    logout();
-                }
-                return false;
-            }
-        };
+
 
         DrawerBuilder result = new DrawerBuilder()
                 .withActivity(this)
@@ -130,8 +121,31 @@ public class MainActivity extends AppCompatActivity {
 
 
         for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
-            result.addDrawerItems(new PrimaryDrawerItem().withName("Fridge " + (i + 1)), new DividerDrawerItem());
+            result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i).withName("Fridge " + (i + 1)), new DividerDrawerItem());
         }
+
+        Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                System.out.println(drawerItem);
+                long identifier = drawerItem.getIdentifier();
+                if (identifier == -2) {
+                    System.out.println("logging out");
+                    logout();
+                } else if (identifier == -3) {
+                    System.out.println("creating a fridge");
+                    createFridge();
+                } else {
+                    for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
+                        if (i == identifier) {
+                            System.out.println("changing fridge");
+                            changeFridge(i);
+                        }
+                    }
+                }
+                return false;
+            }
+        };
 
         result.addDrawerItems(itemCreate)
                 .addDrawerItems(itemLogout)
@@ -252,6 +266,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createFridge() {
+        System.out.println("MainActivity: creating a fridge");
+        System.out.println("MainActivity: fridge ID arr size is " + sharedPreferences.getInt("fridge-id_size", -1));
         try {
             String url = "http://oose-fridgetracker.herokuapp.com/user/f/new";
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -260,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
+                            System.out.println("MainActivity: successfully created a fridge");
                             try {
                                 int id = response.getInt("id");
                                 int size = sharedPreferences.getInt("fridge-id_size", -1);
@@ -285,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //Failure Callback
-                            System.out.println("Failed to post an item");
+                            System.out.println("Failed to create an item");
                             System.out.println(error.getMessage());
                         }
                     }) {
@@ -307,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeFridge(int index) {
         int id = sharedPreferences.getInt("fridge-id_" + index, -1);
+        System.out.println("changing fridge with current id " + id);
         if (id == -1) {
             System.out.println("Error occurred when changing the fridge");
             return;

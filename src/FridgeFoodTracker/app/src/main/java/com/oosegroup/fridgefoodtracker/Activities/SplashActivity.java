@@ -37,13 +37,14 @@ public class SplashActivity extends AppCompatActivity {
 
         // checks if there exists a token and user is logged in
         if (this.pref.getString("token", null) != null
-                && this.pref.getBoolean("loggedIn", true)) {
+                && this.pref.getBoolean("loggedIn", false)) {
             System.out.println("splash: token exists");
             System.out.println("token is : " + this.pref.getString("token", null));
             // token is available, download fridge data and  go to MainActivity
             Handler handler = new Handler();
-            if (pref.getBoolean("fridge-change", true)) {
+            if (pref.getBoolean("fridge-change", false)) {
                 editor.remove("fridge-change");
+                editor.putBoolean("fridge-change", false);
                 editor.commit();
             } else {
                 downloadFrdigeIDs();
@@ -51,6 +52,7 @@ public class SplashActivity extends AppCompatActivity {
             handler.postDelayed(new Runnable() {
                 public void run() {
                     if (pref.getInt("fridge-id_size", -1) != 0) {
+//                        System.out.println("current fridge id is " + pref.getInt("fridge-id_cur", -1));
                         downloadFridgeData(pref.getInt("fridge-id_cur", -1));
                         downloadFridgeHistory(pref.getInt("fridge-id_cur", -1));
                     }
@@ -64,7 +66,7 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             System.out.println("token doesn't exist");
             System.out.println("token is " + this.pref.getString("token", null));
-            System.out.println("loggedIn is " + this.pref.getBoolean("loggedIn", true));
+            System.out.println("loggedIn is " + this.pref.getBoolean("loggedIn", false));
             // no token available, go to LoginActivity
             Intent loginActivityIntent = new Intent(this, LoginActivity.class);
             startActivity(loginActivityIntent);
