@@ -42,7 +42,12 @@ public class SplashActivity extends AppCompatActivity {
             System.out.println("token is : " + this.pref.getString("token", null));
             // token is available, download fridge data and  go to MainActivity
             Handler handler = new Handler();
-            downloadFrdigeIDs();
+            if (pref.getBoolean("fridge-change", true)) {
+                editor.remove("fridge-change");
+                editor.commit();
+            } else {
+                downloadFrdigeIDs();
+            }
             handler.postDelayed(new Runnable() {
                 public void run() {
                     if (pref.getInt("fridge-id_size", -1) != 0) {
@@ -70,7 +75,6 @@ public class SplashActivity extends AppCompatActivity {
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         mainActivityIntent.putExtra("fridgeDataTag", jsonStringData);
         mainActivityIntent.putExtra("fridgeHistoryTag", jsonStringHistory);
-        mainActivityIntent.putExtra("frdigeIDsTag", jsonFridgeIDs);
         startActivity(mainActivityIntent);
     }
 
@@ -212,6 +216,4 @@ public class SplashActivity extends AppCompatActivity {
             throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
         }
     }
-
-
 }

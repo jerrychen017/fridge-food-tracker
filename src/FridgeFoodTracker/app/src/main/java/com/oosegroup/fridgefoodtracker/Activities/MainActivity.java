@@ -13,7 +13,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.mikepenz.materialdrawer.Drawer;
@@ -33,6 +38,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     Fridge fridge;
@@ -66,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         this.fridge = new Fridge(queue, sharedPreferences, 0);
 
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
-        String frdigeIDsTagString = getIntent().getExtras().getString("frdigeIDsTag");
+        String fridgeHistoryString = getIntent().getExtras().getString("fridgeHistoryTag");
         try {
             if (fridgeDataString != null) {
                 JSONObject jsonObject = new JSONObject(fridgeDataString);
@@ -80,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         try {
-            if (frdigeIDsTagString != null) {
-                JSONObject jsonObject = new JSONObject(frdigeIDsTagString);
+            if (fridgeHistoryString != null) {
+                JSONObject jsonObject = new JSONObject(fridgeHistoryString);
                 fridge.initHistory(jsonObject);
             } else {
                 fridge.initHistory();
@@ -237,6 +243,70 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createFridge() {
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/user/f/new";
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            try {
+                                int id =  response.getInt("id");
+                                int size = sharedPreferences.getInt("fridge-id_size", -1);
+                                if (size == -1) {
+                                    System.out.println("Error occured when creating a new fridge");
+                                }
+                                editor.remove("fridge-id_size");
+                                editor.putInt("fridge-id_size", size + 1);
+                                editor.putInt("fridge-id_" + size, id);
+                                editor.remove("fridge-id_cur");
+                                editor.putInt("fridge-id_cur", id);
+                                editor.putBoolean("fridge-change", true);
+                                editor.commit();
+                                Intent splashActivityIntent = new Intent(MainActivity.this, SplashActivity.class);
+                                startActivity(splashActivityIntent);
+//                                changeFridge(size);
+                            } catch (JSONException e) {
+                                System.out.println("Error occurred when parsing json string");
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.out.println("Failed to post an item");
+                            System.out.println(error.getMessage());
+                        }
+                    }) {
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", sharedPreferences.getString("token", null));
+                    return headers;
+                }
+            };
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
+        }
+    }
 
+    public void changeFridge(int index) {
+        int id = sharedPreferences.getInt("fridge-id_" + index, -1);
+        if (id == -1) {
+            System.out.println("Error occurred when changing the fridge");
+            return;
+        }
+        editor.remove("fridge-id_cur");
+        editor.putInt("fridge-id_cur", id);
+        editor.putBoolean("fridge-change", true);
+        editor.commit();
+        Intent splashActivityIntent = new Intent(MainActivity.this, SplashActivity.class);
+        startActivity(splashActivityIntent);
     }
 }
