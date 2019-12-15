@@ -868,7 +868,7 @@ public class CameraSource {
                                             Log.d("RESPONSE", response.toString());
                                             try {
                                                 JSONObject responseJSON = new JSONObject(response);
-                                                if(responseJSON.getJSONArray("items").getJSONObject(0) != null){
+                                                if(responseJSON.getJSONArray("items").length() != 0){
                                                     Log.d("RESPONSE", "Products found");
                                                     JSONArray products = responseJSON.getJSONArray("items");
                                                     String productName = products.getJSONObject(0).getString("item");
