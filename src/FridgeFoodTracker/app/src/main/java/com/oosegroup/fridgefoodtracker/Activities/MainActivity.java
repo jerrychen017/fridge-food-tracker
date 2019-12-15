@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         this.fridge = new Fridge(queue, sharedPreferences, 0);
 
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
+        String frdigeIDsTagString = getIntent().getExtras().getString("frdigeIDsTag");
         try {
             if (fridgeDataString != null) {
                 JSONObject jsonObject = new JSONObject(fridgeDataString);
@@ -76,6 +77,18 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             System.out.println(e.toString());
             fridge.initFridge();
+        }
+
+        try {
+            if (frdigeIDsTagString != null) {
+                JSONObject jsonObject = new JSONObject(frdigeIDsTagString);
+                fridge.initHistory(jsonObject);
+            } else {
+                fridge.initHistory();
+            }
+        } catch (JSONException e) {
+            System.out.println(e.toString());
+            fridge.initHistory();
         }
 
 
@@ -97,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(drawerItem);
                 if (drawerItem.getIdentifier() == 0) {
                     System.out.println("logging out");
-                    loggout();
+                    logout();
                 }
                 return false;
             }
@@ -212,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void loggout() {
+    public void logout() {
         this.editor.clear();
         this.editor.commit();
         goToLoginActivity();
@@ -223,6 +236,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(loginActivityIntent);
     }
 
+    public void createFridge() {
 
-
+    }
 }

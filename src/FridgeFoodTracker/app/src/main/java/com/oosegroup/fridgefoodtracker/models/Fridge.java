@@ -32,34 +32,10 @@ public class Fridge {
     // stores all eaten items
     private ItemHistory eaten;
 
-
-
     // request queue passed to the fridge so that fridge can talk to server
     private RequestQueue queue;
 
-    /**
-     * Determines if the fridge store all its items locally. If false, all items will be stored
-     * the server as well.
-     */
-    private boolean isLocal;
     private SharedPreferences pref;
-
-
-    /**
-     * A constructor that only initializes Fridge id. Only store items locally.
-     * RequestQueue is set to null. If fridge is not a local fridge, RequestQueue has to be set later.
-     *
-     * @param id      Fridge ID
-     * @param isLocal True if only store all items locally. Otherwise items will be
-     */
-    public Fridge(int id, boolean isLocal) {
-        this.content = new ItemList();
-        this.eaten = new ItemHistory();
-        this.trashed = new ItemHistory();
-        this.isLocal = isLocal;
-        this.queue = null;
-        this.id = id;
-    }
 
     /**
      * A constructor that initializes RequestQueue and Fridge ID. It by default stores all items remotely
@@ -70,7 +46,6 @@ public class Fridge {
      *              or http://localhost:300/fridge/id
      */
     public Fridge(RequestQueue queue, SharedPreferences sharedPreferences, int id) {
-        this.isLocal = false;
         this.id = id;
         this.content = new ItemList();
         this.eaten = new ItemHistory();
@@ -162,51 +137,6 @@ public class Fridge {
         } catch (Exception e) {
             System.out.println("ERROR");
         }
-
-        /*
-        // initializing history
-        try {
-            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/history";
-            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
-                    url, null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            //Success Callback
-                            try {
-                                JSONArray arr = response.getJSONArray("items");
-                                for (int i = 0; i < arr.length(); i++) {
-                                    String reason = arr.getJSONObject(i).getString("item");
-                                    Item it = new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item"));
-                                    if (reason.compareTo("eat") == 0) {
-                                        eaten.addItem(it);
-                                    } else if (reason.compareTo("trash") == 0) {
-                                        trashed.addItem(it);
-                                    } else {
-                                        System.out.println("Item was neither trashed nor eaten");
-                                    }
-                                }
-                            } catch (JSONException e) {
-                                System.out.println("Error: Response doesn't have an object mapped to \'body\'");
-                            }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //Failure Callback
-                            System.out.println("Failed to post an item");
-                            System.out.println(error.getMessage());
-                        }
-                    });
-
-            queue.add(jsonObjReq);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
-        }
-
-         */
     }
 
     /**
@@ -365,39 +295,88 @@ public class Fridge {
     }
 
     /**
-     * Add every item in the list to the content of this fridge
-     *
-     * @param list a list of items to be added
-     * @throws IllegalArgumentException Cannot set request queue to a local fridge.
-     *                                  Cannot set request queue if it was set already.
+     * Retrieve all items from the server upon creating the fridge locally
      */
-    public void addItems(List<Item> list) throws IllegalArgumentException {
-        for (Item i : list) {
+    public void initHistory(JSONObject response) {
+        // initialize item list
+        try {
+            System.out.println("Successfully posted an item");
             try {
-                this.addItem(i);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException();
+                JSONArray arr = response.getJSONArray("items");
+                for (int i = 0; i < arr.length(); i++) {
+                    Item it = new Item(arr.getJSONObject(i).getInt("id"),
+                            arr.getJSONObject(i).getString("item"));
+                    // retrieve expiration date
+                    String expStr = arr.getJSONObject(i).getString("expiration");
+                    if (expStr != "null" && expStr != null) {
+                        Calendar expCal = Calendar.getInstance();
+                        boolean finishM = false;
+                        String expM = new String();
+                        boolean finishD = false;
+                        String expD = new String();
+                        String expY = new String();
+                        for (int j = 0; j < expStr.length(); j++) {
+                            char ch = expStr.charAt(j);
+                            if (ch == 'D') {
+                                finishM = true;
+                            } else if (ch == 'Y') {
+                                finishD = true;
+                            } else if (ch != 'M'){
+                                if (!finishM) {
+                                    expM += ch;
+                                } else if (!finishD){
+                                    expD += ch;
+                                } else {
+                                    expY += ch;
+                                }
+                            }
+                        }
+                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD));
+                        Date expDate = expCal.getTime();
+                        it.setDateExpired(expDate);
+                    }
+
+                    // retrieve enter date
+                    String enterStr = arr.getJSONObject(i).getString("enter");
+                    if (enterStr != "null" && enterStr != null) {
+                        Calendar enterCal = Calendar.getInstance();
+                        boolean finishM = false;
+                        String enterM = new String();
+                        boolean finishD = false;
+                        String enterD = new String();
+                        String enterY = new String();
+                        for (int j = 0; j < enterStr.length(); j++) {
+                            char ch = enterStr.charAt(j);
+                            if (ch == 'D') {
+                                finishM = true;
+                            } else if (ch == 'Y') {
+                                finishD = true;
+                            } else if (ch != 'M'){
+                                if (!finishM) {
+                                    enterM += ch;
+                                } else if (!finishD){
+                                    enterD += ch;
+                                } else {
+                                    enterY += ch;
+                                }
+                            }
+                        }
+                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD));
+                        Date enterDate = enterCal.getTime();
+                        it.setDateEntered(enterDate);
+                    }
+
+
+                    content.addItem(it);
+
+                }
+            } catch (JSONException e) {
+                System.out.println("Error: Response doesn't have an object mapped to \'body\'");
             }
 
+        } catch (Exception e) {
+            System.out.println("ERROR");
         }
-    }
-
-    /**
-     * Sets request queue if it hasn't been set yet.
-     *
-     * @param requestQueue RequestQueue that will be set to this fridge.
-     * @throws IllegalArgumentException Cannot set request queue to a local fridge.
-     *                                  Cannot set request queue if it was set already.
-     */
-    public void setRequestQueue(RequestQueue requestQueue) throws IllegalArgumentException {
-        if (isLocal) {
-            throw new IllegalArgumentException("A local fridge doesn't need Request Queue.");
-        }
-        if (queue != null) {
-            throw new IllegalArgumentException("A Request Queue has already been set.");
-        }
-
-        this.queue = requestQueue;
     }
 
     /**
@@ -410,12 +389,8 @@ public class Fridge {
     public boolean addItem(final Item item) throws IllegalArgumentException {
         content.addItem(item);
         // TODO: change error checking
-        if (!isLocal && queue == null) {
+        if (queue == null) {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
-        }
-
-        if (isLocal) {
-            return false;
         }
 
         try {
@@ -492,12 +467,8 @@ public class Fridge {
             trashed.addItem(content.getItem(id));
         }
         content.removeItem(id);
-        if (!isLocal && queue == null) {
+        if (queue == null) {
             throw new IllegalStateException("Cannot add item to the server since the request queue hasn't been set yet");
-        }
-
-        if (isLocal) {
-            return;
         }
 
         try {
@@ -624,10 +595,12 @@ public class Fridge {
     }
 
 
-    public void reconstruct(int id) {
+    /*
+    * Reconstruct the fridge with id
+    * */
+    public void change(int id) {
         // reconstruct the fridge based on the id
     }
-
 
 }
 
