@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(-3).withName("Create A Fridge");
         PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(-2).withName("Logout");
         PrimaryDrawerItem itemRecommend = new PrimaryDrawerItem().withIdentifier(-4).withName("Recommendations");
-
+        long curFridgeIndex = 0;
 
         DrawerBuilder result = new DrawerBuilder()
                 .withActivity(this)
@@ -128,6 +128,9 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
             result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i).withName("Fridge " + (i + 1)), new DividerDrawerItem());
+            if (sharedPreferences.getInt("fridge-id_" + i, -1) == sharedPreferences.getInt("fridge-id_cur", -1)) {
+                curFridgeIndex = i;
+            }
         }
 
 
@@ -154,6 +157,8 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                 }
+
+//                .setSelection(curFridgeIndex);
                 return false;
             }
         };
@@ -162,10 +167,10 @@ public class MainActivity extends AppCompatActivity {
         result.addDrawerItems(itemCreate, new DividerDrawerItem())
                 .addDrawerItems(itemRecommend, new DividerDrawerItem())
                 .addDrawerItems(itemLogout)
-                .withOnDrawerItemClickListener(onDrawerItemClickListener)
-                .build();
+                .withOnDrawerItemClickListener(onDrawerItemClickListener);
 
-//        Drawer resultBuilt = result.build();
+        Drawer resultBuilt = result.build();
+        resultBuilt.setSelection(curFridgeIndex, false);
     }
 
     @Override
