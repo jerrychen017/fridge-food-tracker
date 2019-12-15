@@ -6,11 +6,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 
-import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

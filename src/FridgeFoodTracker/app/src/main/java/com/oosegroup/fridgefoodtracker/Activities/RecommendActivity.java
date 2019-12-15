@@ -27,6 +27,7 @@ import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.Fridge;
 import com.oosegroup.fridgefoodtracker.models.Item;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class RecommendActivity extends AppCompatActivity {
 
     ArrayAdapter<String> adapter;
     MainActivity mainActivity;
-    SharedPreferences pref;
+    SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String jsonString;
 
@@ -48,8 +49,8 @@ public class RecommendActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend);
 
-        this.pref = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
-        this.editor = this.pref.edit();
+        this.sharedPreferences = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
+        this.editor = this.sharedPreferences.edit();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,6 +59,7 @@ public class RecommendActivity extends AppCompatActivity {
 
 
         Fridge fridge = mainActivity.getFridge();
+        System.out.println(fridge.getID());
         List<Item> eatenItems = fridge.recommend();
         List<String> eatenString = new ArrayList<>();
         for (Item i: eatenItems) {
@@ -70,31 +72,54 @@ public class RecommendActivity extends AppCompatActivity {
 
     private void setupNavDrawer(Toolbar toolbar) {
 
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Fridge 1");
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
-        PrimaryDrawerItem item4 = new PrimaryDrawerItem().withIdentifier(4).withName("Recommendations");
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(3).withName("Logout");
+        PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(0).withName("Create A Fridge");
+        PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(1).withName("Logout");
+        PrimaryDrawerItem itemRecommend = new PrimaryDrawerItem().withIdentifier(2).withName("Recommendations");
+
+        DrawerBuilder result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar);
+
+
+        for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
+            result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i+3).withName("Fridge " + (i + 1)), new DividerDrawerItem());
+        }
+
 
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 System.out.println(drawerItem);
-                if (drawerItem.getIdentifier() == 3) {
+                long identifier = drawerItem.getIdentifier();
+                if (identifier == 1) {
                     System.out.println("logging out");
                     logout();
-                } else if (drawerItem.getIdentifier() == 1) {
-                    updateData();
+
+                } else if (identifier == 0) {
+                    System.out.println("creating a fridge");
+                    createFridge();
+                } else {
+                    for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
+                        if (i+3 == identifier) {
+                            System.out.println("changing fridge");
+                            changeFridge(i);
+                        }
+                    }
+
                 }
+
                 return false;
             }
         };
 
-        Drawer result = new DrawerBuilder()
-                .withActivity(this)
-                .withToolbar(toolbar)
-                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item4, new DividerDrawerItem(), item3)
-                .withOnDrawerItemClickListener(onDrawerItemClickListener)
-                .build();
+
+        result.addDrawerItems(itemCreate, new DividerDrawerItem())
+                .addDrawerItems(itemRecommend, new DividerDrawerItem())
+                .addDrawerItems(itemLogout)
+                .withOnDrawerItemClickListener(onDrawerItemClickListener);
+
+        Drawer resultBuilt = result.build();
+        resultBuilt.setSelection(2, false);
     }
 
 
@@ -107,15 +132,14 @@ public class RecommendActivity extends AppCompatActivity {
 
     private void updateData() {
 
-        this.pref = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
+        this.sharedPreferences = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
 
         // checks if there exists a token and user is logged in
-        if (this.pref.getString("token", null) != null
-                && this.pref.getBoolean("loggedIn", true)) {
+        if (this.sharedPreferences.getString("token", null) != null
+                && this.sharedPreferences.getBoolean("loggedIn", true)) {
             System.out.println("splash: token exists");
-            System.out.println("token is : " + this.pref.getString("token", null));
+            System.out.println("token is : " + this.sharedPreferences.getString("token", null));
             // token is available, download fridge data and  go to MainActivity
-//            downloadFridgeData(this.pref.getInt("fridge-id", -1));
 
             downloadFridgeData(0);
             Handler handler = new Handler();
@@ -126,8 +150,8 @@ public class RecommendActivity extends AppCompatActivity {
             }, 500);
         } else {
             System.out.println("token doesn't exist");
-            System.out.println("token is " + this.pref.getString("token", null));
-            System.out.println("loggedIn is " + this.pref.getBoolean("loggedIn", true));
+            System.out.println("token is " + this.sharedPreferences.getString("token", null));
+            System.out.println("loggedIn is " + this.sharedPreferences.getBoolean("loggedIn", true));
             // no token available, go to LoginActivity
             Intent loginActivityIntent = new Intent(this, LoginActivity.class);
             startActivity(loginActivityIntent);
@@ -173,7 +197,7 @@ public class RecommendActivity extends AppCompatActivity {
                 public Map getHeaders() throws AuthFailureError {
                     HashMap headers = new HashMap();
                     headers.put("Content-Type", "application/json");
-                    headers.put("authorization", pref.getString("token", null));
+                    headers.put("authorization", sharedPreferences.getString("token", null));
                     return headers;
                 }
             };
@@ -186,6 +210,81 @@ public class RecommendActivity extends AppCompatActivity {
         }
 
         return this.jsonString;
+    }
+
+    public void changeFridge(int index) {
+        int id = sharedPreferences.getInt("fridge-id_" + index, -1);
+        System.out.println("changing fridge with current id " + id);
+        if (id == -1) {
+            System.out.println("Error occurred when changing the fridge");
+            return;
+        }
+        editor.remove("fridge-id_cur");
+        editor.putInt("fridge-id_cur", id);
+        editor.putBoolean("fridge-change", true);
+        editor.commit();
+        Intent splashActivityIntent = new Intent(RecommendActivity.this, SplashActivity.class);
+        startActivity(splashActivityIntent);
+    }
+
+    public void createFridge() {
+        System.out.println("MainActivity: creating a fridge");
+        System.out.println("MainActivity: fridge ID arr size is " + sharedPreferences.getInt("fridge-id_size", -1));
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/user/f/new";
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            System.out.println("MainActivity: successfully created a fridge");
+                            try {
+                                int id = response.getInt("id");
+                                int size = sharedPreferences.getInt("fridge-id_size", -1);
+                                if (size == -1) {
+                                    System.out.println("Error occured when creating a new fridge");
+                                }
+                                editor.remove("fridge-id_size");
+                                editor.putInt("fridge-id_size", size + 1);
+                                editor.putInt("fridge-id_" + size, id);
+                                editor.remove("fridge-id_cur");
+                                editor.putInt("fridge-id_cur", id);
+                                editor.putBoolean("fridge-change", true);
+                                editor.commit();
+                                Intent splashActivityIntent = new Intent(RecommendActivity.this, SplashActivity.class);
+                                startActivity(splashActivityIntent);
+                            } catch (JSONException e) {
+                                System.out.println("Error occurred when parsing json string");
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.out.println("Failed to create an item");
+                            System.out.println(error.getMessage());
+                        }
+                    }) {
+                /**
+                 * Passing some request headers*
+                 */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", sharedPreferences.getString("token", null));
+                    return headers;
+                }
+            };
+            RequestQueue queue = Volley.newRequestQueue(this);
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
+        }
+
     }
 }
 

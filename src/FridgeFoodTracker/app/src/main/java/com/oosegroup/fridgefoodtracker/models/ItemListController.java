@@ -76,7 +76,6 @@ public class ItemListController {
 
 
     public static void editItem(View view, View editEnterBtnView, Fridge fridge, MainActivity mainActivity) {
-        // Item currItem = fridge.getContent().getItem(Integer.parseInt(view.getTag().toString()));
         Log.d("ItemListController", "EDIT: " + editEnterBtnView.getTag(R.id.TAG_ID).toString());
         EditText mEdit = (EditText) view.findViewById(R.id.edit_item_text_input);
         EditText dEdit = (EditText) view.findViewById(R.id.edit_item_date_input);

@@ -9,8 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
     public List<String> expandableListTitle;
     public HashMap<String, List<String>> detailsMap;
     RequestQueue queue;
-    Button start_camera_button;
     NotificationController notificationController;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -116,10 +113,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupNavDrawer(Toolbar toolbar) {
 
-        PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(-3).withName("Create A Fridge");
-        PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(-2).withName("Logout");
-        PrimaryDrawerItem itemRecommend = new PrimaryDrawerItem().withIdentifier(-4).withName("Recommendations");
-        long curFridgeIndex = 0;
+        PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(0).withName("Create A Fridge");
+        PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(1).withName("Logout");
+        PrimaryDrawerItem itemRecommend = new PrimaryDrawerItem().withIdentifier(2).withName("Recommendations");
+        long curIdentifier = 0;
 
         DrawerBuilder result = new DrawerBuilder()
                 .withActivity(this)
@@ -127,30 +124,41 @@ public class MainActivity extends AppCompatActivity {
 
 
         for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
-            result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i).withName("Fridge " + (i + 1)), new DividerDrawerItem());
+            result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i+3).withName("Fridge " + (i + 1)), new DividerDrawerItem());
             if (sharedPreferences.getInt("fridge-id_" + i, -1) == sharedPreferences.getInt("fridge-id_cur", -1)) {
-                curFridgeIndex = i;
+                curIdentifier = i+3;
             }
         }
 
-
+        setTitle("Fridge " + (curIdentifier - 2));
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 System.out.println(drawerItem);
                 long identifier = drawerItem.getIdentifier();
-                if (identifier == -2) {
+                if (identifier == 1) {
                     System.out.println("logging out");
                     logout();
 
-                } else if (identifier == -3) {
+                } else if (identifier == 0) {
                     System.out.println("creating a fridge");
                     createFridge();
-                } else if (identifier == -4) {
+                } else if (identifier == 2) {
                     goToRecommendActivity();
                 } else {
+                    int tempID = -1;
                     for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
-                        if (i == identifier) {
+                        if (sharedPreferences.getInt("fridge-id_" + i, -1) == sharedPreferences.getInt("fridge-id_cur", -1)) {
+                            tempID = i+3;
+                        }
+                        if (tempID == identifier) {
+                            return false;
+                        }
+
+                    }
+
+                    for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
+                        if (i+3 == identifier) {
                             System.out.println("changing fridge");
                             changeFridge(i);
                         }
@@ -158,7 +166,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-//                .setSelection(curFridgeIndex);
                 return false;
             }
         };
@@ -170,8 +177,9 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(onDrawerItemClickListener);
 
         Drawer resultBuilt = result.build();
-        resultBuilt.setSelection(curFridgeIndex, false);
+        resultBuilt.setSelection(curIdentifier, false);
     }
+
 
     @Override
     protected void onResume() {
@@ -230,8 +238,6 @@ public class MainActivity extends AppCompatActivity {
 
         this.editEntryFragment.show(getSupportFragmentManager(), "edit_item_dialog_fragment");
 
-        // EditText expirationDate = (EditText) view.findViewById(R.id.edit_item_date_input);
-        // expirationDate.setText(currItem.getDateExpired().toString());
     }
 
     public void editItem(View view) {
@@ -318,7 +324,6 @@ public class MainActivity extends AppCompatActivity {
                                 editor.commit();
                                 Intent splashActivityIntent = new Intent(MainActivity.this, SplashActivity.class);
                                 startActivity(splashActivityIntent);
-//                                changeFridge(size);
                             } catch (JSONException e) {
                                 System.out.println("Error occurred when parsing json string");
                             }

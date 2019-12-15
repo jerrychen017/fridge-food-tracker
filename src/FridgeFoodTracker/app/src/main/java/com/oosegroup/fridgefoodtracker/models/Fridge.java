@@ -265,6 +265,7 @@ public class Fridge {
                 String reason = arr.getJSONObject(i).getString("item");
                 Item it = new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item"));
                 if (reason.compareTo("eat") == 0) {
+                    System.out.println("in eaten");
                     eaten.addItem(it);
                 } else if (reason.compareTo("trash") == 0) {
                     trashed.addItem(it);
@@ -432,14 +433,14 @@ public class Fridge {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
-                            System.out.println("Successfully deleted an item");
+                            System.out.println("Successfully deleted an item in remove");
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //Failure Callback
-                            System.out.println("Failed to delete an item");
+                            System.out.println("Failed to delete an item in remove");
                             System.out.println(error.getMessage());
                         }
                     }) {
@@ -543,6 +544,9 @@ public class Fridge {
         return this.eaten.recommend();
     }
 
+    public int getID() {
+        return this.id;
+    }
 
     /*
      * Reconstruct the fridge with id

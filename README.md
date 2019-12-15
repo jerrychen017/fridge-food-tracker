@@ -28,48 +28,62 @@ npm start
 
 <h2>3) Using the app </h2>
 
-<h4>Overview</h4>
+<h4>Register and Login New User</h4> 
 
-![App_Screenshot](./docs/Pictures/app_screenshot_20191119.png)
-- Press the floating action button in the bottom right to open the Items Entry fragment
-  - The floating action button might be hidden behind the keyboard
-- What you see on your emulator should match what you see on our Heroku server.
-  - You will need to refresh your web browser to see the updated database in browser.
-  
-  
-<h4>Adding Items</h4>
+![Register_User_GIF](./docs/Pictures/register_login_20191215.gif)
 
-![Open_Adding_Items_GIF](./docs/Pictures/open_manual_entry.gif)
+<h4>Login Existing User</h4>
 
-![Enter_Adding_Items_GIF](./docs/Pictures/manual_entry_cheese.gif)
+![Login_Existing_User_GIF](./docs/Pictures/login_existing_20191215.gif)
+
+<h4>Create Fridge</h4>  
+
+![Create_Fridge_GIF](./docs/Pictures/create_fridge_20191215.gif)
+
+<h4>Manual Add Items</h4>
+
+![Manual_Add_Item_GIF](./docs/Pictures/manual_ad_item_20191215.gif)
 
 - We have a Date Picker to make it easy for you to input an expiration date
 - Expiration date defaults to tomorrow if you don't put one in
 
+<h4>Use Camera to Add Items</h4>
 
-<h4>Deleting Items</h4>
+<h4>Eating Items</h4>
 
-![Deleting_Items_GIF](./docs/Pictures/delete_items.gif)
-- Delete items by first expanding them, and then hitting delete
+![Eat_Item_GIF](./docs/Pictures/eat_item_20191215.gif)
+- Eat items by first expanding them, and then hitting eat
+- Eaten items will be stored for recommendation data
 
+<h4>Trashing Items</h4>
+
+![Trash_Item_GIF](./docs/Pictures/trash_item_20191215.gif)
+- Eat items by first expanding them, and then hitting trash
 
 <h4>Editing Items</h4>
 
-![Editing_Items_GIF](./docs/Pictures/edit_entry_cheese.gif)
+![Edit_Item_GIF](./docs/Pictures/edit_item_20191215.gif)
 - Put in a new name and a new expiration date
 
 
 <h4>Sorting Items</h4>
 
-![Sorting_Items_GIF](./docs/Pictures/sort_expiration.gif)
+![Sort_Expiration_GIF](./docs/Pictures/sort_expiration_20191215.gif)
 - Options in the top right corner
 
+<h4>Switching Fridges</h4>
 
-<h4>To Be Implemented in Interation 6</h4>
+![Switching_Fridges_GIF](./docs/Pictures/switch_fridge_20191215.gif)
 
-- Set up the Date Picker for Editing Items
-- Maintain sorted order when Adding Items
+<h4>Displaying Recommendations</h4>
 
+<h4>Displaying Notifications</h4>
+
+![Display_Fridges_GIF](./docs/Pictures/expiration_notification_20191215.gif)
+
+<h4>Logout</h4>
+
+![Logout_GIF](./docs/Pictures/logout_20191215.gif)
 
 <h2>Troubleshooting</h2>
 
@@ -86,28 +100,5 @@ npm start
   
 - My configuration isn't working
   - Create an Android app with Module 'app'
-
-
-<h2>ITERATION 2</h2>
-
-![App_Server_Screenshot](./docs/Pictures/App_Server_Screenshot_2019_10-08.png)
-
-We've implemented manual data entry as our first feature.
-
-We have unit tests written for Fridge, ItemList, and Item, and we have functional tests in Postman for our server.
-
-We have begun implementation of barcode-reading, and our progress can be seen in BarcodeScanner project. We will integrate the scanner in iteration 3. 
-
-<h2>ITERATION 3</h2>
-
-We've begun the modification of tableview for Fridge, showing the item as well as a button for deletion. We plan to have the button to get more info about the food item, as well as add some sort of progress bar showing the freshness of the item.
-
-We've merged OCR functionality with the main app.
-
-We've remodeled our item class to work better with our server.
-
-![App_Screenshot_Iteration3](./docs/Pictures/app_screenshot_10.22.2019.PNG)
-
-Due to how Heroku works, the majority of the server work has been splintered off to the server_deployed branch as Heroku needs the deployed application to be at the highest directory level of the project. You will find the latest server code and commits on the server on that branch.
 
 
