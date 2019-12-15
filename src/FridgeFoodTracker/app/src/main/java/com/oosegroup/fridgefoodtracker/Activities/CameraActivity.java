@@ -4,6 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.CameraResources.BarcodeScanningProcessor;
 import com.oosegroup.fridgefoodtracker.CameraResources.CameraSource;
 import com.oosegroup.fridgefoodtracker.CameraResources.CameraSourcePreview;
@@ -20,6 +27,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +44,12 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOption
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.oosegroup.fridgefoodtracker.models.Fridge;
+import com.oosegroup.fridgefoodtracker.models.ItemListController;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -55,7 +69,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     private CameraSource cameraSource = null;
     private CameraSourcePreview preview;
     private GraphicOverlay graphicOverlay;
-
+    TextRecognitionProcessor imageProcessor = new TextRecognitionProcessor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -217,8 +231,58 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d("CAMERA ACTIVITY","DESTROYED");
+        Log.d("IMAGE PROCESSOR", imageProcessor.getItemsDict().keySet().toString());
+        for(String s : imageProcessor.getItemsDict().keySet()) {
+            Log.d("IMAGE PROCESSOR", "KEY: " + s);
+            final String line = s;
+            RequestQueue queue = Volley.newRequestQueue(this);
+            String url = "https://oose-fridgetracker.herokuapp.com/barcode/i/" + s;
+            Log.d("OCR", "Sending request: " + url);
+// Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                        public void onResponse(String response) {
+                            // Display the first 500 characters of the response string.
+                            Log.d("RESPONSE", response);
+                            try {
+                                JSONObject responseJSON = new JSONObject(response);
+                                Log.d("RESPONSE", "ITEMS: " + responseJSON.getJSONArray("items") + " " + responseJSON.getJSONArray("items").length());
+                                if (responseJSON.getJSONArray("items").length() != 0) {
+                                    Log.d("RESPONSE", "Products found");
+                                    JSONArray products = responseJSON.getJSONArray("items");
+                                    String productName = products.getJSONObject(0).getString("item");
+                                    long expiration = products.getJSONObject(0).getLong("expiration");
+                                    Log.d("RESPONSE", "Product Name: " + productName);
+                                    ItemListController.inputItemWithLifespan(MainActivity.getFridge(), productName, expiration);
+                                } else {
+                                    Log.d("RESPONSE", "Products not found: " + line);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("RESPONSE ERROR", error.toString());
+                    }
+            });
+
+// Add the request to the RequestQueue.
+                queue.add(stringRequest);
+        }
         if (cameraSource != null) {
             cameraSource.release();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    ItemListController.callBuildExpandable();
+                }
+            }, 500);
+
         }
     }
 
@@ -314,8 +378,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
      */
 
         File pictureFile = getOutputMediaFileTest();
-
-        TextRecognitionProcessor imageProcessor = new TextRecognitionProcessor();
+        imageProcessor.activity = this;
         imageProcessor.process(image.getBitmap(), graphicOverlay);
         Bitmap bmp = image.getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

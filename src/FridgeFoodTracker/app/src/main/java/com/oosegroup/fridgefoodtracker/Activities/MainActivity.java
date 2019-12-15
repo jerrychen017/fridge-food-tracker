@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -79,6 +81,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        if(ItemListController.getControllerMainActivity() == null) {
+            ItemListController.setControllerMainActivity(this);
+        }
+
+        if(ItemListController.getControllerFridge() == null) {
+            ItemListController.setControllerFridge(this.fridge);
+        }
 
         ItemListController.buildExpandableListAdapter(this, this.fridge);
         this.notificationController = new NotificationController(this, this.fridge);
@@ -113,6 +122,11 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item4, new DividerDrawerItem(), item3)
                 .withOnDrawerItemClickListener(onDrawerItemClickListener)
                 .build();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     public void sendNotifications() {
@@ -159,10 +173,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void trashItem(View view) {
         ItemListController.trashItem(view, fridge, this);
-    }
-
-    public void deleteItem(View view) {
-        ItemListController.deleteItem(view, fridge, this);
     }
 
     public void enterEditDetails(View view) {
@@ -238,4 +248,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    public static Fridge getFridge(){
+        return fridge;
+    }
 }

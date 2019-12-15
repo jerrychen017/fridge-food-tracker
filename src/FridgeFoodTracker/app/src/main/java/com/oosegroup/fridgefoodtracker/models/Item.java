@@ -56,6 +56,13 @@ public class Item {
         this.dateExpired = item.getDateExpired();
     }
 
+    public Item(int id, String description, long lifespan) {
+        this.dateEntered = new Date();
+        this.dateExpired = new Date(this.getDateEntered().getTime() + lifespan);
+        this.id = id;
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }

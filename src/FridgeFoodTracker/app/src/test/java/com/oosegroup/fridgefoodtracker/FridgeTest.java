@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class FridgeTest {
     @Test
     public void testGetContent() {
-        Fridge fridge = new Fridge();
+        Fridge fridge = new Fridge(0, true);
         Item item1 = new Item(1, "item1");
         Item item2 = new Item(2, "item2");
         fridge.addItem(item1);
