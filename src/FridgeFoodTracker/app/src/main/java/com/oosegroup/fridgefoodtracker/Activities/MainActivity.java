@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
@@ -82,11 +83,16 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(fridgeDataString);
                 fridge.initFridge(jsonObject);
             } else {
-                fridge.initFridge();
+                // prompt error
+                new AlertDialog.Builder(this)
+                        .setTitle("Error!")
+                        .setMessage("Username or password is empty")
+                        .setNegativeButton(android.R.string.ok, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         } catch (JSONException e) {
             System.out.println(e.toString());
-            fridge.initFridge();
         }
 
         try {
@@ -94,11 +100,16 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(fridgeHistoryString);
                 fridge.initHistory(jsonObject);
             } else {
-                fridge.initHistory();
+                // prompt error
+                new AlertDialog.Builder(this)
+                        .setTitle("Error!")
+                        .setMessage("Username or password is empty")
+                        .setNegativeButton(android.R.string.ok, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         } catch (JSONException e) {
             System.out.println(e.toString());
-            fridge.initHistory();
         }
 
         if (ItemListController.getControllerMainActivity() == null) {
