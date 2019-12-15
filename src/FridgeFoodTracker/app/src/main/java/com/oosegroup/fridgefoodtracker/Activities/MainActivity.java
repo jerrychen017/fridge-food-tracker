@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
+        setTitle("Fridge " + (curIdentifier - 2));
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
@@ -149,6 +149,17 @@ public class MainActivity extends AppCompatActivity {
                 } else if (identifier == 2) {
                     goToRecommendActivity();
                 } else {
+                    int tempID = -1;
+                    for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
+                        if (sharedPreferences.getInt("fridge-id_" + i, -1) == sharedPreferences.getInt("fridge-id_cur", -1)) {
+                            tempID = i+3;
+                        }
+                        if (tempID == identifier) {
+                            return false;
+                        }
+
+                    }
+
                     for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
                         if (i+3 == identifier) {
                             System.out.println("changing fridge");
@@ -172,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         Drawer resultBuilt = result.build();
         resultBuilt.setSelection(curIdentifier, false);
     }
+
 
     @Override
     protected void onResume() {

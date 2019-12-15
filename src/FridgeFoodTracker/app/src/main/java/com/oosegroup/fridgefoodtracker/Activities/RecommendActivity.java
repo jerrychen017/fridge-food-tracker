@@ -59,6 +59,8 @@ public class RecommendActivity extends AppCompatActivity {
 
 
         Fridge fridge = mainActivity.getFridge();
+        System.out.println(fridge.getID());
+        //System.out.println(fridge.);
         List<Item> eatenItems = fridge.recommend();
         List<String> eatenString = new ArrayList<>();
         for (Item i: eatenItems) {

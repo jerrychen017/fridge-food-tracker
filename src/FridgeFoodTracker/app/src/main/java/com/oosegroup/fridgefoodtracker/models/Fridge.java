@@ -265,6 +265,7 @@ public class Fridge {
                 String reason = arr.getJSONObject(i).getString("item");
                 Item it = new Item(arr.getJSONObject(i).getInt("id"), arr.getJSONObject(i).getString("item"));
                 if (reason.compareTo("eat") == 0) {
+                    System.out.println("in eaten");
                     eaten.addItem(it);
                 } else if (reason.compareTo("trash") == 0) {
                     trashed.addItem(it);
@@ -543,6 +544,9 @@ public class Fridge {
         return this.eaten.recommend();
     }
 
+    public int getID() {
+        return this.id;
+    }
 
     /*
      * Reconstruct the fridge with id

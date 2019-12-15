@@ -59,7 +59,7 @@ public class SplashActivity extends AppCompatActivity {
                         downloadFridgeHistory(pref.getInt("fridge-id_cur", -1));
                     }
                 }
-            }, 500);
+            }, 1000);
             handler.postDelayed(new Runnable() {
                 public void run() {
                     goToMainActivity();
