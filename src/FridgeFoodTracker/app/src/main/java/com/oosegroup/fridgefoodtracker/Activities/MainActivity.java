@@ -116,10 +116,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupNavDrawer(Toolbar toolbar) {
 
-        PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(-3).withName("Create A Fridge");
-        PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(-2).withName("Logout");
-        PrimaryDrawerItem itemRecommend = new PrimaryDrawerItem().withIdentifier(-4).withName("Recommendations");
-        long curFridgeIndex = 0;
+        PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(0).withName("Create A Fridge");
+        PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(1).withName("Logout");
+        PrimaryDrawerItem itemRecommend = new PrimaryDrawerItem().withIdentifier(2).withName("Recommendations");
+        long curIdentifier = 0;
 
         DrawerBuilder result = new DrawerBuilder()
                 .withActivity(this)
@@ -127,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
-            result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i).withName("Fridge " + (i + 1)), new DividerDrawerItem());
+            result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i+3).withName("Fridge " + (i + 1)), new DividerDrawerItem());
             if (sharedPreferences.getInt("fridge-id_" + i, -1) == sharedPreferences.getInt("fridge-id_cur", -1)) {
-                curFridgeIndex = i;
+                curIdentifier = i+3;
             }
         }
 
@@ -139,18 +139,18 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 System.out.println(drawerItem);
                 long identifier = drawerItem.getIdentifier();
-                if (identifier == -2) {
+                if (identifier == 1) {
                     System.out.println("logging out");
                     logout();
 
-                } else if (identifier == -3) {
+                } else if (identifier == 0) {
                     System.out.println("creating a fridge");
                     createFridge();
-                } else if (identifier == -4) {
+                } else if (identifier == 2) {
                     goToRecommendActivity();
                 } else {
                     for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
-                        if (i == identifier) {
+                        if (i+3 == identifier) {
                             System.out.println("changing fridge");
                             changeFridge(i);
                         }
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 .withOnDrawerItemClickListener(onDrawerItemClickListener);
 
         Drawer resultBuilt = result.build();
-        resultBuilt.setSelection(curFridgeIndex, false);
+        resultBuilt.setSelection(curIdentifier, false);
     }
 
     @Override
