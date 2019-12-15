@@ -1,14 +1,10 @@
 package com.oosegroup.fridgefoodtracker.Activities;
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.content.Context;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.os.Handler;
@@ -17,19 +13,20 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import com.google.gson.JsonArray;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue queue;
     Button start_camera_button;
     NotificationController notificationController;
-
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     ManualEntryFragment manualEntryFragment;
     EditEntryFragment editEntryFragment;
     public String sortingState = "NONE";
@@ -57,11 +55,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setupNavDrawer(toolbar);
+
+        this.sharedPreferences = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
+        this.editor = this.sharedPreferences.edit();
+
         this.queue = Volley.newRequestQueue(this);
-        this.fridge = new Fridge(queue, 0);
+        this.fridge = new Fridge(queue, sharedPreferences, 0);
 
         String fridgeDataString = getIntent().getExtras().getString("fridgeDataTag");
         try {
@@ -81,6 +85,32 @@ public class MainActivity extends AppCompatActivity {
         ItemListController.buildExpandableListAdapter(this, this.fridge);
         this.notificationController = new NotificationController(this, this.fridge);
         sendNotifications();
+    }
+
+    private void setupNavDrawer(Toolbar toolbar) {
+
+        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
+        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
+        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(0).withName("Logout");
+
+        Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                System.out.println(drawerItem);
+                if (drawerItem.getIdentifier() == 0) {
+                    System.out.println("logging out");
+                    loggout();
+                }
+                return false;
+            }
+        };
+
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item3)
+                .withOnDrawerItemClickListener(onDrawerItemClickListener)
+                .build();
     }
 
     @Override
@@ -184,6 +214,19 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void loggout() {
+        this.editor.clear();
+        this.editor.commit();
+        goToLoginActivity();
+    }
+
+    private void goToLoginActivity() {
+        Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginActivityIntent);
+    }
+
+
 
     public static Fridge getFridge(){
         return fridge;

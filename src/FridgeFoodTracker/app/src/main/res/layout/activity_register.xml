@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".Activities.RegisterActivity">
 
     <EditText
         android:id="@+id/username"
@@ -26,7 +28,7 @@
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/ic_lock_24px"
         android:hint="Password"
-        android:inputType="textPersonName"/>
+        android:inputType="textPassword"/>
 
     <EditText
         android:id="@+id/confirm"
@@ -38,7 +40,7 @@
         android:layout_marginTop="20dp"
         android:drawableLeft="@drawable/ic_lock_24px"
         android:hint="Confirm Password"
-        android:inputType="textPersonName"/>
+        android:inputType="textPassword"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"

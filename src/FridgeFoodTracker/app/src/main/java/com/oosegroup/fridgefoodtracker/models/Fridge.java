@@ -1,24 +1,18 @@
 package com.oosegroup.fridgefoodtracker.models;
+import android.content.SharedPreferences;
 
-import android.content.Context;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.oosegroup.fridgefoodtracker.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +42,7 @@ public class Fridge {
      * the server as well.
      */
     private boolean isLocal;
+    private SharedPreferences pref;
 
 
     /**
@@ -74,13 +69,14 @@ public class Fridge {
      *              it can be accessed by http://10.0.2.2:3000/fridge/id (for running android emulator)
      *              or http://localhost:300/fridge/id
      */
-    public Fridge(RequestQueue queue, int id) {
+    public Fridge(RequestQueue queue, SharedPreferences sharedPreferences, int id) {
         this.isLocal = false;
         this.id = id;
         this.content = new ItemList();
         this.eaten = new ItemHistory();
         this.trashed = new ItemHistory();
         this.queue = queue;
+        this.pref = sharedPreferences;
     }
 
     /**
@@ -120,7 +116,7 @@ public class Fridge {
                                 }
                             }
                         }
-                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD)-1);
+                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD));
                         Date expDate = expCal.getTime();
                         it.setDateExpired(expDate);
                     }
@@ -150,7 +146,7 @@ public class Fridge {
                                 }
                             }
                         }
-                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD)-1);
+                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD));
                         Date enterDate = enterCal.getTime();
                         it.setDateEntered(enterDate);
                     }
@@ -257,7 +253,7 @@ public class Fridge {
                                                 }
                                             }
                                         }
-                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD)-1);
+                                        expCal.set(Integer.parseInt(expY), Integer.parseInt(expM)-1, Integer.parseInt(expD));
                                         Date expDate = expCal.getTime();
                                         it.setDateExpired(expDate);
                                     }
@@ -287,7 +283,7 @@ public class Fridge {
                                                 }
                                             }
                                         }
-                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD)-1);
+                                        enterCal.set(Integer.parseInt(enterY), Integer.parseInt(enterM)-1, Integer.parseInt(enterD));
                                         Date enterDate = enterCal.getTime();
                                         it.setDateEntered(enterDate);
                                     }
@@ -308,7 +304,16 @@ public class Fridge {
                             System.out.println("Failed to post an item");
                             System.out.println(error.getMessage());
                         }
-                    });
+                    }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
 
             queue.add(jsonObjReq);
         } catch (Exception e) {
@@ -455,7 +460,16 @@ public class Fridge {
                             System.out.println("Failed to post an item");
                             System.out.println(error.getMessage());
                         }
-                    });
+                    }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
             queue.add(jsonObjReq);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -467,7 +481,7 @@ public class Fridge {
     /**
      * Removes the item with given id from the content of the fridge
      * @param id item id
-     * @param eaten if the item was eaten
+     * @param wasEaten if the item was eaten
      * @throws IllegalArgumentException
      */
     public void remove(int id, boolean wasEaten) throws IllegalArgumentException {
@@ -510,7 +524,16 @@ public class Fridge {
                             System.out.println("Failed to delete an item");
                             System.out.println(error.getMessage());
                         }
-                    });
+                    }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
             queue.add(jsonObjReq);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -546,7 +569,16 @@ public class Fridge {
                             System.out.println("Failed to updated an item");
                             System.out.println(error.getMessage());
                         }
-                    });
+                    }){
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() throws AuthFailureError {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
             queue.add(jsonObjReq);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -587,9 +619,14 @@ public class Fridge {
         this.getContent().sortByEntryDate();
     }
 
-  public List<Item> recommend() {
+    public List<Item> recommend() {
         return this.eaten.recommend();
-  }
+    }
+
+
+    public void reconstruct(int id) {
+        // reconstruct the fridge based on the id
+    }
 
 
 }

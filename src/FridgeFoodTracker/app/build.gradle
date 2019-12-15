@@ -37,5 +37,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision:23.0.0'
     implementation 'androidx.core:core:1.0.0'
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    implementation "com.mikepenz:materialdrawer:6.1.2"
+
+//required support lib modules
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.annotation:annotation:1.0.0"
+    implementation "com.google.android.material:material:1.0.0"
+
 }
 apply plugin: 'com.google.gms.google-services'
