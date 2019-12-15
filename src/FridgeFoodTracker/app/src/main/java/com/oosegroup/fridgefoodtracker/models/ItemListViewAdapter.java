@@ -54,14 +54,21 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int listPosition, final int expandedListPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         Log.d("child view", "getChildView: ");
-        final String expandedListText = (String) getChild(listPosition, expandedListPosition);
+        String expandedListText = (String) getChild(listPosition, expandedListPosition);
+        String toSetText;
+        try {
+            toSetText = expandedListText.substring(0, expandedListText.indexOf(' ', 23)) +
+                    expandedListText.substring(expandedListText.lastIndexOf(' '));
+        } catch (Exception e) {
+            toSetText = expandedListText;
+        }
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.items_child, null);
         }
 
         TextView expandedListTextView = (TextView) convertView.findViewById(R.id.items_child);
-        expandedListTextView.setText(expandedListText);
+        expandedListTextView.setText(toSetText);
 
         Button editButton = convertView.findViewById(R.id.items_child_edit_btn);
         editButton.setTag(R.id.TAG_ID, this.itemIDArray[listPosition]);
