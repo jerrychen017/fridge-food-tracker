@@ -1,8 +1,10 @@
 package com.oosegroup.fridgefoodtracker.Activities;
+
 import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
@@ -98,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         ItemListController.buildExpandableListAdapter(this, this.fridge);
         this.notificationController = new NotificationController(this, this.fridge);
         sendNotifications();
@@ -106,9 +107,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupNavDrawer(Toolbar toolbar) {
 
-        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
-        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
-        PrimaryDrawerItem item3 = new PrimaryDrawerItem().withIdentifier(0).withName("Logout");
+//        PrimaryDrawerItem item1 = new PrimaryDrawerItem().withName("Fridge 1");
+//        PrimaryDrawerItem item2 = new PrimaryDrawerItem().withName("Fridge 2");
+        PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(0).withName("Create A Fridge");
+        PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(0).withName("Logout");
 
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -122,12 +124,20 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        Drawer result = new DrawerBuilder()
+        DrawerBuilder result = new DrawerBuilder()
                 .withActivity(this)
-                .withToolbar(toolbar)
-                .addDrawerItems(item1, new DividerDrawerItem(), item2, new DividerDrawerItem(), item3)
-                .withOnDrawerItemClickListener(onDrawerItemClickListener)
-                .build();
+                .withToolbar(toolbar);
+
+
+        for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
+            result.addDrawerItems(new PrimaryDrawerItem().withName("Fridge " + (i + 1)), new DividerDrawerItem());
+        }
+
+        result.addDrawerItems(itemCreate)
+                .addDrawerItems(itemLogout)
+                .withOnDrawerItemClickListener(onDrawerItemClickListener);
+
+        Drawer resultBuilt = result.build();
     }
 
     public void sendNotifications() {
@@ -135,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         NotificationManagerCompat notificationManger = this.notificationController.getManager();
         List<Notification> notifications = this.notificationController.getNotifications();
         int count = 1;
-        for(Notification notification : notifications) {
+        for (Notification notification : notifications) {
             System.out.println("for loop for each notification");
             notificationManger.notify(count, notification);
             count++;
@@ -144,10 +154,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    public HashMap<String, List<String>>  createDetailsMap(Fridge fridge) {
+    public HashMap<String, List<String>> createDetailsMap(Fridge fridge) {
         LinkedHashMap<String, List<String>> detailsMap = new LinkedHashMap<>();
-        for(Item item : fridge.getContent().getItems()) {
+        for (Item item : fridge.getContent().getItems()) {
             List<String> curr = new ArrayList<String>();
             curr.add("Date Entered: " + item.getDateEntered());
             curr.add("Date Expires: " + item.getDateExpired());
@@ -157,10 +166,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enterManually(View view) {
-        if(this.manualEntryFragment == null) {
+        if (this.manualEntryFragment == null) {
             this.manualEntryFragment = ManualEntryFragment.newInstance();
         }
-        this.manualEntryFragment.show(getSupportFragmentManager(),"add_photo_dialog_fragment");
+        this.manualEntryFragment.show(getSupportFragmentManager(), "add_photo_dialog_fragment");
 
     }
 
@@ -193,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void editItem(View view) {
         ItemListController.editItem(this.editEntryFragment.getView(),
-                    view,
-                    fridge, this);
+                view,
+                fridge, this);
     }
 
     @Override
@@ -252,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(JSONObject response) {
                             //Success Callback
                             try {
-                                int id =  response.getInt("id");
+                                int id = response.getInt("id");
                                 int size = sharedPreferences.getInt("fridge-id_size", -1);
                                 if (size == -1) {
                                     System.out.println("Error occured when creating a new fridge");
