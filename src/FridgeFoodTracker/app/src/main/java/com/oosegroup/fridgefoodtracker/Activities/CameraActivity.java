@@ -20,6 +20,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,7 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.oosegroup.fridgefoodtracker.models.Fridge;
+import com.oosegroup.fridgefoodtracker.models.ItemListController;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -316,6 +318,7 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
         File pictureFile = getOutputMediaFileTest();
 
         TextRecognitionProcessor imageProcessor = new TextRecognitionProcessor();
+        imageProcessor.activity = this;
         imageProcessor.process(image.getBitmap(), graphicOverlay);
         Bitmap bmp = image.getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();

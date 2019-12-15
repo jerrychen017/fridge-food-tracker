@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -81,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
         sendNotifications();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     public void sendNotifications() {
         System.out.println("inside sending");
@@ -126,10 +132,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void trashItem(View view) {
         ItemListController.trashItem(view, fridge, this);
-    }
-
-    public void deleteItem(View view) {
-        ItemListController.deleteItem(view, fridge, this);
     }
 
     public void enterEditDetails(View view) {

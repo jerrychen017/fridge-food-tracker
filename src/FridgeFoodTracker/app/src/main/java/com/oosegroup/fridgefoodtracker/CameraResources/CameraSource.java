@@ -60,7 +60,9 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import  com.oosegroup.fridgefoodtracker.Activities.CameraActivity;
 import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.models.Item;
+import com.oosegroup.fridgefoodtracker.models.ItemListController;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -855,7 +857,7 @@ public class CameraSource {
                             }
                             // Instantiate the RequestQueue.
                             RequestQueue queue = Volley.newRequestQueue(activity);
-                            String url = "https://chompthis.com/api/product-code.php?token=JFIJqQZRgsUr2iq8e&code=" + s;
+                            String url = "https://oose-fridgetracker.herokuapp.com/barcode/b/" + s;
                             Log.d("Barcode", "Sending request: " + url);
 // Request a string response from the provided URL.
                             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -866,15 +868,13 @@ public class CameraSource {
                                             Log.d("RESPONSE", response.toString());
                                             try {
                                                 JSONObject responseJSON = new JSONObject(response);
-                                                if(responseJSON.getJSONObject("chomp").getJSONObject("response").getInt("products_found") != 0){
+                                                if(responseJSON.getJSONArray("items").getJSONObject(0) != null){
                                                     Log.d("RESPONSE", "Products found");
-                                                    JSONObject products = responseJSON.getJSONObject("products");
-                                                    String productName = products.getJSONObject(products.keys().next()).getString("name");
-                                                                        //.getJSONObject(responseJSON.getJSONObject("chomp").getJSONObject("request").getString("product_code"))
-                                                                        //.getString("name");
+                                                    JSONArray products = responseJSON.getJSONArray("items");
+                                                    String productName = products.getJSONObject(0).getString("item");
+                                                    long expiration = products.getJSONObject(0).getLong("expiration");
                                                     Log.d("RESPONSE", "Product Name: " + productName);
-                                                    Item item = new Item(MainActivity.getFridge().getContent().getItems().size(), productName);
-                                                    MainActivity.getFridge().addItem(item);
+                                                    ItemListController.inputItemWithLifespan(MainActivity.getFridge(), productName, expiration);
                                                 } else {
                                                     Log.d("RESPONSE", "Products not found");
                                                 }

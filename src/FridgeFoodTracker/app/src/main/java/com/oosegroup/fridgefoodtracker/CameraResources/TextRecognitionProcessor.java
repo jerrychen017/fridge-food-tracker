@@ -14,17 +14,32 @@ package com.oosegroup.fridgefoodtracker.CameraResources;
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+import com.oosegroup.fridgefoodtracker.Activities.CameraActivity;
+import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
+import com.oosegroup.fridgefoodtracker.models.ItemListController;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,6 +54,7 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
     private static final String TAG = "TextRecProc";
 
     private final FirebaseVisionTextRecognizer detector;
+    public CameraActivity activity;
 
     private HashMap<String, Integer> itemsDict = new HashMap<>();
 
@@ -50,6 +66,50 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
     public void stop() {
         try {
             detector.close();
+            for(String s : itemsDict.keySet()) {
+                final String line = s;
+                RequestQueue queue = Volley.newRequestQueue(activity);
+                String url = "https://oose-fridgetracker.herokuapp.com/barcode/i/" + s;
+                Log.d("Barcode", "Sending request: " + url);
+// Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                // Display the first 500 characters of the response string.
+                                Log.d("RESPONSE", response.toString());
+                                try {
+                                    JSONObject responseJSON = new JSONObject(response);
+                                    if (responseJSON.getJSONArray("items").length() == 0) {
+                                        Log.d("RESPONSE", "Products found");
+                                        JSONArray products = responseJSON.getJSONArray("items");
+                                        String productName = products.getJSONObject(0).getString("item");
+                                        long expiration = products.getJSONObject(0).getLong("expiration");
+                                        Log.d("RESPONSE", "Product Name: " + productName);
+                                        ItemListController.inputItemWithLifespan(MainActivity.getFridge(), productName, expiration);
+                                    } else {
+                                        Log.d("RESPONSE", "Products not found");
+                                        Context context = activity.getApplicationContext();
+                                        CharSequence text =  line + " not found in the database!";
+                                        int duration = Toast.LENGTH_SHORT;
+
+                                        Toast toast = Toast.makeText(context, text, duration);
+                                        toast.show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("RESPONSE ERROR", error.toString());
+                    }
+                });
+
+// Add the request to the RequestQueue.
+                queue.add(stringRequest);
+            }
         } catch (IOException e) {
             Log.e(TAG, "Exception thrown while trying to close Text Detector: " + e);
         }
