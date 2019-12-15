@@ -1,14 +1,10 @@
 package com.oosegroup.fridgefoodtracker.models;
-
-
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-
 import com.oosegroup.fridgefoodtracker.Activities.MainActivity;
 import com.oosegroup.fridgefoodtracker.R;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

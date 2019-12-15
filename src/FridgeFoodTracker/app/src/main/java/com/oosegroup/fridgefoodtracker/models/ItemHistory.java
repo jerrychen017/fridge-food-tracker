@@ -1,24 +1,34 @@
 package com.oosegroup.fridgefoodtracker.models;
-
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Collections;
 
+/**
+ * Stores the history of items stored in the fridge.
+ */
 public class ItemHistory {
     private List<Item> items;
 
+    /**
+     * Constructor
+     */
     public ItemHistory() {
         this.items = new ArrayList<>();
     }
 
+    /**
+     * add item to the history
+     * @param it item to be added
+     */
     public void addItem(Item it) {
         items.add(it);
     }
 
-    // for now add more it
+    /**
+     * Recommend items for users to buy based on this history
+     * @return a list of items
+     */
     public List<Item> recommend() {
         List<Item> result = new ArrayList<>();
 
