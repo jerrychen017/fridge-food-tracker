@@ -197,7 +197,8 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
                     }
             });
 
-                queue.add(stringRequest);
+            queue.add(stringRequest);
+            imageProcessor.removeFromDict(s);
         }
         if (cameraSource != null) {
             cameraSource.release();

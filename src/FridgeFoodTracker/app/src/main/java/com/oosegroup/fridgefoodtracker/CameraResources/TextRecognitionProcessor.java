@@ -131,6 +131,10 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
         return itemsDict;
     }
 
+    public void removeFromDict(String toRemove){
+        itemsDict.remove(toRemove);
+    }
+
     @Override
     protected void onFailure(@NonNull Exception e) {
         Log.w(TAG, "Text detection failed." + e);
