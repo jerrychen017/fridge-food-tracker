@@ -62,11 +62,11 @@ This is many of our first times working in a larger team. As such, it's the firs
 
 ### Postman
 
-We used Postman to test our Server calls. It was pretty good.
+We used Postman to test our Server calls. It was pretty good, and no serious problems occurred.
 
 ### Heroku
 
-We used Heroku to host our Server. It was pretty good.
+We used Heroku to host our Server. It was pretty good, and no serious problems occurred.
 
 ### JUnit
 
@@ -94,6 +94,7 @@ Update the project board with tasks for a hypothetical Iteration 7.
 
 # A Final Message to Your Advisor
 
+Thank you for your guidance throughout the project. Many of the suggestions that you have made we were able to incorporate and implement into our project.
 <!--
 What did you like in working with them?
 
