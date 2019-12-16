@@ -48,6 +48,7 @@ npm start
 - Expiration date defaults to tomorrow if you don't put one in
 
 <h4>Use Camera to Add Items</h4>
+
 ![Barcode_Scanner_JPG](./docs/Pictures/barcode_scanner.jpg)
 
 <h4>Eating Items</h4>
