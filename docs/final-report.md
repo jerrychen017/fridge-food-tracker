@@ -66,7 +66,7 @@ We used Postman to test our Server calls. It was pretty good, and no serious pro
 
 ### Heroku
 
-We used Heroku to host our Server. It was pretty good, and no serious problems occurred.
+We used Heroku to host our Server. It was pretty good, and no serious problems occurred. The only problem we ran into was that Heroku only natively supports PostgreSQL, so we had to majorly refactor our server which had been relying on an SQLite database up until deployment -- as apparently PostgreSQL has quite a few major divergences from other SQL languages.
 
 ### JUnit
 
@@ -75,6 +75,10 @@ We used JUnit to test many of the classes that we had created. It helped us find
 ### Google ML Kit
 
 Google ML Kit was absolutely critical to the implementation of Barcode and OCR processing. Equally critical were their tutorial and sample apps - which we relied heavily on. Our only complaint would be the number of helper-classes required to implement even the simplest capabilities of ML Kit. Ultimately though, having explored other software options for implementing Barcode and OCR processing, we have no regrets about choosing ML Kit.
+
+### Node JS
+
+Node JS was the foundation of our backend. Our server was a Node Express server, and it allowed us to create an easily scalable and quick to respond server. Node was a natural choice for our backend with the huge amount of support for data management and asynchronous functionality, and we are glad we went with Node rather than Javalin for our backend, as it allowed us to more quickly iterate and add features when necessary.
 
 <!--
 Which tools did you learn to like? Why?
