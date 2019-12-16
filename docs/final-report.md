@@ -90,7 +90,22 @@ Which tools did you learn to dislike? Why? And what other tools would you have r
 
 # Iteration 7 & Beyond
 
-We would finish some of the features in our project proposal that we couldn't get to in time, like recommending items based on known recipes. Beyond these, we would want to release the app on iOS and desktop, 
+We would finish some of the features in our project proposal that we couldn't get to in time, like recommending items based on known recipes. Beyond these, we would want to release the app on iOS and desktop. We've updated our project board for iteration 7. Here is how we would prioritize:
+
+Core:
+- Keeping track of quantities of items (# of eggs, percent of milk, etc..) 
+- Link to bigger expiration database
+- Recently Deleted - add back to fridge
+- Shared fridges with other users
+- Interactable notifications to automatically go to fridge or be able to delete from notification itself
+- Account page
+
+More:
+- Recipe Recommender
+- Food Classifier 
+- Advanced OCR Processing
+- Usability Feedback
+- Social Media Integration
 
 <!--
 Where would you take your project from here? What features would you add to make your application even more awesome? How would you prioritize that work?
