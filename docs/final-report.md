@@ -72,9 +72,9 @@ We used Heroku to host our Server. It was pretty good.
 
 We used JUnit to test many of the classes that we had created. It helped us find some of the bugs we were having more quickly. The tool would have been more useful if we had integrated with Travis CI so that the tests ran automatically, but with our small codebase we found that running the tests manually was fine. YAGNI.
 
-### Google MLKit
+### Google ML Kit
 
-Google MLKit was absolutely critical to the implementation of Barcode and OCR processing. Equally critical were their tutorial and sample apps - which we relied heavily on. Our only complaint would be the number of helper-classes required to implement even the simplest capabilities of MLKit. Ultimately though, having explored other software options for implementing Barcode and OCR processing, we have no regrets about choosing MLKit.
+Google ML Kit was absolutely critical to the implementation of Barcode and OCR processing. Equally critical were their tutorial and sample apps - which we relied heavily on. Our only complaint would be the number of helper-classes required to implement even the simplest capabilities of ML Kit. Ultimately though, having explored other software options for implementing Barcode and OCR processing, we have no regrets about choosing ML Kit.
 
 <!--
 Which tools did you learn to like? Why?
