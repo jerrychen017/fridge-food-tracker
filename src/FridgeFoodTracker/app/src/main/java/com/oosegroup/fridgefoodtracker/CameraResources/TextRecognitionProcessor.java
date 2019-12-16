@@ -127,6 +127,10 @@ public class TextRecognitionProcessor extends VisionProcessorBase<FirebaseVision
         return true;
     }
 
+    public void clearDict(){
+        itemsDict.clear();
+    }
+
     public HashMap<String, Integer> getItemsDict() {
         return itemsDict;
     }

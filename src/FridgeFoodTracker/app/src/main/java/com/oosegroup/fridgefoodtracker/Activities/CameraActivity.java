@@ -68,7 +68,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class CameraActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -170,7 +172,10 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        for(String s : imageProcessor.getItemsDict().keySet()) {
+        Iterator i = imageProcessor.getItemsDict().entrySet().iterator();
+        while(i.hasNext()){
+            Map.Entry element = (Map.Entry)i.next();
+            String s = (String) element.getKey();
             RequestQueue queue = Volley.newRequestQueue(this);
             String url = "https://oose-fridgetracker.herokuapp.com/barcode/i/" + s;
             StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -198,9 +203,10 @@ public class CameraActivity extends AppCompatActivity implements ActivityCompat.
             });
 
             queue.add(stringRequest);
-            imageProcessor.removeFromDict(s);
+            i.remove();
         }
         if (cameraSource != null) {
+            imageProcessor.clearDict();
             cameraSource.release();
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
