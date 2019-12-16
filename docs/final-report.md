@@ -56,6 +56,8 @@ What were some of the biggest challenges you found when developing your project?
 
 Android is ubiquitous. It's been around for a long time, and there are tons of devices throughout the world running it. We wanted our app to run on as many of these devices as possible, so we set our minimum APK version to be quite low. This meant we couldn't take advantage of many of the quality-of-life updates Android has had over the years, and so it sometimes felt like we were writing legacy software right out of the gate.
 
+Working with Android for almost everyone was new to them, so a lot of the UI stuff was actually quite challenging for us to develop and debug. It was a big hurdle, but everyone learned quite a lot about mobile development for Android.
+
 ### Git and GitHub
 
 This is many of our first times working in a larger team. As such, it's the first time many of us have adopted a branching & merging workflow. We did have some troubles, especially at first, but we were all able to implement this flow quickly. We had good success with this workflow, and we would be happy to do it again.
