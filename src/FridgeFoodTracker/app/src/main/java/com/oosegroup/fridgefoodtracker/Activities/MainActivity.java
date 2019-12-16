@@ -117,7 +117,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        setTitle("Fridge " + (curIdentifier - 2));
+        if (curIdentifier - 2 < 0) {
+            setTitle("Create a fridge from Sidebar!");
+        } else {
+            setTitle("Fridge " + (curIdentifier - 2));
+        }
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
