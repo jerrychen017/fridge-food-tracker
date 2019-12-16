@@ -1,4 +1,5 @@
 package com.oosegroup.fridgefoodtracker.models;
+
 import android.content.SharedPreferences;
 
 import com.android.volley.NetworkResponse;
@@ -7,9 +8,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -128,10 +131,127 @@ public class Fridge {
                 content.addItem(it);
             }
         } catch (JSONException e) {
-            System.err.println("initFridge: exception occurred when parsing JSONObject with message "
+            System.err.println("initFridge(JSONObject): exception occurred when " +
+                    "parsing JSONObject with message "
                     + e.getMessage());
         }
     }
+
+    /**
+     * Retrieve all items from the server upon creating the fridge locally
+     */
+    public void initFridge() {
+        // initialize item list
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id;
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            System.out.println("initFridge(): Successfully retrieved items");
+                            try {
+                                JSONArray arr = response.getJSONArray("items");
+                                for (int i = 0; i < arr.length(); i++) {
+                                    Item it = new Item(arr.getJSONObject(i).getInt("id"),
+                                            arr.getJSONObject(i).getString("item"));
+                                    // retrieve expiration date
+                                    String expStr = arr.getJSONObject(i).getString("expiration");
+                                    if (expStr != "null" && expStr != null) {
+                                        Calendar expCal = Calendar.getInstance();
+                                        boolean finishM = false;
+                                        String expM = new String();
+                                        boolean finishD = false;
+                                        String expD = new String();
+                                        String expY = new String();
+                                        for (int j = 0; j < expStr.length(); j++) {
+                                            char ch = expStr.charAt(j);
+                                            if (ch == 'D') {
+                                                finishM = true;
+                                            } else if (ch == 'Y') {
+                                                finishD = true;
+                                            } else if (ch != 'M') {
+                                                if (!finishM) {
+                                                    expM += ch;
+                                                } else if (!finishD) {
+                                                    expD += ch;
+                                                } else {
+                                                    expY += ch;
+                                                }
+                                            }
+                                        }
+                                        expCal.set(Integer.parseInt(expY),
+                                                Integer.parseInt(expM) - 1,
+                                                Integer.parseInt(expD));
+                                        Date expDate = expCal.getTime();
+                                        it.setDateExpired(expDate);
+                                    }
+
+                                    // retrieve enter date
+                                    String enterStr = arr.getJSONObject(i).getString("enter");
+                                    if (enterStr != "null" && enterStr != null) {
+                                        Calendar enterCal = Calendar.getInstance();
+                                        boolean finishM = false;
+                                        String enterM = new String();
+                                        boolean finishD = false;
+                                        String enterD = new String();
+                                        String enterY = new String();
+                                        for (int j = 0; j < enterStr.length(); j++) {
+                                            char ch = enterStr.charAt(j);
+                                            if (ch == 'D') {
+                                                finishM = true;
+                                            } else if (ch == 'Y') {
+                                                finishD = true;
+                                            } else if (ch != 'M') {
+                                                if (!finishM) {
+                                                    enterM += ch;
+                                                } else if (!finishD) {
+                                                    enterD += ch;
+                                                } else {
+                                                    enterY += ch;
+                                                }
+                                            }
+                                        }
+                                        enterCal.set(Integer.parseInt(enterY),
+                                                Integer.parseInt(enterM) - 1,
+                                                Integer.parseInt(enterD));
+                                        Date enterDate = enterCal.getTime();
+                                        it.setDateEntered(enterDate);
+                                    }
+                                    content.addItem(it);
+                                }
+                            } catch (JSONException e) {
+                                System.err.println("initFridge(): exception occurred when parsing "
+                                        + "JSON object with error message " + e.getMessage());
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.err.println("initFridge(): Failed to retrieve items with error " +
+                                    "message " + error.getMessage());
+                        }
+                    }) {
+                /** Passing some request headers* */
+                @Override
+                public Map getHeaders() {
+                    HashMap headers = new HashMap();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("authorization", pref.getString("token", null));
+                    return headers;
+                }
+            };
+
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.err.println("initFridge(): exception occurred when sending GET request" +
+                    " with error message " + e.getMessage());
+        }
+    }
+
 
     /**
      * Parse all fridge items from the given JSON object
@@ -146,7 +266,6 @@ public class Fridge {
                 Item it = new Item(arr.getJSONObject(i).getInt("id"),
                         arr.getJSONObject(i).getString("item"));
                 if (reason.compareTo("eat") == 0) {
-                    System.out.println("in eaten");
                     eaten.addItem(it);
                 } else if (reason.compareTo("trash") == 0) {
                     trashed.addItem(it);
@@ -155,8 +274,58 @@ public class Fridge {
                 }
             }
         } catch (JSONException e) {
-            System.err.println("initHistory:  exception occurred when parsing JSONObject " +
+            System.err.println("initHistory(JSONObject):  exception occurred when parsing JSONObject " +
                     "with message " + e.getMessage());
+        }
+    }
+
+    /**
+     * Retrieve all history items from the server upon creating the fridge locally
+     */
+    public void initHistory() {
+        // initializing history
+        try {
+            String url = "http://oose-fridgetracker.herokuapp.com/fridge/" + this.id + "/history";
+            JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            //Success Callback
+                            try {
+                                JSONArray arr = response.getJSONArray("items");
+                                for (int i = 0; i < arr.length(); i++) {
+                                    String reason = arr.getJSONObject(i).getString("reason");
+                                    Item it = new Item(arr.getJSONObject(i).getInt("id"),
+                                            arr.getJSONObject(i).getString("item"));
+                                    if (reason.compareTo("eat") == 0) {
+                                        eaten.addItem(it);
+                                    } else if (reason.compareTo("trash") == 0) {
+                                        trashed.addItem(it);
+                                    } else {
+                                        System.err.println("initHistory(): " +
+                                                "Item was neither trashed nor eaten");
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                System.err.println("initHistory(): exception occurred when parsing" +
+                                        " JSON object with error message " + e.getMessage());
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            //Failure Callback
+                            System.err.println("initHistory(): Failed to retrieve items with " +
+                                    "error message " + error.getMessage());
+                        }
+                    });
+
+            queue.add(jsonObjReq);
+        } catch (Exception e) {
+            System.err.println("initHistory(): exception occurred when sending GET request" +
+                    " with error message " + e.getMessage());
         }
     }
 
@@ -386,6 +555,7 @@ public class Fridge {
 
     /**
      * Recommend a list of items for the user to buy
+     *
      * @return list of items
      */
     public List<Item> recommend() {
@@ -394,6 +564,7 @@ public class Fridge {
 
     /**
      * gets the id of the fridge
+     *
      * @return id of this fridge
      */
     public int getID() {

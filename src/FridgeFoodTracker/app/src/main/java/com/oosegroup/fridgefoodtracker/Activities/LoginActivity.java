@@ -1,5 +1,4 @@
 package com.oosegroup.fridgefoodtracker.Activities;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,18 +7,18 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.FridgeAccountAuthenticator;
 
+/**
+ * Activity for user login
+ */
 public class LoginActivity extends AppCompatActivity {
-
     RequestQueue queue;
     String usernameStr;
     String passwordStr;
@@ -62,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
 
         if (usernameStr != null && passwordStr != null) {
             FridgeAccountAuthenticator.login(usernameStr, passwordStr);
-//            FridgeAccountAuthenticator.auth();
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -81,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             }, 500);
-
         } else {
             // prompt error
             new AlertDialog.Builder(this)
@@ -91,9 +88,5 @@ public class LoginActivity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
-    }
-    @Override
-    public void onBackPressed() {
-
     }
 }
