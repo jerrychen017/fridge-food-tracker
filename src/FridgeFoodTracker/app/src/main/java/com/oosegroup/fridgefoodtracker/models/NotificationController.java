@@ -49,15 +49,10 @@ public class NotificationController {
      * @param fridge the fridge for the notifications
      */
     private void buildNotifications(Context mContext, Fridge fridge) {
-        System.out.println("building notifications");
         Date currentTime = new Date();
         //2 days in milliseconds
         long notificationTime = 172800 * 1000;
-        if(fridge.getContent().getItems().isEmpty()) {
-            System.out.println("empty");
-        }
         for (Item item : fridge.getContent().getItems()) {
-            System.out.println("in for loop");
             long diff = item.getDateExpired().getTime() - currentTime.getTime();
             if(diff > 0 && diff <= notificationTime) {
                 Notification notification = new NotificationCompat.Builder(mContext, CHANNEL_ID)

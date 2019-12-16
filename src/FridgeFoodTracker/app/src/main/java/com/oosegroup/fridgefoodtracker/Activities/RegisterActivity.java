@@ -15,9 +15,10 @@ import com.android.volley.toolbox.Volley;
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.FridgeAccountAuthenticator;
 
+/**
+ * Activity for account registration
+ */
 public class RegisterActivity extends AppCompatActivity {
-
-
     RequestQueue queue;
     String usernameStr;
     String passwordStr;
@@ -30,7 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
         this.queue = Volley.newRequestQueue(this);
         this.pref = getSharedPreferences("fridge-food-tracker", MODE_PRIVATE);
         FridgeAccountAuthenticator.init(queue, pref);
-
         CardView register = (CardView) findViewById(R.id.login);
         register.setOnClickListener(registerOnClickListener);
-
     }
 
     private void register(View view) {
@@ -52,7 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         usernameStr = username.getText().toString();
         passwordStr = password.getText().toString();
-
         if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
             // passwords do not match
             new AlertDialog.Builder(this)
@@ -63,8 +60,6 @@ public class RegisterActivity extends AppCompatActivity {
                     .show();
             return;
         }
-        System.out.println("username is " + usernameStr);
-
 
         if (usernameStr.isEmpty() || passwordStr.isEmpty()) {
             // either username or password is empty, prompt error
@@ -108,8 +103,5 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 }
             }, 500);
-
     }
-
-
 }

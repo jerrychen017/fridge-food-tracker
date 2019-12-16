@@ -94,7 +94,6 @@ public class ItemListController {
      */
     public static void eatItem(View view, Fridge fridge, MainActivity mainActivity) {
         Log.d("ItemListController", "EAT: " + view.getTag().toString());
-        System.out.println("called eatItem with id " + Integer.parseInt(view.getTag().toString())); // debug
         fridge.remove(Integer.parseInt(view.getTag().toString()), true);
         buildExpandableListAdapter(mainActivity, fridge);
     }

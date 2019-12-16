@@ -1,41 +1,30 @@
 package com.oosegroup.fridgefoodtracker.Activities;
-
 import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
-
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.ExpandableListView;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-
 import com.oosegroup.fridgefoodtracker.R;
 import com.oosegroup.fridgefoodtracker.models.*;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -69,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 
         setupNavDrawer(toolbar);
 
-
         this.queue = Volley.newRequestQueue(this);
         this.fridge = new Fridge(queue, sharedPreferences, this.sharedPreferences.getInt("fridge-id_cur", -1));
 
@@ -80,16 +68,11 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(fridgeDataString);
                 fridge.initFridge(jsonObject);
             } else {
-                // prompt error
-                new AlertDialog.Builder(this)
-                        .setTitle("Error!")
-                        .setMessage("Username or password is empty")
-                        .setNegativeButton(android.R.string.ok, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                fridge.initFridge();
             }
         } catch (JSONException e) {
-            System.out.println(e.toString());
+            System.err.println("MainActivity onCreate: exception occurred when constructing " +
+                    "JSON object with error message " + e.getMessage());
         }
 
         try {
@@ -97,16 +80,11 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(fridgeHistoryString);
                 fridge.initHistory(jsonObject);
             } else {
-                // prompt error
-                new AlertDialog.Builder(this)
-                        .setTitle("Error!")
-                        .setMessage("Username or password is empty")
-                        .setNegativeButton(android.R.string.ok, null)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+                fridge.initHistory();
             }
         } catch (JSONException e) {
-            System.out.println(e.toString());
+            System.err.println("MainActivity onCreate: exception occurred when constructing " +
+                    "JSON object with error message " + e.getMessage());
         }
 
         if (ItemListController.getControllerMainActivity() == null) {
@@ -123,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupNavDrawer(Toolbar toolbar) {
-
         PrimaryDrawerItem itemCreate = new PrimaryDrawerItem().withIdentifier(0).withName("Create A Fridge");
         PrimaryDrawerItem itemLogout = new PrimaryDrawerItem().withIdentifier(1).withName("Logout");
         PrimaryDrawerItem itemRecommend = new PrimaryDrawerItem().withIdentifier(2).withName("Recommendations");
@@ -133,11 +110,10 @@ public class MainActivity extends AppCompatActivity {
                 .withActivity(this)
                 .withToolbar(toolbar);
 
-
         for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
-            result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i+3).withName("Fridge " + (i + 1)), new DividerDrawerItem());
+            result.addDrawerItems(new PrimaryDrawerItem().withIdentifier(i + 3).withName("Fridge " + (i + 1)), new DividerDrawerItem());
             if (sharedPreferences.getInt("fridge-id_" + i, -1) == sharedPreferences.getInt("fridge-id_cur", -1)) {
-                curIdentifier = i+3;
+                curIdentifier = i + 3;
             }
         }
 
@@ -145,14 +121,10 @@ public class MainActivity extends AppCompatActivity {
         Drawer.OnDrawerItemClickListener onDrawerItemClickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                System.out.println(drawerItem);
                 long identifier = drawerItem.getIdentifier();
                 if (identifier == 1) {
-                    System.out.println("logging out");
                     logout();
-
                 } else if (identifier == 0) {
-                    System.out.println("creating a fridge");
                     createFridge();
                 } else if (identifier == 2) {
                     goToRecommendActivity();
@@ -160,27 +132,23 @@ public class MainActivity extends AppCompatActivity {
                     int tempID = -1;
                     for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
                         if (sharedPreferences.getInt("fridge-id_" + i, -1) == sharedPreferences.getInt("fridge-id_cur", -1)) {
-                            tempID = i+3;
+                            tempID = i + 3;
                         }
                         if (tempID == identifier) {
                             return false;
                         }
-
                     }
 
                     for (int i = 0; i < sharedPreferences.getInt("fridge-id_size", -1); i++) {
-                        if (i+3 == identifier) {
-                            System.out.println("changing fridge");
+                        if (i + 3 == identifier) {
                             changeFridge(i);
                         }
                     }
-
                 }
 
                 return false;
             }
         };
-
 
         result.addDrawerItems(itemCreate, new DividerDrawerItem())
                 .addDrawerItems(itemRecommend, new DividerDrawerItem())
@@ -198,12 +166,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendNotifications() {
-        System.out.println("inside sending");
         NotificationManagerCompat notificationManger = this.notificationController.getManager();
         List<Notification> notifications = this.notificationController.getNotifications();
         int count = 1;
         for (Notification notification : notifications) {
-            System.out.println("for loop for each notification");
             notificationManger.notify(count, notification);
             count++;
         }
@@ -309,8 +275,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void createFridge() {
-        System.out.println("MainActivity: creating a fridge");
-        System.out.println("MainActivity: fridge ID arr size is " + sharedPreferences.getInt("fridge-id_size", -1));
         try {
             String url = "http://oose-fridgetracker.herokuapp.com/user/f/new";
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,
@@ -319,12 +283,13 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             //Success Callback
-                            System.out.println("MainActivity: successfully created a fridge");
+                            System.out.println("MainActivity createFridge: successfully created a fridge");
                             try {
                                 int id = response.getInt("id");
                                 int size = sharedPreferences.getInt("fridge-id_size", -1);
                                 if (size == -1) {
-                                    System.out.println("Error occured when creating a new fridge");
+                                    System.err.println("MainActivity createFridge:" +
+                                            " error occurred when creating a new fridge");
                                 }
                                 editor.remove("fridge-id_size");
                                 editor.putInt("fridge-id_size", size + 1);
@@ -336,7 +301,9 @@ public class MainActivity extends AppCompatActivity {
                                 Intent splashActivityIntent = new Intent(MainActivity.this, SplashActivity.class);
                                 startActivity(splashActivityIntent);
                             } catch (JSONException e) {
-                                System.out.println("Error occurred when parsing json string");
+                                System.err.println("MainActivity createFridge: exception occurred " +
+                                        "when parsing JSON string with error message " +
+                                        e.getMessage());
                             }
                         }
                     },
@@ -344,15 +311,15 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             //Failure Callback
-                            System.out.println("Failed to create an item");
-                            System.out.println(error.getMessage());
+                            System.err.println("MainActivity createFridge: failed to create a fridge" +
+                                    " with error message " + error.getMessage());
                         }
                     }) {
                 /**
                  * Passing some request headers*
                  */
                 @Override
-                public Map getHeaders() throws AuthFailureError {
+                public Map getHeaders() {
                     HashMap headers = new HashMap();
                     headers.put("Content-Type", "application/json");
                     headers.put("authorization", sharedPreferences.getString("token", null));
@@ -361,10 +328,9 @@ public class MainActivity extends AppCompatActivity {
             };
             queue.add(jsonObjReq);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new IllegalArgumentException("Exception occured when seding http request. Error: " + e.getMessage());
+            System.err.println("MainActivity createFridge: exception occurred when " +
+                    "sending POST request with error message " + e.getMessage());
         }
-
     }
 
     public static Fridge getFridge() {
@@ -373,9 +339,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeFridge(int index) {
         int id = sharedPreferences.getInt("fridge-id_" + index, -1);
-        System.out.println("changing fridge with current id " + id);
         if (id == -1) {
-            System.out.println("Error occurred when changing the fridge");
+            System.err.println("MainActivity changeFridge: error occurred when changing the fridge");
             return;
         }
         editor.remove("fridge-id_cur");
