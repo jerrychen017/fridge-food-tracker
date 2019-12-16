@@ -128,14 +128,6 @@ public class ItemListViewAdapter extends BaseExpandableListAdapter {
         Button eatButton = convertView.findViewById(R.id.items_child_eat_btn);
         eatButton.setTag(this.itemIDArray[listPosition]);
 
-        // debug
-        System.out.println("getChildView: listposistion is " + listPosition);
-        System.out.println("getChildView: item id is " + this.itemIDArray[listPosition]);
-        System.out.print("ID Array is ");
-        for (int i = 0; i < itemIDArray.length; i++) {
-            System.out.print(itemIDArray[i] + " ");
-        }
-        System.out.println();
 
         LinearLayout buttons = convertView.findViewById(R.id.items_child_buttons);
         if (isLastChild) {

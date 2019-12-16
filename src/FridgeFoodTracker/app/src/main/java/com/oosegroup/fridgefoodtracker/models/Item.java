@@ -1,6 +1,5 @@
 package com.oosegroup.fridgefoodtracker.models;
 import java.util.Date;
-// item class representing Item
 
 /**
  * Represents a fridge item with id, text description, entry date and expired date
