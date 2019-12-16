@@ -64,7 +64,7 @@ This is many of our first times working in a larger team. As such, it's the firs
 
 ### Postman
 
-We used Postman to test our Server calls. It was pretty good, and no serious problems occurred.
+We used Postman to test our Server calls. We found that Postman helped us test the server more quickly and easily than sending the calls through code. Using Postman in the lectures helped.
 
 ### Heroku
 
